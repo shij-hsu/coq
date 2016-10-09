@@ -329,8 +329,7 @@ Example inversion_ex6 : forall (X : Type)
   x :: y :: l = [] ->
   y :: l = z :: j ->
   x = z.
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. intros. inversion H. Qed.
 (** [] *)
 
 (** To summarize this discussion, suppose [H] is a hypothesis in the
@@ -567,8 +566,13 @@ Proof.
 (** **** Exercise: 2 stars (beq_nat_true)  *)
 Theorem beq_nat_true : forall n m,
     beq_nat n m = true -> n = m.
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. intros n. induction n as [|n'].
+       - intros m. destruct m as [|m'].
+         + reflexivity.
+         + simpl. intros contra. inversion contra.
+       - intros m. destruct m as [|m'].
+         + intros contra. inversion contra.
+         + simpl. intros. apply f_equal. exact (IHn' m' H). Qed.
 (** [] *)
 
 (** **** Exercise: 2 stars, advanced (beq_nat_true_informal)  *)
@@ -688,12 +692,17 @@ Qed.
 
 (** **** Exercise: 3 stars, recommended (gen_dep_practice)  *)
 (** Prove this by induction on [l]. *)
+Lemma Sn_pred:forall (n m:nat),S n=m->n=pred m.
+  intros. rewrite <- H. rewrite <- pred_Sn. reflexivity. Qed. 
 
 Theorem nth_error_after_last: forall (n : nat) (X : Type) (l : list X),
      length l = n ->
      nth_error l n = None.
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. intros. generalize dependent n. induction l.
+       - intros. simpl. reflexivity.
+       - intros. simpl in H. assert (length l=pred n).
+         { apply (Sn_pred (length l) n). rewrite H. reflexivity. }
+         simpl. rewrite<-H. rewrite S_nbeq_0. rewrite H. exact (IHl (pred n) H0). Qed.
 (** [] *)
 
 (** **** Exercise: 3 stars, optional (app_length_cons)  *)
@@ -704,18 +713,41 @@ Theorem app_length_cons : forall (X : Type) (l1 l2 : list X)
                                   (x : X) (n : nat),
      length (l1 ++ (x :: l2)) = n ->
      S (length (l1 ++ l2)) = n.
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. induction l1.
+       - simpl. intros. apply H.
+       - intros. simpl in H.
+         assert (length (l1 ++ x0 :: l2)=pred n).
+         { rewrite <- H. rewrite <-pred_Sn. reflexivity. }
+         simpl. assert (S (length (l1 ++ l2)) = pred n).
+         { apply (IHl1 l2 x0 (pred n) H0). }
+         rewrite H1. rewrite <-H. rewrite <-pred_Sn. reflexivity. Qed.
+         
 (** [] *)
 
 (** **** Exercise: 4 stars, optional (app_length_twice)  *)
 (** Prove this by induction on [l], without using [app_length] from [Lists]. *)
-
+Lemma app_cons_length :forall (X : Type) (l1 l2 : list X)
+                              (x : X) (n : nat),
+     S (length (l1 ++ l2)) = n->
+     length (l1 ++ (x :: l2)) = n.
+    
+Proof. intros. generalize dependent n. induction l1.
+       - intros. auto.
+       - intros. simpl in H. simpl. assert (S (length (l1++l2))=pred n).
+         { rewrite <- H. rewrite <-pred_Sn. reflexivity. }
+         rewrite (IHl1 (pred n) H0). rewrite <-H0. rewrite H. reflexivity. Qed.
 Theorem app_length_twice : forall (X:Type) (n:nat) (l:list X),
      length l = n ->
      length (l ++ l) = n + n.
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. intros. generalize dependent n. induction l.
+       - intros. simpl. simpl in H. rewrite <-H. auto.
+       - intros. simpl. simpl in H. assert (length l=pred n).
+         { rewrite <-H. rewrite <-pred_Sn. reflexivity. }
+         assert (length (l++x::l)=n+(pred n)).
+         { apply app_cons_length. rewrite (IHl (pred n) H0).
+           rewrite <-H0. rewrite <-plus_Sn_m. rewrite H. reflexivity. }
+         rewrite H1. rewrite plus_comm. rewrite <-plus_Sn_m. rewrite <-H0.
+         rewrite H. reflexivity. Qed.
 (** [] *)
 
 (** **** Exercise: 3 stars, optional (double_induction)  *)
@@ -727,8 +759,11 @@ Theorem double_induction: forall (P : nat -> nat -> Prop),
   (forall n, P 0 n -> P 0 (S n)) ->
   (forall m n, P m n -> P (S m) (S n)) ->
   forall m n, P m n.
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. intros P P0 H1 H2 H3.
+       induction m.
+       - intros. induction n. apply P0. exact (H2 n IHn).
+       - intros. destruct n. apply (H1 m (IHm 0)). apply H3. apply IHm. Qed.
+       
 (** [] *)
 
 (* ################################################################# *)
