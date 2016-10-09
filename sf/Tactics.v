@@ -411,6 +411,14 @@ Theorem plus_n_n_injective : forall n m,
      n = m.
 Proof.
   intros n. induction n as [| n'].
+  - intros m. simpl. intros eq. destruct m.
+    + reflexivity.
+    + inversion eq.
+  - intros. destruct m.
+    + inversion H.
+    + apply f_equal. simpl in H. repeat rewrite <-plus_n_Sm in H. inversion H.
+      exact (IHn' m H1). Qed.
+      
 (** [] *)
 
 (* ################################################################# *)
@@ -929,8 +937,10 @@ Proof.
 Theorem combine_split : forall X Y (l : list (X * Y)) l1 l2,
   split l = (l1, l2) ->
   combine l1 l2 = l.
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. intros X Y l. induction l as [|[x y] l'].
+       - intros. inversion H. reflexivity.
+       - intros. simpl in H. destruct (split l') as [lx ly].
+         inversion H. simpl. rewrite IHl'. reflexivity. reflexivity. Qed.
 (** [] *)
 
 (** However, [destruct]ing compound expressions requires a bit of
