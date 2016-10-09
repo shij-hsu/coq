@@ -1000,8 +1000,27 @@ Proof.
 Theorem bool_fn_applied_thrice :
   forall (f : bool -> bool) (b : bool),
   f (f (f b)) = f b.
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. intros. destruct b.
+       - (* b=true *)
+         destruct (f true) eqn:e1.
+         (* f true=true *)
+         + 
+           rewrite e1. apply e1.
+         + 
+           destruct (f false) eqn:e2.
+           (* f false=true *)
+           * apply e1.
+           * apply e2.
+       - (* b=false *)
+         destruct (f false) eqn:e1.
+         + (* f false=true *)
+           destruct (f true) eqn:e2.
+           (* f true=true *)
+           * apply e2.
+           * apply e1.
+         + (* f false=false *)
+           * rewrite e1. apply e1. Qed.
+         
 (** [] *)
 
 (* ################################################################# *)
@@ -1073,8 +1092,15 @@ Proof.
 (** **** Exercise: 3 stars (beq_nat_sym)  *)
 Theorem beq_nat_sym : forall (n m : nat),
   beq_nat n m = beq_nat m n.
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. intros n.
+       induction n.
+       - destruct m.
+         + reflexivity.
+         + reflexivity.
+       - intros. destruct m.
+         + reflexivity.
+         + simpl. exact (IHn m). Qed.
+         
 (** [] *)
 
 (** **** Exercise: 3 stars, advanced, optional (beq_nat_sym_informal)  *)
@@ -1093,8 +1119,7 @@ Theorem beq_nat_trans : forall n m p,
   beq_nat n m = true ->
   beq_nat m p = true ->
   beq_nat n p = true.
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. intros. rewrite (beq_nat_true n m H). apply H0. Qed.
 (** [] *)
 
 (** **** Exercise: 3 stars, advanced (split_combine)  *)
@@ -1110,14 +1135,19 @@ Proof.
     things than necessary.  Hint: what property do you need of [l1]
     and [l2] for [split] [combine l1 l2 = (l1,l2)] to be true?)  *)
 
-Definition split_combine_statement : Prop 
-  (* REPLACE THIS LINE WITH   := _your_definition_ . *) . Admitted.
+Definition split_combine_statement : Prop :=
+  forall (X Y:Type) (l1:list X) (l2:list Y),
+length l1=length l2->split (combine l1 l2)=(l1,l2).
 
 Theorem split_combine : split_combine_statement.
-Proof.
-(* FILL IN HERE *) Admitted.
-
-
+Proof. intros X Y. induction l1 as [|x l1'].
+       - intros l2 Heq. destruct l2 as [|y l2'].
+         + reflexivity.
+         + inversion Heq.
+       - intros l2 Heq. destruct l2 as [|y l2'].
+         + inversion Heq.
+         + simpl. rewrite IHl1'. reflexivity.
+           inversion Heq. reflexivity. Qed.
 (** [] *)
 
 (** **** Exercise: 3 stars, advanced (filter_exercise)  *)
@@ -1128,8 +1158,11 @@ Theorem filter_exercise : forall (X : Type) (test : X -> bool)
                              (x : X) (l lf : list X),
      filter test l = x :: lf ->
      test x = true.
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. intros X test x. induction l.
+       - intros. simpl in H. inversion H.
+       - simpl. destruct (test x0) eqn:e1.
+         + intros. inversion H. rewrite <- H1. apply e1.
+         + apply IHl. Qed.
 (** [] *)
 
 (** **** Exercise: 4 stars, advanced, recommended (forall_exists_challenge)  *)
