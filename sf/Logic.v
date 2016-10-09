@@ -147,8 +147,9 @@ Qed.
 (** **** Exercise: 2 stars (and_exercise)  *)
 Example and_exercise :
   forall n m : nat, n + m = 0 -> n = 0 /\ m = 0.
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. intros n m. destruct n.
+       - intros. split. reflexivity. simpl in H. apply H.
+       - intros. simpl in H. split. inversion H. inversion H. Qed.
 (** [] *)
 
 (** So much for proving conjunctive statements.  To go in the other
@@ -221,8 +222,7 @@ Proof.
 (** **** Exercise: 1 star, optional (proj2)  *)
 Lemma proj2 : forall P Q : Prop,
   P /\ Q -> Q.
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. intros. destruct H as [HP HQ]. apply HQ. Qed.
 (** [] *)
 
 (** Finally, we sometimes need to rearrange the order of conjunctions
@@ -249,7 +249,7 @@ Theorem and_assoc : forall P Q R : Prop,
   P /\ (Q /\ R) -> (P /\ Q) /\ R.
 Proof.
   intros P Q R [HP [HQ HR]].
-(* FILL IN HERE *) Admitted.
+  split. split. apply HP. apply HQ. apply HR. Qed.
 (** [] *)
 
 (** By the way, the infix notation [/\] is actually just syntactic
@@ -318,15 +318,19 @@ Qed.
 (** **** Exercise: 1 star (mult_eq_0)  *)
 Lemma mult_eq_0 :
   forall n m, n * m = 0 -> n = 0 \/ m = 0.
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. intros n m. destruct n eqn:e1.
+       - left. reflexivity.
+       - destruct m.
+         + intros. right. reflexivity.
+         + intro contra. inversion contra. Qed.
 (** [] *)
 
 (** **** Exercise: 1 star (or_commut)  *)
 Theorem or_commut : forall P Q : Prop,
   P \/ Q  -> Q \/ P.
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. intros P Q [HP| HQ].
+       - right. apply HP.
+       - left. apply HQ. Qed.
 (** [] *)
 
 (* ================================================================= *)
@@ -380,8 +384,7 @@ Proof.
 
 Fact not_implies_our_not : forall (P:Prop),
   ~ P -> (forall (Q:Prop), P -> Q).
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. intros. destruct H. apply H0. Qed.
 (** [] *)
 
 (** This is how we use [not] to state that [0] and [1] are different
@@ -441,15 +444,14 @@ Proof.
 (** **** Exercise: 2 stars, recommended (contrapositive)  *)
 Theorem contrapositive : forall P Q : Prop,
   (P -> Q) -> (~Q -> ~P).
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. intros. unfold not in H0. unfold not. intros. exact (H0 (H H1)). Qed.
 (** [] *)
 
 (** **** Exercise: 1 star (not_both_true_and_false)  *)
 Theorem not_both_true_and_false : forall P : Prop,
   ~ (P /\ ~P).
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. unfold not. intros. destruct H.
+       - exact (H0 H). Qed.
 (** [] *)
 
 (** **** Exercise: 1 star, advanced (informal_not_PNP)  *)
@@ -553,20 +555,30 @@ Qed.
 
 Theorem iff_refl : forall P : Prop,
   P <-> P.
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. unfold iff. intros. split.
+       - intros. apply H.
+       - intros. apply H. Qed.
 
 Theorem iff_trans : forall P Q R : Prop,
   (P <-> Q) -> (Q <-> R) -> (P <-> R).
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. unfold iff. intros. destruct H. destruct H0. split.
+       - intros. exact (H0 (H H3)).
+       - intros. exact (H1 (H2 H3)). Qed.
 (** [] *)
 
 (** **** Exercise: 3 stars (or_distributes_over_and)  *)
 Theorem or_distributes_over_and : forall P Q R : Prop,
   P \/ (Q /\ R) <-> (P \/ Q) /\ (P \/ R).
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. unfold iff. split. intros.
+       - destruct H as [HPQ |HR].
+         + split. left. apply HPQ. left. apply HPQ.
+         + destruct HR as [HQ HR].
+           * split. right. apply HQ. right. apply HR.
+       - intros. destruct H as [HPQ HPR]. destruct HPQ as [HP |HQ].
+         + left. apply HP.
+         + destruct HPR as [HP |HR].
+           * left. apply HP.
+           * right. split. apply HQ. apply HR. Qed.
 (** [] *)
 
 (** Some of Coq's tactics treat [iff] statements specially, avoiding
@@ -664,8 +676,7 @@ Proof.
 
 Theorem dist_not_exists : forall (X:Type) (P : X -> Prop),
   (forall x, P x) -> ~ (exists x, ~ P x).
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. unfold not. intros. 
 (** [] *)
 
 (** **** Exercise: 2 stars (dist_exists_or)  *)
