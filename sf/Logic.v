@@ -818,15 +818,27 @@ Proof. intros. split. induction l.
     lemma below.  (Of course, your definition should _not_ just
     restate the left-hand side of [All_In].) *)
 
-Fixpoint All {T} (P : T -> Prop) (l : list T) : Prop 
-  (* REPLACE THIS LINE WITH   := _your_definition_ . *) . Admitted.
+Fixpoint All {T} (P : T -> Prop) (l : list T) : Prop :=
+  match l with
+  |nil=>True
+  |x::l'=>P x/\All P l'
+  end.
 
 Lemma All_In :
   forall T (P : T -> Prop) (l : list T),
     (forall x, In x l -> P x) <->
     All P l.
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. intros. split.
+       - induction l.
+         + simpl. intros. reflexivity.
+         + intros. simpl. simpl in H. split.
+           * apply H. left. reflexivity.
+           * apply IHl. intros. apply H. right. apply H0.
+       - induction l.
+         + simpl. intros. inversion H0.
+         + simpl. intros. destruct H. destruct H0.
+           * rewrite H0 in H. apply H.
+           * apply IHl. apply H1. apply H0. Qed.
 (** [] *)
 
 (** **** Exercise: 3 stars (combine_odd_even)  *)
@@ -836,8 +848,12 @@ Proof.
     equivalent to [Podd n] when [n] is odd and equivalent to [Peven n]
     otherwise. *)
 
-Definition combine_odd_even (Podd Peven : nat -> Prop) : nat -> Prop 
-  (* REPLACE THIS LINE WITH   := _your_definition_ . *) . Admitted.
+Definition combine_odd_even (Podd Peven : nat -> Prop) : nat -> Prop :=
+  fun n=>
+    match (oddb n) with
+    |true=>Podd n
+    |false=>Peven n
+    end.
 
 (** To test your definition, prove the following facts: *)
 
@@ -846,24 +862,23 @@ Theorem combine_odd_even_intro :
     (oddb n = true -> Podd n) ->
     (oddb n = false -> Peven n) ->
     combine_odd_even Podd Peven n.
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. intros. destruct (oddb n) eqn:e1.
+       - unfold combine_odd_even. rewrite e1. apply H. reflexivity.
+       - unfold combine_odd_even. rewrite e1. apply H0. reflexivity. Qed.
 
 Theorem combine_odd_even_elim_odd :
   forall (Podd Peven : nat -> Prop) (n : nat),
     combine_odd_even Podd Peven n ->
     oddb n = true ->
     Podd n.
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. intros. unfold combine_odd_even in H. rewrite H0 in H. apply H. Qed.
 
 Theorem combine_odd_even_elim_even :
   forall (Podd Peven : nat -> Prop) (n : nat),
     combine_odd_even Podd Peven n ->
     oddb n = false ->
     Peven n.
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. intros. unfold combine_odd_even in H. rewrite H0 in H. apply H. Qed.
 (** [] *)
 
 (* ################################################################# *)
@@ -1088,7 +1103,8 @@ Definition tr_rev {X} (l : list X) : list X :=
 
 
 Lemma tr_rev_correct : forall X, @tr_rev X = @rev X.
-(* FILL IN HERE *) Admitted.
+  intros. apply functional_extensionality.
+  unfold tr_rev.
 (** [] *)
 
 (* ================================================================= *)
