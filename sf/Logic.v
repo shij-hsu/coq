@@ -676,7 +676,8 @@ Proof.
 
 Theorem dist_not_exists : forall (X:Type) (P : X -> Prop),
   (forall x, P x) -> ~ (exists x, ~ P x).
-Proof. unfold not. intros. 
+Proof. unfold not. intros. destruct H0.
+       apply H0. apply H. Qed.
 (** [] *)
 
 (** **** Exercise: 2 stars (dist_exists_or)  *)
@@ -685,8 +686,13 @@ Proof. unfold not. intros.
 
 Theorem dist_exists_or : forall (X:Type) (P Q : X -> Prop),
   (exists x, P x \/ Q x) <-> (exists x, P x) \/ (exists x, Q x).
-Proof.
-   (* FILL IN HERE *) Admitted.
+Proof. intros. split.
+       - intros. destruct H. destruct H as [HP|HQ].
+         + left. exists x. apply HP.
+         + right. exists x. apply HQ.
+       - intros. destruct H.
+         + destruct H. exists x. left. apply H.
+         + destruct H. exists x. right. apply H. Qed.
 (** [] *)
 
 (* ################################################################# *)
@@ -768,15 +774,37 @@ Lemma In_map_iff :
   forall (A B : Type) (f : A -> B) (l : list A) (y : B),
     In y (map f l) <->
     exists x, f x = y /\ In x l.
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. intros. induction l.
+       - split.
+         + simpl. intros. inversion H.
+         + simpl. intros. destruct H. destruct H. apply H0.
+       - simpl. split.
+         + intros. destruct H.
+           * exists x. split. apply H. left. reflexivity.
+           * destruct IHl. destruct (H0 H). exists x0. destruct H2.
+             split. apply H2. right. apply H3.
+         + intros. destruct H. destruct H.
+           * destruct H0. rewrite <-H0 in H. left. apply H. destruct IHl.
+             right. apply H2. exists x0. split. apply H. apply H0. Qed.
 (** [] *)
 
 (** **** Exercise: 2 stars (in_app_iff)  *)
 Lemma in_app_iff : forall A l l' (a:A),
   In a (l++l') <-> In a l \/ In a l'.
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. intros. split. induction l.
+       - simpl. intros. right. apply H.
+       - simpl. intros. destruct H.
+         + left. left. apply H.
+         + destruct (IHl H).
+           * left. right. apply H0.
+           * right. apply H0.
+       - induction l.
+         + simpl. intros. destruct H.
+           * inversion H.
+           * apply H.
+         + intros. simpl. simpl in H. destruct H.
+           * destruct H. left. apply H. right. apply IHl. left. apply H.
+           * right. apply IHl. right. apply H. Qed.
 (** [] *)
 
 (** **** Exercise: 3 stars (All)  *)
