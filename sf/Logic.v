@@ -1104,7 +1104,11 @@ Definition tr_rev {X} (l : list X) : list X :=
 
 Lemma tr_rev_correct : forall X, @tr_rev X = @rev X.
   intros. apply functional_extensionality.
-  unfold tr_rev.
+  unfold tr_rev. assert (H1:forall x1 x2:list X,rev_append x1 x2=rev x1++x2).
+  { induction x1.
+    - reflexivity.
+    - simpl. intros. rewrite (IHx1 (x::x2)). rewrite <-app_assoc. simpl. reflexivity. }
+  intros. rewrite (H1 x []). apply app_nil_r. Qed.
 (** [] *)
 
 (* ================================================================= *)
@@ -1135,7 +1139,12 @@ Theorem evenb_double_conv : forall n,
                 else S (double k).
 Proof.
   (* Hint: Use the [evenb_S] lemma from [Induction.v]. *)
-  (* FILL IN HERE *) Admitted.
+  (* FILL IN HERE *)
+  intros. induction n.
+  - simpl. exists 0. reflexivity.
+  - destruct (evenb n) eqn:e1.
+    + rewrite evenb_S. rewrite e1. simpl. destruct IHn. exists x. rewrite H. reflexivity.
+    + rewrite evenb_S. rewrite e1. simpl. destruct IHn. exists (S x). rewrite H. simpl. reflexivity. Qed.
 (** [] *)
 
 Theorem even_bool_prop : forall n,
@@ -1247,13 +1256,33 @@ Proof. apply even_bool_prop. reflexivity. Qed.
 
 Lemma andb_true_iff : forall b1 b2:bool,
   b1 && b2 = true <-> b1 = true /\ b2 = true.
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. intros. split.
+       - destruct b1 eqn:e1.
+         + destruct b2 eqn:e2.
+           * intros. split. reflexivity. reflexivity.
+           * intros. destruct H. split. split. split.
+         + destruct b2 eqn:e2.
+           * intros. destruct H. split. split. split.
+           * intros H. inversion H.
+       - intros. destruct H. rewrite H. rewrite H0. simpl. reflexivity. Qed.
 
 Lemma orb_true_iff : forall b1 b2,
   b1 || b2 = true <-> b1 = true \/ b2 = true.
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. intros. split.
+       - destruct b1 eqn:e1.
+         + destruct b2 eqn:e2.
+           * intros. left. reflexivity.
+           * intros. left. reflexivity.
+         + destruct b2 eqn:e2.
+           * intros. right. reflexivity.
+           * intros. destruct H. left. simpl. reflexivity.
+       - destruct b1 eqn:e1.
+         + destruct b2 eqn:e2.
+           * intros. simpl. reflexivity.
+           * intros. simpl. reflexivity.
+         + destruct b2 eqn:e2.
+           * intros. simpl. reflexivity.
+           * intros. destruct H. simpl. apply H. simpl. apply H. Qed.
 (** [] *)
 
 (** **** Exercise: 1 star (beq_nat_false_iff)  *)
@@ -1263,8 +1292,10 @@ Proof.
 
 Theorem beq_nat_false_iff : forall x y : nat,
   beq_nat x y = false <-> x <> y.
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. intros. split.
+       - induction x. destruct y.
+         + simpl. intros. inversion H.
+         + simpl. intros. Abort.
 (** [] *)
 
 (** **** Exercise: 3 stars (beq_list)  *)
@@ -1275,15 +1306,37 @@ Proof.
     definition is correct, prove the lemma [beq_list_true_iff]. *)
 
 Fixpoint beq_list {A} (beq : A -> A -> bool)
-                  (l1 l2 : list A) : bool 
-  (* REPLACE THIS LINE WITH   := _your_definition_ . *) . Admitted.
+         (l1 l2 : list A) : bool :=
+  match l1 with
+  |nil=>match l2 with
+        |nil=>true
+        |_=>false
+        end
+  |x::l1'=>match l2 with
+           |nil=>false
+           |y::l2'=> (beq x y) && (beq_list beq l1' l2')
+           end
+  end.
+                   
 
 Lemma beq_list_true_iff :
   forall A (beq : A -> A -> bool),
     (forall a1 a2, beq a1 a2 = true <-> a1 = a2) ->
     forall l1 l2, beq_list beq l1 l2 = true <-> l1 = l2.
 Proof.
-(* FILL IN HERE *) Admitted.
+  (* FILL IN HERE *)induction l1.
+                    - destruct l2.
+                      +  split. reflexivity. simpl. reflexivity.
+                      + simpl. split. intros. inversion H0. intros. inversion H0.
+                    - destruct l2.
+                      + simpl. split. intros. inversion H0. intros. inversion H0.
+                      + simpl. split.
+                        * intros. unfold andb in H0. destruct (beq x a) eqn:e1.
+                          destruct (H x a). rewrite (H1 e1). destruct (IHl1 l2).
+                          rewrite (H3 H0). reflexivity. inversion H0.
+                        * intros. inversion H0. unfold andb. destruct (H a a).
+                          assert(a=a). { reflexivity. } rewrite (H4 H5).
+                          rewrite <-H3. destruct (IHl1 l1). apply H7. reflexivity. Qed.
 (** [] *)
 
 (** **** Exercise: 2 stars, recommended (All_forallb)  *)
@@ -1301,8 +1354,10 @@ Fixpoint forallb {X : Type} (test : X -> bool) (l : list X) : bool :=
 
 Theorem forallb_true_iff : forall X test (l : list X),
    forallb test l = true <-> All (fun x => test x = true) l.
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. intros. split.
+       - intros. induction l.
+         + simpl. reflexivity.
+         + simpl in H.
 
 (** Are there any important properties of the function [forallb] which
     are not captured by your specification? *)
