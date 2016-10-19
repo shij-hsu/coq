@@ -1354,10 +1354,20 @@ Fixpoint forallb {X : Type} (test : X -> bool) (l : list X) : bool :=
 
 Theorem forallb_true_iff : forall X test (l : list X),
    forallb test l = true <-> All (fun x => test x = true) l.
-Proof. intros. split.
-       - intros. induction l.
-         + simpl. reflexivity.
-         + simpl in H.
+Proof. intros. split. induction l.
+       - intros. simpl. reflexivity.
+       - simpl. unfold andb. intros. split.
+         + destruct (test x) eqn:e1.
+            * reflexivity.
+            * inversion H.
+         + apply IHl. destruct (test x) eqn:e1.
+           *  apply H.
+           * inversion H.
+       - induction l.
+         + reflexivity.
+         + simpl. unfold andb. intros. destruct (test x) eqn:e1.
+           * destruct H. apply IHl. apply H0.
+           * destruct H. inversion H. Qed.
 
 (** Are there any important properties of the function [forallb] which
     are not captured by your specification? *)
@@ -1376,7 +1386,7 @@ Proof. intros. split.
 
 Definition excluded_middle := forall P : Prop,
   P \/ ~ P.
-
+(*我只能钦定了*)
 (** To understand operationally why this is the case, recall that, to
     prove a statement of the form [P \/ Q], we use the [left] and
     [right] tactics, which effectively require knowing which side of
@@ -1474,10 +1484,10 @@ Qed.
     cannot prove the negation of such an axiom; if we could, we would
     have both [~ (P \/ ~P)] and [~ ~ (P \/ ~P)], a contradiction. *)
 
+
 Theorem excluded_middle_irrefutable:  forall (P:Prop),
   ~ ~ (P \/ ~ P).
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. intros HP. apply double_neg. Admitted.
 (** [] *)
 
 (** **** Exercise: 3 stars, optional (not_exists_dist)  *)
@@ -1496,8 +1506,7 @@ Theorem not_exists_dist :
   excluded_middle ->
   forall (X:Type) (P : X -> Prop),
     ~ (exists x, ~ P x) -> (forall x, P x).
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. intros. Admitted.
 (** [] *)
 
 (** **** Exercise: 5 stars, advanced, optional (classical_axioms)  *)
