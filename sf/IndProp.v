@@ -653,25 +653,25 @@ Proof. induction n.
 Theorem leb_correct : forall n m,
   n <= m ->
   leb n m = true.
-Proof. induction m as [H1| m'].
-   - intros H. inversion H. reflexivity.
-   - induction n as [H2|n'].
-     + simpl. reflexivity.
-     + 
+Proof. induction n.
+   - intros m H. reflexivity.
+   - intros m H. destruct m. inversion H.
+     simpl. apply IHn. apply Sn_le_Sm__n_le_m. apply H. Qed.
 (* FILL IN HERE *)
 
 (** Hint: This theorem can easily be proved without using [induction]. *)
 
 Theorem leb_true_trans : forall n m o,
   leb n m = true -> leb m o = true -> leb n o = true.
-Proof.
-  (* FILL IN HERE *) Admitted.
-
+Proof. intros n m o H H0. apply leb_correct. apply (le_trans n m).
+   apply leb_complete. apply H. apply leb_complete. apply H0. Qed.
 (** **** Exercise: 2 stars, optional (leb_iff)  *)
 Theorem leb_iff : forall n m,
   leb n m = true <-> n <= m.
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. intros n m. split.
+   - apply leb_complete.
+     - apply leb_correct. Qed.
+  (* FILL IN HERE *) 
 (** [] *)
 
 Module R.
@@ -709,12 +709,27 @@ Inductive R : nat -> nat -> nat -> Prop :=
     Figure out which function; then state and prove this equivalence
     in Coq? *)
 
-Definition fR : nat -> nat -> nat 
-  (* REPLACE THIS LINE WITH   := _your_definition_ . *) . Admitted.
+Definition fR : nat -> nat -> nat :=
+  fun m n=>m+n.
+  (* REPLACE THIS LINE WITH   := _your_definition_ . *) 
 
 Theorem R_equiv_fR : forall m n o, R m n o <-> fR m n = o.
-Proof.
-(* FILL IN HERE *) Admitted.
+Proof. split.
+   - unfold fR in *. intro. induction H.
+     + reflexivity.
+     + rewrite plus_comm. rewrite <-plus_n_Sm. rewrite <-IHR. rewrite plus_comm. reflexivity.
+     + rewrite <-plus_n_Sm. rewrite IHR. reflexivity.
+     + rewrite <-plus_n_Sm in IHR. inversion IHR. reflexivity.
+     + rewrite plus_comm. apply IHR.
+   - unfold fR in *. assert (forall a b,R a b (a+b)).
+     { induction a.
+       - induction b.
+         + apply c1.
+         + simpl in *. apply c3. apply IHb.
+       - intros. rewrite plus_comm. rewrite <-plus_n_Sm. apply c2. rewrite plus_comm. apply IHa. }
+     intros. rewrite <-H0. apply H. Qed.
+
+(* FILL IN HERE *) 
 (** [] *)
 
 End R.
@@ -988,14 +1003,17 @@ Qed.
 
 Lemma empty_is_empty : forall T (s : list T),
   ~ (s =~ EmptySet).
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. intros T s. unfold not. intros H. inversion H. Qed.
+
+  (* FILL IN HERE *)
 
 Lemma MUnion' : forall T (s : list T) (re1 re2 : reg_exp T),
   s =~ re1 \/ s =~ re2 ->
   s =~ Union re1 re2.
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. intros T s re1 re2 H. destruct H.
+   - apply MUnionL. apply H.
+   - apply MUnionR. apply H. Qed.
+  (* FILL IN HERE *) 
 
 (** The next lemma is stated in terms of the [fold] function from the
     [Poly] chapter: If [ss : list (list T)] represents a sequence of
@@ -1005,8 +1023,11 @@ Proof.
 Lemma MStar' : forall T (ss : list (list T)) (re : reg_exp T),
   (forall s, In s ss -> s =~ re) ->
   fold app ss [] =~ Star re.
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. induction ss.
+   - simpl. intros. apply MStar0.
+   - intros re H. simpl. apply MStarApp. apply H. simpl. left. reflexivity.
+     apply IHss. intros. apply H. simpl. right. apply H0. Qed.
+  (* FILL IN HERE *)
 (** [] *)
 
 (** **** Exercise: 4 stars (reg_exp_of_list)  *)
@@ -1016,8 +1037,16 @@ Proof.
 
 Lemma reg_exp_of_list_spec : forall T (s1 s2 : list T),
   s1 =~ reg_exp_of_list s2 <-> s1 = s2.
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. split.
+   - generalize dependent s1. generalize dependent s2. induction s2.
+     + simpl. intros s1 H. inversion H. reflexivity.
+     + intros. simpl in *. inversion H. inversion H3. simpl. assert (s3=s2).
+       { apply (IHs2 s3). apply H4. } rewrite H6. reflexivity.
+   - generalize dependent s1. generalize dependent s2. induction s2.
+     + simpl. intros s1 H. inversion H. apply MEmpty.
+     + intros. simpl in *. destruct s1. inversion H. inversion H. assert (x::s2=[x]++s2).
+       { simpl. reflexivity. } rewrite H0. apply MApp. apply MChar. apply IHs2. reflexivity. Qed.
+  (* FILL IN HERE *)
 (** [] *)
 
 (** Since the definition of [exp_match] has a recursive
@@ -1096,13 +1125,48 @@ Qed.
     regular expression matches some string. Prove that your function
     is correct. *)
 
-Fixpoint re_not_empty {T} (re : reg_exp T) : bool 
-  (* REPLACE THIS LINE WITH   := _your_definition_ . *) . Admitted.
+Fixpoint re_not_empty {T} (re : reg_exp T) : bool :=
+  match re with
+  |EmptySet=>false
+  |EmptyStr=>true
+  |Char x=>true
+  |App re1 re2=>andb (re_not_empty re1) (re_not_empty re2)
+  |Union re1 re2=>orb (re_not_empty re1)  (re_not_empty re2)
+  |Star re=>true
+  end.
+  (* REPLACE THIS LINE WITH   := _your_definition_ . *)
 
 Lemma re_not_empty_correct : forall T (re : reg_exp T),
   (exists s, s =~ re) <-> re_not_empty re = true.
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. split.
+   - intros. generalize dependent re. induction re.
+     + intros. destruct H. inversion H.
+     + intros. destruct H. inversion H. reflexivity.
+     + intros. destruct H. inversion H. reflexivity.
+     + intros. destruct H. inversion H. assert (re_not_empty re1=true).
+       { apply IHre1. exists s1. apply H3. } simpl. rewrite H5.
+       assert (re_not_empty re2=true).
+       { apply IHre2. exists s2. apply H4. } simpl. apply H6.
+     + intros. destruct H. inversion H. simpl. assert (re_not_empty re1=true).
+       { apply IHre1. exists s1. rewrite <-H1 in H2. apply H2. } rewrite H4. reflexivity.
+       simpl. assert (re_not_empty re2=true).
+       { apply IHre2. exists s2. rewrite <-H1 in H2. apply H2. } rewrite H4. destruct (re_not_empty re1).
+       reflexivity. reflexivity.
+     + intros. destruct H. simpl. reflexivity.
+   - intros. generalize dependent re. induction re.
+     + intros. simpl in *. inversion H.
+     + intros.  exists []. simpl. apply MEmpty.
+     + intros. exists [t]. apply MChar.
+     + intros. simpl in *. destruct (re_not_empty re1) eqn:E1.
+       * destruct IHre1. reflexivity. destruct (re_not_empty re2) eqn:E2.
+         destruct IHre2. reflexivity. exists (x++x0). apply MApp. apply H0. apply H1.
+         inversion H.
+       * inversion H.
+     + intros. simpl in *. destruct (re_not_empty re1) eqn:E1.
+       * destruct IHre1. reflexivity. exists x. apply MUnionL. apply H0.
+       * destruct (re_not_empty re2) eqn:E2. destruct IHre2. reflexivity. exists x. apply MUnionR. apply H0. inversion H.
+     + intros. simpl in *. exists []. apply MStar0. Qed.
+  (* FILL IN HERE *)
 (** [] *)
 
 (* ================================================================= *)
@@ -1236,8 +1300,8 @@ Lemma MStar'' : forall T (s : list T) (re : reg_exp T),
   exists ss : list (list T),
     s = fold app ss []
     /\ forall s', In s' ss -> s' =~ re.
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. intros T s re H. 
+  (* FILL IN HERE *)
 (** [] *)
 
 (** **** Exercise: 5 stars, advanced (pumping)  *)
