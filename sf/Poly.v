@@ -1085,7 +1085,9 @@ Proof. auto. Qed.
     a "Universe inconsistency" error, try iterating over a different
     type: [nat] itself is usually problematic.) *)
 
-(*
+Print one.
+Print mult.
+Print nat.
 Definition exp (n m : nat) : nat :=
   n nat (mult m) one.
 
@@ -1097,7 +1099,7 @@ Proof. (* FILL IN HERE *) Admitted.
 
 Example exp_3 : exp three zero = one.
 Proof. (* FILL IN HERE *) Admitted.
-*)
+
 End Church.
 (** [] *)
 
