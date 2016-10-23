@@ -1,0 +1,163 @@
+DIGEST e68e0b0580e9c1c4a007c8133e3b0644
+FIndPrinciples
+R201:212 ProofObjects <> <> lib
+R633:639 Coq.Init.Datatypes <> nat_ind scheme
+prf 1180:1188 <> mult_0_r'
+R1201:1203 Coq.Init.Datatypes <> nat ind
+R1213:1215 Coq.Init.Logic <> :type_scope:x_'='_x not
+R1209:1211 Basics <> :nat_scope:x_'*'_x not
+R1208:1208 IndPrinciples <> n var
+R1234:1240 Coq.Init.Datatypes <> nat_ind scheme
+R1234:1240 Coq.Init.Datatypes <> nat_ind scheme
+prf 2403:2413 <> plus_one_r'
+R2426:2428 Coq.Init.Datatypes <> nat ind
+R2438:2440 Coq.Init.Logic <> :type_scope:x_'='_x not
+R2434:2436 Basics <> :nat_scope:x_'+'_x not
+R2433:2433 IndPrinciples <> n var
+R2441:2441 Coq.Init.Datatypes <> S constr
+R2443:2443 IndPrinciples <> n var
+R2459:2465 Coq.Init.Datatypes <> nat_ind scheme
+R2459:2465 Coq.Init.Datatypes <> nat_ind scheme
+ind 3550:3554 <> yesno
+constr 3570:3572 <> yes
+constr 3586:3587 <> no
+R3576:3580 IndPrinciples <> yesno ind
+R3591:3595 IndPrinciples <> yesno ind
+R3605:3613 IndPrinciples <> yesno_ind scheme
+ind 4032:4034 <> rgb
+constr 4050:4052 <> red
+constr 4064:4068 <> green
+constr 4080:4083 <> blue
+R4056:4058 IndPrinciples <> rgb ind
+R4072:4074 IndPrinciples <> rgb ind
+R4087:4089 IndPrinciples <> rgb ind
+R4098:4104 IndPrinciples <> rgb_ind scheme
+ind 4226:4232 <> natlist
+constr 4248:4251 <> nnil
+constr 4267:4271 <> ncons
+R4255:4261 IndPrinciples <> natlist ind
+R4293:4299 IndPrinciples <> natlist ind
+R4282:4288 IndPrinciples <> natlist ind
+R4275:4277 Coq.Init.Datatypes <> nat ind
+R4309:4319 IndPrinciples <> natlist_ind scheme
+ind 4691:4698 <> natlist1
+constr 4714:4718 <> nnil1
+constr 4735:4740 <> nsnoc1
+R4722:4729 IndPrinciples <> natlist1 ind
+R4763:4770 IndPrinciples <> natlist1 ind
+R4756:4758 Coq.Init.Datatypes <> nat ind
+R4744:4751 IndPrinciples <> natlist1 ind
+ind 5715:5721 <> byntree
+constr 5736:5741 <> bempty
+constr 5756:5760 <> bleaf
+constr 5785:5791 <> nbranch
+R5745:5751 IndPrinciples <> byntree ind
+R5774:5780 IndPrinciples <> byntree ind
+R5765:5769 IndPrinciples <> yesno ind
+R5826:5832 IndPrinciples <> byntree ind
+R5815:5821 IndPrinciples <> byntree ind
+R5804:5810 IndPrinciples <> byntree ind
+R5795:5799 IndPrinciples <> yesno ind
+ind 6231:6235 <> ExSet
+ind 7621:7624 <> tree
+constr 7649:7652 <> leaf
+constr 7672:7675 <> node
+R7661:7664 IndPrinciples <> tree ind
+R7699:7702 IndPrinciples <> tree ind
+R7689:7692 IndPrinciples <> tree ind
+R7679:7682 IndPrinciples <> tree ind
+R7713:7720 IndPrinciples <> tree_ind scheme
+ind 8754:8757 <> foo'
+constr 8782:8783 <> C1
+constr 8818:8819 <> C2
+R8807:8810 IndPrinciples <> foo' ind
+R8797:8800 IndPrinciples <> foo' ind
+R8787:8790 Poly <> list ind
+R8823:8826 IndPrinciples <> foo' ind
+def 10182:10186 <> P_m0r
+R10191:10193 Coq.Init.Datatypes <> nat ind
+R10213:10215 Coq.Init.Logic <> :type_scope:x_'='_x not
+R10209:10211 Basics <> :nat_scope:x_'*'_x not
+R10208:10208 IndPrinciples <> n var
+def 10260:10265 <> P_m0r'
+R10269:10271 Coq.Init.Datatypes <> nat ind
+R10298:10300 Coq.Init.Logic <> :type_scope:x_'='_x not
+R10294:10296 Basics <> :nat_scope:x_'*'_x not
+R10293:10293 IndPrinciples <> n var
+prf 10381:10390 <> mult_0_r''
+R10403:10405 Coq.Init.Datatypes <> nat ind
+R10410:10414 IndPrinciples <> P_m0r def
+R10416:10416 IndPrinciples <> n var
+R10434:10440 Coq.Init.Datatypes <> nat_ind scheme
+R10434:10440 Coq.Init.Datatypes <> nat_ind scheme
+R10566:10570 IndPrinciples <> P_m0r def
+R10587:10591 IndPrinciples <> P_m0r def
+prf 12495:12505 <> plus_assoc'
+R12524:12526 Coq.Init.Datatypes <> nat ind
+R12542:12544 Coq.Init.Logic <> :type_scope:x_'='_x not
+R12532:12535 Basics <> :nat_scope:x_'+'_x not
+R12541:12541 Basics <> :nat_scope:x_'+'_x not
+R12531:12531 IndPrinciples <> n var
+R12537:12539 Basics <> :nat_scope:x_'+'_x not
+R12536:12536 IndPrinciples <> m var
+R12540:12540 IndPrinciples <> p var
+R12545:12545 Basics <> :nat_scope:x_'+'_x not
+R12551:12554 Basics <> :nat_scope:x_'+'_x not
+R12547:12549 Basics <> :nat_scope:x_'+'_x not
+R12546:12546 IndPrinciples <> n var
+R12550:12550 IndPrinciples <> m var
+R12555:12555 IndPrinciples <> p var
+prf 13449:13458 <> plus_comm'
+R13475:13477 Coq.Init.Datatypes <> nat ind
+R13487:13489 Coq.Init.Logic <> :type_scope:x_'='_x not
+R13483:13485 Basics <> :nat_scope:x_'+'_x not
+R13482:13482 IndPrinciples <> n var
+R13486:13486 IndPrinciples <> m var
+R13491:13493 Basics <> :nat_scope:x_'+'_x not
+R13490:13490 IndPrinciples <> m var
+R13494:13494 IndPrinciples <> n var
+R13566:13573 Induction <> plus_n_O thm
+R13566:13573 Induction <> plus_n_O thm
+R13657:13665 Induction <> plus_n_Sm thm
+R13657:13665 Induction <> plus_n_Sm thm
+prf 14080:14090 <> plus_comm''
+R14107:14109 Coq.Init.Datatypes <> nat ind
+R14119:14121 Coq.Init.Logic <> :type_scope:x_'='_x not
+R14115:14117 Basics <> :nat_scope:x_'+'_x not
+R14114:14114 IndPrinciples <> n var
+R14118:14118 IndPrinciples <> m var
+R14123:14125 Basics <> :nat_scope:x_'+'_x not
+R14122:14122 IndPrinciples <> m var
+R14126:14126 IndPrinciples <> n var
+R14258:14265 Induction <> plus_n_O thm
+R14258:14265 Induction <> plus_n_O thm
+R14339:14347 Induction <> plus_n_Sm thm
+R14339:14347 Induction <> plus_n_Sm thm
+R17817:17822 IndProp <> ev_ind scheme
+prf 18542:18547 <> ev_ev'
+R18569:18571 IndProp <> ev' ind
+R18573:18573 IndPrinciples <> n var
+R18561:18562 IndProp <> ev ind
+R18564:18564 IndPrinciples <> n var
+R18591:18596 IndProp <> ev_ind scheme
+R18591:18596 IndProp <> ev_ind scheme
+R18624:18628 IndProp <> ev'_0 constr
+R18624:18628 IndProp <> ev'_0 constr
+R18678:18684 IndProp <> ev'_sum constr
+R18678:18684 IndProp <> ev'_sum constr
+R18704:18708 IndProp <> ev'_2 constr
+R18704:18708 IndProp <> ev'_2 constr
+ind 19308:19309 <> le
+constr 19340:19343 <> le_n
+constr 19358:19361 <> le_S
+R19314:19316 Coq.Init.Datatypes <> nat ind
+R19321:19323 Coq.Init.Datatypes <> nat ind
+R19347:19348 IndPrinciples <> le ind
+R19388:19389 IndPrinciples <> le ind
+R19394:19394 Coq.Init.Datatypes <> S constr
+R19396:19396 IndPrinciples <> m var
+R19376:19377 IndPrinciples <> le ind
+R19381:19381 IndPrinciples <> m var
+R19424:19425 IndPrinciples <> le ind
+not 19411 <> ::x_'<='_x
+R19572:19577 IndPrinciples <> le_ind scheme

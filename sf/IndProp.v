@@ -1428,7 +1428,7 @@ Proof.
     destruct (IH H0). destruct H1. destruct H1. exists x. exists x0. exists x1.
     destruct H1. split. apply H1. destruct H2. split. apply H2. intros. apply MUnionR. apply H3.
   - simpl. omega.
-  - simpl. 
+  - simpl. Admitted.
 (* FILL IN HERE *)
 
 End Pumping.
@@ -1501,8 +1501,10 @@ Qed.
 
 (** **** Exercise: 2 stars, recommended (reflect_iff)  *)
 Theorem reflect_iff : forall P b, reflect P b -> (P <-> b = true).
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. intros P [] H.
+   - split. intros. reflexivity. inversion H. intros. apply H0.
+   - split. intros. inversion H. unfold not in *. destruct H1. apply H0. intros. inversion H0. Qed.
+  (* FILL IN HERE *)
 (** [] *)
 
 (** The advantage of [reflect] over the normal "if and only if"
@@ -1697,7 +1699,8 @@ Inductive nostutter {X:Type} : list X -> Prop :=
     example with more basic tactics.)  *)
 
 Example test_nostutter_1: nostutter [3;1;4;1;5;6].
-(* FILL IN HERE *) Admitted.
+Admitted.
+(* FILL IN HERE *) 
 (* 
   Proof. repeat constructor; apply beq_nat_false_iff; auto.
   Qed.
@@ -1739,8 +1742,12 @@ Example test_nostutter_4:      not (nostutter [3;1;1;4]).
 Lemma in_split : forall (X:Type) (x:X) (l:list X),
   In x l ->
   exists l1 l2, l = l1 ++ x :: l2.
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. induction l.
+   - intros. inversion H.
+   - simpl. intros. destruct H.
+     + rewrite H. exists []. simpl. exists l. reflexivity.
+     + destruct (IHl H). exists (x0::x1). simpl. destruct H0. exists x2. rewrite H0. reflexivity. Qed.
+  (* FILL IN HERE *)
 
 (** Now define a property [repeats] such that [repeats X l] asserts
     that [l] contains at least one repeated element (of type [X]).  *)
@@ -1767,9 +1774,10 @@ Theorem pigeonhole_principle: forall (X:Type) (l1  l2:list X),
    (forall x, In x l1 -> In x l2) ->
    length l2 < length l1 ->
    repeats l1.
-Proof.
-   intros X l1. induction l1 as [|x l1' IHl1'].
-  (* FILL IN HERE *) Admitted.
+Proof.  intros X l1. induction l1 as [|x l1' IHl1'].
+    - unfold excluded_middle. intros l2 H H0 H1. inversion H1.
+    - unfold excluded_middle. intros l2 H H0 H1. simpl. Admitted.
+  (* FILL IN HERE *) 
 (** [] *)
 
 
