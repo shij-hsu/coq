@@ -1300,8 +1300,30 @@ Lemma MStar'' : forall T (s : list T) (re : reg_exp T),
   exists ss : list (list T),
     s = fold app ss []
     /\ forall s', In s' ss -> s' =~ re.
-Proof. intros T s re H. 
-  (* FILL IN HERE *)
+Proof. intros. remember (Star re) as re'. 
+   induction H
+     as [|x Hx|s1 re1 s2 re2 Hre1 Hre2 Hre1re2
+         |s1 re1 re2 Hre1 Hre|re1 s2 re2 Hre2 Hre
+         |re' Hre|s1 s2 re' Hre Hre' Hres].
+   - inversion Heqre'.
+   - inversion Heqre'.
+   - inversion Heqre'.
+   - inversion Heqre'.
+   - inversion Heqre'.
+   - exists []. split. reflexivity. intros. inversion H.
+   - assert (Hre'' : exists ss : list (list T), s1 = fold app ss [] /\ (forall s' : list T, In s' ss -> s' =~ re)).
+     {  exists [s1]. simpl. split. rewrite app_nil_r. reflexivity. intros. destruct H. rewrite <-H. inversion Heqre'.
+        rewrite <-H1. apply Hre. inversion H. }
+     destruct (IHHres Heqre'). destruct Hre''. exists (x0++x). split. destruct H0. destruct H. rewrite H0. rewrite H.
+     assert (forall x y:list(list T), fold app x []++fold app y []=fold app (x++y) []).
+     { induction x1.
+       - simpl. intros. reflexivity.
+       - simpl. intros. rewrite <-app_assoc. rewrite IHx1. reflexivity. }
+     apply H3. destruct H0. destruct H.
+     intros. destruct (in_app_iff (list T) x0 x s'). destruct (H4 H3).
+     + apply H1. apply H6.
+     + apply H2. apply H6. Qed.
+(* FILL IN HERE *)
 (** [] *)
 
 (** **** Exercise: 5 stars, advanced (pumping)  *)
@@ -1384,7 +1406,30 @@ Proof.
        | re | s1 s2 re Hmatch1 IH1 Hmatch2 IH2 ].
   - (* MEmpty *)
     simpl. omega.
-  (* FILL IN HERE *) Admitted.
+  - simpl. omega.
+  - simpl. intros. rewrite app_length in H.
+    assert (H1 : pumping_constant re1<=length s1\/pumping_constant re2<=length s2).
+    { omega. } 
+    destruct H1.
+    + destruct (IH1 H0). destruct H1. destruct H1. exists x. exists x0. exists (x1++s2).
+      destruct H1. split. rewrite H1. repeat rewrite app_assoc. reflexivity.
+      destruct H2. split. apply H2. intros. repeat rewrite app_assoc. apply MApp. rewrite <-app_assoc.
+      apply H3. apply Hmatch2.
+    + destruct (IH2 H0). destruct H1. destruct H1. exists (s1++x). exists x0. exists x1.
+      destruct H1. split. rewrite H1. repeat rewrite app_assoc. reflexivity.
+      destruct H2. split. apply H2. intros. rewrite <-app_assoc. apply MApp. apply Hmatch1.
+      apply H3.
+  -  simpl. intros.  assert (pumping_constant re1<= length s1).
+     { omega. }
+     destruct (IH H0). destruct H1. destruct H1. exists x. exists x0. exists x1.
+     destruct H1. split. apply H1. destruct H2. split. apply H2. intros. apply MUnionL. apply H3.
+  - simpl. intros. assert (pumping_constant re2 <= length s2).
+    { omega. }
+    destruct (IH H0). destruct H1. destruct H1. exists x. exists x0. exists x1.
+    destruct H1. split. apply H1. destruct H2. split. apply H2. intros. apply MUnionR. apply H3.
+  - simpl. omega.
+  - simpl. 
+(* FILL IN HERE *)
 
 End Pumping.
 (** [] *)
