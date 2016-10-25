@@ -1578,11 +1578,23 @@ Proof. auto. Qed.
     Prove the following theorem.  You will need to start by stating a
     more general lemma to get a usable induction hypothesis; the main
     theorem will then be a simple corollary of this lemma. *)
-
+Lemma s_compile_local_correct:forall (e:aexp) (st:state) (stack:list nat)(insts:list sinstr),
+    s_execute st stack (s_compile e++insts)=s_execute st ([aeval st e]++stack) insts.
+Proof. induction e.
+   - auto.
+   - auto.
+   - intros. simpl. pattern  ((s_compile e1 ++ s_compile e2 ++ [SPlus]) ++ insts) at 1. rewrite <-app_assoc. rewrite (IHe1 st stack ((s_compile e2 ++ [SPlus]) ++ insts)). rewrite <-app_assoc.
+     rewrite (IHe2 st ([aeval st e1] ++ stack) ([SPlus] ++ insts)). simpl. rewrite plus_comm. reflexivity.
+    - intros. simpl. pattern  ((s_compile e1 ++ s_compile e2 ++ [SMinus]) ++ insts) at 1. rewrite <-app_assoc. rewrite (IHe1 st stack ((s_compile e2 ++ [SMinus]) ++ insts)). rewrite <-app_assoc.
+      rewrite (IHe2 st ([aeval st e1] ++ stack) ([SMinus] ++ insts)). simpl. reflexivity.
+    - intros. simpl. pattern  ((s_compile e1 ++ s_compile e2 ++ [SMult]) ++ insts) at 1. rewrite <-app_assoc. rewrite (IHe1 st stack ((s_compile e2 ++ [SMult]) ++ insts)). rewrite <-app_assoc.
+      rewrite (IHe2 st ([aeval st e1] ++ stack) ([SMult] ++ insts)). simpl. rewrite mult_comm. reflexivity. Qed.
 
 Theorem s_compile_correct : forall (st : state) (e : aexp),
   s_execute st [] (s_compile e) = [ aeval st e ].
-Proof.
+Proof. intros. assert (s_execute st [] (s_compile e ++ []) = s_execute st ([aeval st e] ++ []) []).
+   exact (s_compile_local_correct e st [] []).
+   simpl in H. rewrite app_nil_r in H. apply H. Qed.
   (* FILL IN HERE *)
 (** [] *)
 
