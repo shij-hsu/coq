@@ -1713,7 +1713,39 @@ Reserved Notation "c1 '/' st '\\' s '/' st'"
 Inductive ceval : com -> state -> status -> state -> Prop :=
   | E_Skip : forall st,
       CSkip / st \\ SContinue / st
-  (* FILL IN HERE *)
+  | E_Break: forall st,
+      CBreak /st \\ SBreak /st
+  | E_Ass: forall st a1 n x,
+      aeval st a1=n->
+      (x::=a1)/st\\SContinue /(t_update st x n)
+  | E_Seq_C : forall c1 c2 st st' st'' sta,
+      c1 / st  \\SContinue/ st' ->
+      c2 / st' \\sta/ st'' ->
+      (c1 ;; c2) / st \\sta/ st''
+  | E_Seq_B:forall c1 c2 st st',
+      c1/st\\SBreak/st'->
+      (c1;;c2)/st\\SBreak/st'
+  | E_IfTrue : forall st st' b c1 c2 sta,
+      beval st b = true ->
+      c1 / st \\ sta/st' ->
+      (IFB b THEN c1 ELSE c2 FI) / st \\sta/ st'
+  | E_IfFalse : forall st st' b c1 c2 sta,
+      beval st b = false ->
+      c2 / st \\sta/ st' ->
+      (IFB b THEN c1 ELSE c2 FI) / st \\sta/ st'
+  | E_WhileEnd : forall b st c,
+      beval st b = false ->
+      (WHILE b DO c END) / st \\SContinue/ st
+  | E_WhileLoop_C : forall st st' st'' b c,
+      beval st b = true ->
+      c / st \\SContinue/ st' ->
+      (WHILE b DO c END) / st' \\SContinue/st'' ->
+      (WHILE b DO c END) / st \\SContinue/ st''
+  | E_WhileLoop_B:forall st st' b c ,
+      beval st b=true->
+      c/st\\SBreak/st'->
+      (WHILE b DO c END) /st\\SContinue/st'
+                         
 
   where "c1 '/' st '\\' s '/' st'" := (ceval c1 st s st').
 
@@ -1722,29 +1754,45 @@ Inductive ceval : com -> state -> status -> state -> Prop :=
 Theorem break_ignore : forall c st st' s,
      (BREAK;; c) / st \\ s / st' ->
      st = st'.
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. intros. destruct s.
+   - inversion H. inversion H2.
+   - inversion H. inversion H2. inversion H3. reflexivity. Qed.
+  (* FILL IN HERE *)
 
 Theorem while_continue : forall b c st st' s,
   (WHILE b DO c END) / st \\ s / st' ->
   s = SContinue.
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. intros. destruct s.
+   - reflexivity.
+   - inversion H. Qed.
+  (* FILL IN HERE *)
 
 Theorem while_stops_on_break : forall b c st st',
   beval st b = true ->
   c / st \\ SBreak / st' ->
   (WHILE b DO c END) / st \\ SContinue / st'.
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. intros. apply (E_WhileLoop_B st st'). apply H. apply H0. Qed.
+  (* FILL IN HERE *) 
 
 (** **** Exercise: 3 stars, advanced, optional (while_break_true)  *)
+
 Theorem while_break_true : forall b c st st',
   (WHILE b DO c END) / st \\ SContinue / st' ->
   beval st' b = true ->
   exists st'', c / st'' \\ SBreak / st'.
-Proof.
-(* FILL IN HERE *) Admitted.
+Proof. intros. exists st. inversion H. induction H. generalize dependent st.
+   - intros. rewrite H4 in H0. inversion H0.
+   - intros. rewrite H4 in H0. inversion H0.
+   - intros. rewrite H4 in H0. inversion H0.
+   - intros. rewrite H4 in H0. inversion H0.
+   - intros. rewrite H4 in H0. inversion H0.
+   - intros. rewrite H4 in H0. inversion H0.
+   - intros. rewrite H4 in H0. inversion H0.
+   - intros. rewrite H4 in H0. inversion H0.
+   - intros. rewrite H4 in H0. inversion H0.
+   - intros. rewrite H4 in H0. inversion H0.
+   - Admitted.
+(* FILL IN HERE *)
 
 (** **** Exercise: 4 stars, advanced, optional (ceval_deterministic)  *)
 Theorem ceval_deterministic: forall (c:com) st st1 st2 s1 s2,
