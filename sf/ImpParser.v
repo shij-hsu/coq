@@ -432,7 +432,7 @@ Definition parse (str : string) : optionE (com * list token) :=
 (* ################################################################# *)
 (** * Examples *)
 
-(*
+
 Compute parse "
   IF x == y + 1 + 2 - y * 6 + 3 THEN
     x := x * 1;;
@@ -440,6 +440,7 @@ Compute parse "
   ELSE
     SKIP
   END  ".
+(*
 ====>
   SomeE
      (IFB BEq (AId (Id 0))
