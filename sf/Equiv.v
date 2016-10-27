@@ -446,8 +446,12 @@ Theorem seq_assoc : forall c1 c2 c3,
   cequiv ((c1;;c2);;c3) (c1;;(c2;;c3)).
 Proof. intros. unfold cequiv.
    intros. split.
-   - intros. apply (E_Seq c1 st) in H.
-  (* FILL IN HERE *) Admitted.
+   - intros. inversion H. subst. inversion H2. subst.
+     apply E_Seq with st'1. apply H3. apply E_Seq with st'0.
+     apply H7. apply H5.
+   - intros. inversion H. subst. inversion H5. subst.
+     apply E_Seq with st'1. apply E_Seq with st'0. apply H2. apply H3. apply H7. Qed.
+  (* FILL IN HERE *)
 (** [] *)
 
 (** Proving program properties involving assignments is one place
@@ -478,8 +482,23 @@ Qed.
 Theorem assign_aequiv : forall X e,
   aequiv (AId X) e ->
   cequiv SKIP (X ::= e).
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. intros. unfold cequiv. intros. split.
+   - unfold aequiv in *. simpl in *.
+     intros. inversion H0. subst. assert ( t_update st' X (st' X)=st').
+     { unfold t_update. apply functional_extensionality.
+       intros. destruct (beq_id_true_iff X x).
+       destruct (beq_id X x) eqn:E1. rewrite (H1). reflexivity. reflexivity. reflexivity. } pattern st' at 2.
+     rewrite <-H1. 
+     apply (E_Ass st' e (st' X) X). symmetry. apply (H st').
+   - intros. unfold aequiv in *. simpl in *.
+     inversion H0. subst.
+     assert (t_update st X (aeval st e)=st).
+     { unfold t_update. apply functional_extensionality.
+       intros. destruct (beq_id_true_iff X x).
+       destruct (beq_id X x) eqn:E1. rewrite <-(H st).
+       rewrite H1. reflexivity. reflexivity. reflexivity. }
+     rewrite H1. apply E_Skip. Qed.
+  (* FILL IN HERE *)
 (** [] *)
 
 (* ################################################################# *)
@@ -675,8 +694,14 @@ Proof.
 Theorem CSeq_congruence : forall c1 c1' c2 c2',
   cequiv c1 c1' -> cequiv c2 c2' ->
   cequiv (c1;;c2) (c1';;c2').
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. intros. unfold cequiv in *. intros. split.
+   - intros. inversion H1. apply E_Seq with st'0.
+     subst. apply (H st st'0). apply H4. subst.
+     apply (H0 st'0 st'). apply H7.
+   - intros. inversion H1. apply E_Seq with st'0.
+     subst. apply (H st st'0). apply H4. subst.
+     apply (H0 st'0 st'). apply H7. Qed.
+  (* FILL IN HERE *)
 (** [] *)
 
 (** **** Exercise: 3 stars (CIf_congruence)  *)
@@ -684,8 +709,13 @@ Theorem CIf_congruence : forall b b' c1 c1' c2 c2',
   bequiv b b' -> cequiv c1 c1' -> cequiv c2 c2' ->
   cequiv (IFB b THEN c1 ELSE c2 FI)
          (IFB b' THEN c1' ELSE c2' FI).
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. intros. unfold cequiv in *. unfold bequiv in *. intros. split.
+   - intros. inversion H2. subst. apply (E_IfTrue).
+     rewrite <-(H st). apply H8. apply (H0 st st'). apply H9. subst. apply (E_IfFalse). rewrite <-(H st). apply H8. apply (H1 st st'). apply H9.
+   - intros. inversion H2. subst. apply (E_IfTrue).
+     rewrite (H st). apply H8. apply (H0 st st'). apply H9.
+     subst. apply (E_IfFalse). rewrite (H st). apply H8. apply (H1 st st'). apply H9. Qed.
+  (* FILL IN HERE *)
 (** [] *)
 
 (** For example, here are two equivalent programs and a proof of their
@@ -1026,7 +1056,10 @@ Proof.
          aeval st a2 = aeval st (fold_constants_aexp a2),
 
        completing the case.  []
-*)
+ *)
+(* 定义了一个引理方便使用*)
+Lemma MyH:forall a' st0, aeval st0 a'=aeval st0 (fold_constants_aexp a').
+Proof. apply fold_constants_aexp_sound. Qed.
 
 Theorem fold_constants_bexp_sound:
   btrans_sound fold_constants_bexp.
@@ -1057,7 +1090,9 @@ Proof.
 
       simpl. destruct (beq_nat n n0); reflexivity.
   - (* BLe *)
-    (* FILL IN HERE *) admit.
+    simpl. remember (fold_constants_aexp a) as Ha'.
+    remember (fold_constants_aexp a0) as Ha0'.
+    destruct Ha';destruct Ha0';rewrite (MyH a st);rewrite (MyH a0 st);rewrite <-HeqHa';rewrite <-HeqHa0'; simpl; try (destruct (leb n n0) eqn:E; simpl); reflexivity.
   - (* BNot *)
     simpl. remember (fold_constants_bexp b) as b' eqn:Heqb'.
     rewrite IHb.
@@ -1067,8 +1102,8 @@ Proof.
     remember (fold_constants_bexp b1) as b1' eqn:Heqb1'.
     remember (fold_constants_bexp b2) as b2' eqn:Heqb2'.
     rewrite IHb1. rewrite IHb2.
-    destruct b1'; destruct b2'; reflexivity.
-(* FILL IN HERE *) Admitted.
+    destruct b1'; destruct b2'; reflexivity. Qed.
+(* FILL IN HERE *)
 (** [] *)
 
 (** **** Exercise: 3 stars (fold_constants_com_sound)  *)
@@ -1084,8 +1119,8 @@ Proof.
               apply fold_constants_aexp_sound.
   - (* ;; *) apply CSeq_congruence; assumption.
   - (* IFB *)
-    assert (bequiv b (fold_constants_bexp b)). {
-      apply fold_constants_bexp_sound. }
+    assert (bequiv b (fold_constants_bexp b)).
+    { apply fold_constants_bexp_sound. }
     destruct (fold_constants_bexp b) eqn:Heqb;
       try (apply CIf_congruence; assumption).
 
@@ -1100,7 +1135,22 @@ Proof.
       apply trans_cequiv with c2; try assumption.
       apply IFB_false; assumption.
   - (* WHILE *)
-    (* FILL IN HERE *) Admitted.
+    assert (bequiv b  (fold_constants_bexp b)).
+    { apply fold_constants_bexp_sound. }
+    destruct (fold_constants_bexp b).
+    + apply WHILE_true. apply H.
+    + apply WHILE_false. apply H.
+    + unfold cequiv. intros. split.
+      * intros. SearchAbout "CWhile". apply (CWhile_congruence b (BEq a a0) c (fold_constants_com c) H IHc). apply H0.
+      * intros. assert (bequiv (BEq a a0) b).
+        { unfold bequiv in *. intros. rewrite (H st0). reflexivity. }
+        assert (cequiv (fold_constants_com c) c).
+        { unfold cequiv in *. intros. apply iff_sym.
+          apply (IHc st0 st'0). }
+        apply (CWhile_congruence (BEq a a0) b (fold_constants_com c) c H1 H2). apply H0.
+    + apply (CWhile_congruence b (BLe a a0) c (fold_constants_com c) H IHc).
+    + apply (CWhile_congruence b (BNot b0) c (fold_constants_com c) H IHc).
+    + apply (CWhile_congruence b (BAnd b0_1 b0_2) c (fold_constants_com c) H IHc). Qed.
 (** [] *)
 
 (* ----------------------------------------------------------------- *)
@@ -1307,8 +1357,14 @@ Inductive var_not_used_in_aexp (X:id) : aexp -> Prop :=
 Lemma aeval_weakening : forall i st a ni,
   var_not_used_in_aexp i a ->
   aeval (t_update st i ni) a = aeval st a.
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. intros. induction H.
+   - reflexivity.
+   - simpl. SearchAbout "t_update".
+     apply (t_update_neq). apply H.
+   - simpl. rewrite IHvar_not_used_in_aexp1. rewrite IHvar_not_used_in_aexp2. reflexivity.
+   - simpl. rewrite IHvar_not_used_in_aexp1. rewrite IHvar_not_used_in_aexp2. reflexivity.
+   - simpl. rewrite IHvar_not_used_in_aexp1. rewrite IHvar_not_used_in_aexp2. reflexivity. Qed.
+  (* FILL IN HERE *)
 
 (** Using [var_not_used_in_aexp], formalize and prove a correct verson
     of [subst_equiv_property]. *)
@@ -1321,8 +1377,9 @@ Proof.
 
 Theorem inequiv_exercise:
   ~ cequiv (WHILE BTrue DO SKIP END) SKIP.
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. intros. unfold not. intros. unfold cequiv in *.
+   SearchAbout "WHILE".
+  (* FILL IN HERE *)
 (** [] *)
 
 (* ################################################################# *)
