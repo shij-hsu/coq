@@ -1088,8 +1088,9 @@ Proof. auto. Qed.
 Print one.
 Print mult.
 Print nat.
+(*
 Definition exp (n m : nat) : nat :=
-  n nat (mult m) one.
+  n nat (mult m) one. Admitted.
 
 Example exp_1 : exp two two = plus two two.
 Proof. (* FILL IN HERE *) Admitted.
@@ -1099,7 +1100,7 @@ Proof. (* FILL IN HERE *) Admitted.
 
 Example exp_3 : exp three zero = one.
 Proof. (* FILL IN HERE *) Admitted.
-
+*)
 End Church.
 (** [] *)
 

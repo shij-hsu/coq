@@ -1780,18 +1780,12 @@ Theorem while_break_true : forall b c st st',
   (WHILE b DO c END) / st \\ SContinue / st' ->
   beval st' b = true ->
   exists st'', c / st'' \\ SBreak / st'.
-Proof. intros. exists st. inversion H. induction H. generalize dependent st.
-   - intros. rewrite H4 in H0. inversion H0.
-   - intros. rewrite H4 in H0. inversion H0.
-   - intros. rewrite H4 in H0. inversion H0.
-   - intros. rewrite H4 in H0. inversion H0.
-   - intros. rewrite H4 in H0. inversion H0.
-   - intros. rewrite H4 in H0. inversion H0.
-   - intros. rewrite H4 in H0. inversion H0.
-   - intros. rewrite H4 in H0. inversion H0.
-   - intros. rewrite H4 in H0. inversion H0.
-   - intros. rewrite H4 in H0. inversion H0.
-   - Admitted.
+Proof. intros. remember (WHILE b DO c END) as wl.
+   induction H; inversion Heqwl.
+   - subst b0. rewrite H0 in H. inversion H.
+   - subst b0 c0. clear Heqwl. apply IHceval2. reflexivity.
+     apply H0.
+   - subst b0 c0. clear Heqwl.  exists st. apply H1. Qed.
 (* FILL IN HERE *)
 
 (** **** Exercise: 4 stars, advanced, optional (ceval_deterministic)  *)
@@ -1799,8 +1793,33 @@ Theorem ceval_deterministic: forall (c:com) st st1 st2 s1 s2,
      c / st \\ s1 / st1  ->
      c / st \\ s2 / st2 ->
      st1 = st2 /\ s1 = s2.
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. intros.
+   generalize dependent st2. generalize dependent s2.
+   induction H; intros. split.
+   - inversion H0. reflexivity.
+   - inversion H0. reflexivity.
+   - inversion H0. split. reflexivity. reflexivity.
+   - inversion H0. subst. split. reflexivity. reflexivity.
+   - inversion H1. clear H1. subst. apply IHceval2. assert (st'=st'0).
+     { destruct (IHceval1 SContinue st'0 H4). apply H1. }
+     subst. apply H8. subst. split. destruct (IHceval1 SBreak st2 H7). inversion H3. destruct (IHceval1 SBreak st2 H7). inversion H3.
+   - inversion H0. subst. apply IHceval.
+     destruct (IHceval SContinue st'0 H3). inversion H2.
+     split. subst. destruct (IHceval SBreak st2 H6). apply H1. reflexivity.
+   - inversion H1. subst. apply IHceval.  apply H9.
+     subst. rewrite H8 in H. inversion H.
+   - inversion H1. subst. apply IHceval. rewrite H8 in H.
+     inversion H. subst. apply IHceval. apply H9.
+   - inversion H0. subst. split. reflexivity. reflexivity.
+     subst. rewrite H3 in H. inversion H. subst. rewrite H3 in H. inversion H.
+   - inversion H2. subst. rewrite H8 in H. inversion H.
+     subst. assert (st'=st'0).
+     { destruct (IHceval1 SContinue st'0 H6). apply H3. }
+     subst. apply IHceval2. apply H10.
+     subst. destruct (IHceval1 SBreak st2 H9). inversion H4.
+   - inversion H1. subst. rewrite H7 in H. inversion H.
+     subst. destruct (IHceval SContinue st'0 H5). inversion H3. subst. destruct (IHceval SBreak st2 H8). split. apply H2. reflexivity. Qed.
+(* FILL IN HERE *) 
 
 End BreakImp.
 (** [] *)

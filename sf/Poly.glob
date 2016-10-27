@@ -1,4 +1,4 @@
-DIGEST 2886ca3a9aada17dbba790e07cc1b3e2
+DIGEST 3e3b99032e050ba1d6b446c351ec6ce7
 FPoly
 R180:184 Lists <> <> lib
 ind 1062:1069 <> boollist
@@ -1272,5 +1272,5 @@ R37516:37518 Poly Exercises.Church two def
 R37528:37531 Poly Exercises.Church plus def
 R37539:37543 Poly Exercises.Church three def
 R37533:37537 Poly Exercises.Church three def
-R38173:38178 Poly Church <> mod
-R38196:38204 Poly <> <> mod
+R38217:38222 Poly Church <> mod
+R38240:38248 Poly <> <> mod
