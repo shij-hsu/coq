@@ -1377,8 +1377,11 @@ Proof. intros. induction H.
 
 Theorem inequiv_exercise:
   ~ cequiv (WHILE BTrue DO SKIP END) SKIP.
-Proof. intros. unfold not. intros. unfold cequiv in *.
-   SearchAbout "WHILE".
+Proof. intros. unfold not. intros.
+   destruct (H empty_state empty_state). clear H.
+   assert ((WHILE BTrue DO SKIP END)/empty_state\\empty_state).
+   { apply H1. apply E_Skip. }
+   apply (WHILE_true_nonterm BTrue SKIP empty_state empty_state). unfold bequiv. simpl. intros. reflexivity. apply H. Qed.
   (* FILL IN HERE *)
 (** [] *)
 
@@ -1486,6 +1489,7 @@ Inductive ceval : com -> state -> state -> Prop :=
       c1 / st \\ st' ->
       (WHILE b1 DO c1 END) / st' \\ st'' ->
       (WHILE b1 DO c1 END) / st \\ st''
+  |E_Havoc:forall X st n,(HAVOC X)/st\\t_update st X n
 (* FILL IN HERE *)
 
   where "c1 '/' st '\\' st'" := (ceval c1 st st').
@@ -1494,13 +1498,14 @@ Inductive ceval : com -> state -> state -> Prop :=
     your definition: *)
 
 Example havoc_example1 : (HAVOC X) / empty_state \\ t_update empty_state X 0.
-Proof.
-(* FILL IN HERE *) Admitted.
+Proof. apply E_Havoc. Qed.
+(* FILL IN HERE *)
 
 Example havoc_example2 :
   (SKIP;; HAVOC Z) / empty_state \\ t_update empty_state Z 42.
-Proof.
-(* FILL IN HERE *) Admitted.
+Proof. apply E_Seq with empty_state. apply E_Skip.
+   apply (E_Havoc Z empty_state 42). Qed.
+(* FILL IN HERE *) 
 (** [] *)
 
 (** Finally, we repeat the definition of command equivalence from above: *)
@@ -1526,7 +1531,42 @@ Definition pYX :=
 
 Theorem pXY_cequiv_pYX :
   cequiv pXY pYX \/ ~cequiv pXY pYX.
-Proof. (* FILL IN HERE *) Admitted.
+Proof. unfold cequiv. left.
+   unfold not, pXY, pYX. destruct X. destruct Y.
+   destruct (beq_nat n n0) eqn:E.
+   - intros. split.
+     + rewrite (beq_nat_true n n0 E). intros. apply H.
+     + rewrite (beq_nat_true n n0 E). intros. apply H.
+   - intros. split.
+     + intros. inversion H. inversion H2. inversion H5.
+       subst. assert (t_update (t_update st (Id n) n1) (Id n0) n2=t_update (t_update st (Id n0) n2) (Id n) n1).
+       { unfold t_update. apply functional_extensionality.
+         intros. destruct x. simpl.
+         destruct (beq_nat n0 n3) eqn:E1.
+         * destruct (beq_nat n n3) eqn:E2.
+           assert (n0=n3).
+           { apply beq_nat_true. apply E1. }
+           assert (n=n3).
+           { apply beq_nat_true. apply E2. }
+           subst. rewrite E in E1. inversion E1.
+           reflexivity.
+         * reflexivity. }
+       rewrite H0. apply E_Seq with (t_update st (Id n0) n2). apply E_Havoc. apply E_Havoc.
+     + intros. inversion H. inversion H2. inversion H5.
+       subst.  assert (t_update (t_update st (Id n) n2) (Id n0) n1=t_update (t_update st (Id n0) n1) (Id n) n2).
+       { unfold t_update. apply functional_extensionality.
+         intros. destruct x. simpl.
+         destruct (beq_nat n0 n3) eqn:E1.
+         * destruct (beq_nat n n3) eqn:E2.
+           assert (n0=n3).
+           { apply beq_nat_true. apply E1. }
+           assert (n=n3).
+           { apply beq_nat_true. apply E2. }
+           subst. rewrite E in E1. inversion E1.
+           reflexivity.
+         * reflexivity. }
+       rewrite <-H0. apply E_Seq with (t_update st (Id n) n2). apply E_Havoc. apply E_Havoc. Qed.
+(* FILL IN HERE *) 
 (** [] *)
 
 (** **** Exercise: 4 stars, optional (havoc_copy)  *)
@@ -1544,7 +1584,12 @@ Definition pcopy :=
 
 Theorem ptwice_cequiv_pcopy :
   cequiv ptwice pcopy \/ ~cequiv ptwice pcopy.
-Proof. (* FILL IN HERE *) Admitted.
+Proof. right. unfold not, cequiv, ptwice, pcopy. intros.
+   destruct (H empty_state (t_update (t_update empty_state X 0) Y 1)).
+   assert ( (HAVOC X;; HAVOC Y) / empty_state \\
+                                t_update (t_update empty_state X 0) Y 1).
+   { 
+(* FILL IN HERE *)
 (** [] *)
 
 (** The definition of program equivalence we are using here has some
