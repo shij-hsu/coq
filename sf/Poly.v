@@ -1054,6 +1054,7 @@ Proof. auto. Qed.
 Definition plus (n m : nat) : nat :=
   fun (X:Type) (f:X->X) (x:X)=>n X f (m X f x).
 
+
 Example plus_1 : plus zero one = one.
 Proof. auto. Qed.
 
@@ -1088,19 +1089,29 @@ Proof. auto. Qed.
 Print one.
 Print mult.
 Print nat.
-(*
+
+Definition exp' (n m:nat):nat:=
+  fun (X:Type) (f:X->X) (x:X)=>m (X->X) ((fun f'=>(n X f'))) f x.
+
 Definition exp (n m : nat) : nat :=
-  n nat (mult m) one. Admitted.
+  fun (X:Type) =>
+    m (X->X) (n X).
+(*
+    m nat (mult n) one
+  
+      
+      (lambda xx: nat, lambda X f x, n X (xx X f) x) one.
+  fun (X:Type) (f:X->X) (x:X)=>n X (m X f) x.*)
 
-Example exp_1 : exp two two = plus two two.
-Proof. (* FILL IN HERE *) Admitted.
 
-Example exp_2 : exp three two = plus (mult two (mult two two)) one.
-Proof. (* FILL IN HERE *) Admitted.
+Example exp_1 : exp two three =plus ( mult two three) two.
+Proof. auto. Qed.
+Example exp_2 : exp' three two = plus (mult two (mult two two)) one.
+Proof. (* FILL IN HERE *) auto. Qed.
 
 Example exp_3 : exp three zero = one.
-Proof. (* FILL IN HERE *) Admitted.
-*)
+Proof. (* FILL IN HERE *) auto. Qed.
+
 End Church.
 (** [] *)
 
