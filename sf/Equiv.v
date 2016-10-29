@@ -1585,10 +1585,36 @@ Definition pcopy :=
 Theorem ptwice_cequiv_pcopy :
   cequiv ptwice pcopy \/ ~cequiv ptwice pcopy.
 Proof. right. unfold not, cequiv, ptwice, pcopy. intros.
-   destruct (H empty_state (t_update (t_update empty_state X 0) Y 1)).
-   assert ( (HAVOC X;; HAVOC Y) / empty_state \\
-                                t_update (t_update empty_state X 0) Y 1).
-   { 
+   destruct (H empty_state (t_update (t_update empty_state X 0) Y 1)). clear H. assert ((HAVOC X;; Y ::= AId X) / empty_state \\t_update (t_update empty_state X 0) Y 1).
+   apply H0. apply E_Seq with  (t_update empty_state X 0). apply E_Havoc. apply E_Havoc.
+   clear H1 H0. unfold X,Y in H. inversion H.
+   subst. inversion H2. subst. inversion H5. subst.
+   simpl in H6. unfold t_update in H6.
+   destruct n.
+   - assert (0=(fun x' : id =>
+        if beq_id (Id 1) x'
+        then
+         if beq_id (Id 0) (Id 0)
+         then 0
+         else empty_state (Id 0)
+        else if beq_id (Id 0) x' then 0 else empty_state x') (Id 1)). simpl. reflexivity. 
+     rewrite H6 in H0. simpl in H0. inversion H0.
+   - assert (S n=(fun x' : id =>
+        if beq_id (Id 1) x'
+        then
+         if beq_id (Id 0) (Id 0)
+         then S n
+         else empty_state (Id 0)
+        else
+          if beq_id (Id 0) x' then S n else empty_state x') (Id 1)). simpl. reflexivity. rewrite H6 in H0. simpl in H0. inversion H0. clear H0. subst.
+     assert (1=(fun x' : id =>
+        if beq_id (Id 1) x'
+        then
+         if beq_id (Id 0) (Id 0)
+         then 1
+         else empty_state (Id 0)
+        else if beq_id (Id 0) x' then 1 else empty_state x') (Id 0)). simpl. reflexivity.
+     rewrite H6 in H0. simpl in H0. inversion H0. Qed.
 (* FILL IN HERE *)
 (** [] *)
 
@@ -1626,18 +1652,43 @@ Definition p2 : com :=
 
 Lemma p1_may_diverge : forall st st', st X <> 0 ->
   ~ p1 / st \\ st'.
-Proof. (* FILL IN HERE *) Admitted.
+Proof. intros. unfold not. unfold p1. intros.
+   remember (WHILE BNot (BEq (AId X) (ANum 0)) DO HAVOC Y;; X ::= APlus (AId X) (ANum 1) END) as wl.
+   induction H0; try (inversion Heqwl).
+   subst. simpl in *. assert ((beq_nat (st X) 0) = negb false). apply negb_sym. symmetry. apply H0. simpl in H1.
+   assert (st X=0). apply beq_nat_true. apply H1. rewrite H2 in H. destruct H. reflexivity.
+   subst. apply IHceval2. clear IHceval2 Heqwl IHceval1 H0.
+   inversion H0_. clear H0_. subst. inversion H2. subst.
+   inversion H5. subst. simpl. unfold t_update. simpl.
+   assert (forall n:nat, n+1<>0).
+   { induction n0. omega. omega. } apply H0.
+   reflexivity. Qed.
+(* FILL IN HERE *)
 
 Lemma p2_may_diverge : forall st st', st X <> 0 ->
   ~ p2 / st \\ st'.
-Proof.
-(* FILL IN HERE *) Admitted.
+Proof. intros. unfold not. unfold p2. intros.
+   remember (WHILE BNot (BEq (AId X) (ANum 0)) DO SKIP END) as wl. induction H0; try (inversion Heqwl).
+   - subst. simpl in *.  assert ((beq_nat (st X) 0) = negb false). apply negb_sym. symmetry. apply H0. simpl in H1.
+     assert (st X=0). apply beq_nat_true. apply H1. rewrite H2 in H. destruct H. reflexivity.
+   - subst. apply IHceval2. clear IHceval2 Heqwl IHceval1 H0.
+     inversion H0_. clear H0_. subst. apply H. reflexivity. Qed.
+(* FILL IN HERE *)
 
 (** You should use these lemmas to prove that [p1] and [p2] are actually
     equivalent. *)
 
 Theorem p1_p2_equiv : cequiv p1 p2.
-Proof. (* FILL IN HERE *) Admitted.
+Proof. (* FILL IN HERE *)
+  unfold cequiv, p1, p2. intros. split.
+  - intros. inversion H. subst. simpl in *.
+    SearchAbout "While". apply E_WhileEnd. simpl. apply H4.
+    simpl in H2. assert False. apply (p1_may_diverge st st').
+    apply beq_nat_false_iff. assert ( (beq_nat (st X) 0) =negb true). { apply negb_sym. symmetry. apply H2. } assumption. unfold p1. assumption. inversion H7.
+  - intros. inversion H. subst. simpl in *.
+    apply E_WhileEnd. simpl. assumption. simpl in H2.
+    assert (False). apply (p2_may_diverge st st').
+    apply beq_nat_false_iff. assert (beq_nat (st X) 0=negb true).  { apply negb_sym. symmetry. apply H2. } assumption. unfold p1. assumption. inversion H7. Qed.
 (** [] *)
 
 (** **** Exercise: 4 stars, advanced (p3_p4_inquiv)  *)
@@ -1653,7 +1704,6 @@ Definition p3 : com :=
 Definition p4 : com :=
   X ::= (ANum 0);;
   Z ::= (ANum 1).
-
 
 Theorem p3_p4_inequiv : ~ cequiv p3 p4.
 Proof. (* FILL IN HERE *) Admitted.
