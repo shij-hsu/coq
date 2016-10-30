@@ -1682,7 +1682,7 @@ Theorem p1_p2_equiv : cequiv p1 p2.
 Proof. (* FILL IN HERE *)
   unfold cequiv, p1, p2. intros. split.
   - intros. inversion H. subst. simpl in *.
-    SearchAbout "While". apply E_WhileEnd. simpl. apply H4.
+    apply E_WhileEnd. simpl. apply H4.
     simpl in H2. assert False. apply (p1_may_diverge st st').
     apply beq_nat_false_iff. assert ( (beq_nat (st X) 0) =negb true). { apply negb_sym. symmetry. apply H2. } assumption. unfold p1. assumption. inversion H7.
   - intros. inversion H. subst. simpl in *.
@@ -1706,7 +1706,25 @@ Definition p4 : com :=
   Z ::= (ANum 1).
 
 Theorem p3_p4_inequiv : ~ cequiv p3 p4.
-Proof. (* FILL IN HERE *) Admitted.
+Proof. (* FILL IN HERE *)
+  unfold cequiv, p3, p4, not. intros.
+  remember (t_update empty_state X 1) as init_state.
+  destruct (H init_state (t_update (t_update init_state X 0) Z 2)).
+  destruct (beq_id X Z) eqn:E.
+  - inversion E.
+  - clear H H1. assert ( (X ::= ANum 0;; Z ::= ANum 1) / init_state \\ t_update (t_update init_state X 0) Z 2).
+  { apply H0. apply E_Seq with (t_update init_state Z 1).
+    apply E_Ass. auto. apply E_WhileLoop with (t_update (t_update init_state X 0) Z 2).
+    rewrite Heqinit_state. auto.
+    assert ( t_update (t_update init_state X 0) Z 2= t_update (t_update (t_update init_state Z 1) X 0) Z 2).
+    unfold t_update. apply functional_extensionality.
+    intros. destruct (beq_id Z x). reflexivity. reflexivity. rewrite H. apply E_Seq with  (t_update (t_update init_state Z 1) X 0). apply E_Havoc. apply E_Havoc.
+    apply E_WhileEnd. auto. }
+  inversion H. inversion H3. subst. simpl in H6.
+  inversion H6. subst. simpl in H7. assert (1=2).
+  assert (1=(t_update (t_update (t_update empty_state X 1) X 0) Z 1) Z). unfold t_update. simpl. reflexivity.
+  rewrite H7 in H1. unfold t_update in H1. simpl in H1.
+  apply H1. inversion H1. Qed.
 (** [] *)
 
 (** **** Exercise: 5 stars, advanced, optional (p5_p6_equiv)  *)
@@ -1721,7 +1739,36 @@ Definition p6 : com :=
 
 
 Theorem p5_p6_equiv : cequiv p5 p6.
-Proof. (* FILL IN HERE *) Admitted.
+Proof. (* FILL IN HERE *)
+  unfold cequiv, p5, p6. intros. split.
+  - intros. remember  (WHILE BNot (BEq (AId X) (ANum 1)) DO HAVOC X END) as wl. induction H; try inversion Heqwl.
+    + subst. simpl in H. assert (t_update st X 1=st).
+      { unfold t_update. apply functional_extensionality.
+        intros. destruct (beq_id X x) eqn:E.
+        apply beq_nat_true_iff. assert (X=x).
+        apply beq_id_true_iff. apply E. rewrite <-H0.
+        assert ((beq_nat (st X) 1) = negb false).
+        apply negb_sym. symmetry. apply H. simpl in H1.
+        apply beq_nat_true_iff. symmetry. apply beq_nat_true_iff. apply H1. reflexivity. }
+      pattern st at 2. rewrite <-H0. apply E_Ass. auto.
+    + subst. simpl in H. clear IHceval1 Heqwl.
+      assert ( (X ::= ANum 1) / st' \\ st''). apply IHceval2. reflexivity. inversion H2. subst. simpl.
+      inversion H0. subst. assert ( t_update (t_update st X n) X 1= t_update st X 1). SearchAbout "t_update".
+      apply t_update_shadow. simpl in H2. rewrite H3.
+      apply E_Ass. auto.
+  - intros. remember  (WHILE BNot (BEq (AId X) (ANum 1)) DO HAVOC X END) as wl. inversion H. subst. simpl in *.
+    destruct (beq_nat (st X) 1) eqn:E.
+    + assert (t_update st X 1=st).
+      { unfold t_update. apply functional_extensionality.
+        intros. destruct (beq_id X x) eqn:E1.
+        symmetry. apply beq_nat_true_iff. assert (X=x).
+        apply beq_id_true_iff. assumption. rewrite <-H0.
+        apply E. reflexivity. }
+      rewrite H0. apply E_WhileEnd. simpl.
+      rewrite E. auto.
+    + apply E_WhileLoop with ( t_update st X 1).
+      simpl. rewrite E. auto. apply E_Havoc.
+      apply E_WhileEnd. auto. Qed.
 (** [] *)
 
 End Himp.
@@ -1759,8 +1806,28 @@ Theorem swap_noninterfering_assignments: forall l1 l2 a1 a2,
   cequiv
     (l1 ::= a1;; l2 ::= a2)
     (l2 ::= a2;; l1 ::= a1).
-Proof.
-(* FILL IN HERE *) Admitted.
+Proof. unfold cequiv. intros. split.
+   - intros. inversion H2. inversion H5. inversion H8.
+     subst. assert ( t_update (t_update st l1 (aeval st a1)) l2 (aeval (t_update st l1 (aeval st a1)) a2)= t_update (t_update st l2 (aeval st a2)) l1 (aeval (t_update st l2 (aeval st a2)) a1)).
+     { assert ((aeval (t_update st l1 (aeval st a1)) a2)=aeval st a2). apply aeval_weakening. assumption. rewrite H3.
+       assert ( (aeval (t_update st l2 (aeval st a2)) a1)=aeval st a1). apply aeval_weakening. assumption. rewrite H4.
+       unfold t_update. apply functional_extensionality.
+       intros. destruct (beq_id l2 x) eqn:E1.
+       destruct (beq_id l1 x) eqn:E2. assert (l2=x).
+       apply beq_id_true_iff. apply E1. rewrite <-H6 in E2.
+       destruct H. apply beq_id_true_iff. apply E2. reflexivity. reflexivity. }
+     rewrite H3. apply E_Seq with (t_update st l2 (aeval st a2)). apply E_Ass. auto. apply E_Ass. auto.
+   -  intros. inversion H2. inversion H5. inversion H8.
+     subst. assert ( t_update (t_update st l1 (aeval st a1)) l2 (aeval (t_update st l1 (aeval st a1)) a2)= t_update (t_update st l2 (aeval st a2)) l1 (aeval (t_update st l2 (aeval st a2)) a1)).
+     { assert ((aeval (t_update st l1 (aeval st a1)) a2)=aeval st a2). apply aeval_weakening. assumption. rewrite H3.
+       assert ( (aeval (t_update st l2 (aeval st a2)) a1)=aeval st a1). apply aeval_weakening. assumption. rewrite H4.
+       unfold t_update. apply functional_extensionality.
+       intros. destruct (beq_id l2 x) eqn:E1.
+       destruct (beq_id l1 x) eqn:E2. assert (l2=x).
+       apply beq_id_true_iff. apply E1. rewrite <-H6 in E2.
+       destruct H. apply beq_id_true_iff. apply E2. reflexivity. reflexivity. }
+     rewrite <-H3. apply E_Seq with (t_update st l1 (aeval st a1)). apply E_Ass. auto. apply E_Ass. auto. Qed.
+(* FILL IN HERE *)
 (** [] *)
 
 (** **** Exercise: 4 stars, advanced, optional (capprox)  *)
@@ -1784,31 +1851,45 @@ Definition capprox (c1 c2 : com) : Prop := forall (st st' : state),
 (** Find two programs [c3] and [c4] such that neither approximates
     the other. *)
 
-Definition c3 : com (* REPLACE THIS LINE WITH   := _your_definition_ . *) . Admitted.
-Definition c4 : com (* REPLACE THIS LINE WITH   := _your_definition_ . *) . Admitted.
+Definition c3 : com:= (* REPLACE THIS LINE WITH   := _your_definition_ . *)(X::=(ANum 1)).
+Definition c4 : com:= (* REPLACE THIS LINE WITH   := _your_definition_ . *)(X::=(ANum 2)).
 
 Theorem c3_c4_different : ~ capprox c3 c4 /\ ~ capprox c4 c3.
-Proof. (* FILL IN HERE *) Admitted.
-
+Proof. (* FILL IN HERE *)
+  unfold capprox, c3, c4, not. split.
+  - intros. assert ( (X ::= ANum 1) / empty_state \\ (t_update empty_state X 1) -> (X ::= ANum 2) /empty_state \\ (t_update empty_state X 1)). apply H. assert ((X ::= ANum 2) / empty_state \\ t_update empty_state X 1). apply H0. apply E_Ass.
+    auto. inversion H1. subst. simpl in H6.
+    assert (1=(t_update empty_state X 1) X).
+    { unfold t_update. auto. } rewrite <-H6 in H2.
+    unfold t_update in H2. simpl in H2. inversion H2.
+  - intros. assert ( (X ::= ANum 2) / empty_state \\ (t_update empty_state X 2) -> (X ::= ANum 1) /empty_state \\ (t_update empty_state X 2)). apply H. assert ((X ::= ANum 1) / empty_state \\ t_update empty_state X 2). apply H0. apply E_Ass.
+    auto. inversion H1. subst. simpl in H6.
+    assert (1=(t_update empty_state X 1) X).
+    { unfold t_update. auto. } rewrite H6 in H2.
+    unfold t_update in H2. simpl in H2. inversion H2. Qed.
 (** Find a program [cmin] that approximates every other program. *)
 
-Definition cmin : com 
-  (* REPLACE THIS LINE WITH   := _your_definition_ . *) . Admitted.
+Definition cmin : com  (* REPLACE THIS LINE WITH   := _your_definition_ . *):=
+  (WHILE BTrue DO SKIP END). 
 
 Theorem cmin_minimal : forall c, capprox cmin c.
-Proof. (* FILL IN HERE *) Admitted.
+Proof. (* FILL IN HERE *)
+  unfold capprox, cmin.
+  intros. assert (False).
+  { apply (WHILE_true_nonterm BTrue SKIP st st').
+    unfold bequiv. simpl. reflexivity. apply H. }
+  inversion H0. Qed.
 
 (** Finally, find a non-trivial property which is preserved by
     program approximation (when going from left to right). *)
-
+(*
 Definition zprop (c : com) : Prop 
   (* REPLACE THIS LINE WITH   := _your_definition_ . *) . Admitted.
-
 
 Theorem zprop_preserving : forall c c',
   zprop c -> capprox c c' -> zprop c'.
 Proof. (* FILL IN HERE *) Admitted.
 (** [] *)
-
+*)
 (** $Date: 2016-07-13 12:41:41 -0400 (Wed, 13 Jul 2016) $ *)
 
