@@ -441,15 +441,7 @@ Proof.
 
    ...into formal statements (use the names [assn_sub_ex1] 
    and [assn_sub_ex2]) and use [hoare_asgn] to prove them. *)
-Lemma assn_sub_ex1:
-  {{ (fun st=>(st X <= 5)) [X |->APlus (AId X) (ANum 1)] }}
-    X ::=APlus (AId X) (ANum 1){{fun st=>(st X <= 5) }}.
-Proof. apply hoare_asgn. Qed.
 
-Lemma assn_sub_ex2:
-  {{ (fun st=>(0<=st X/\st X<=5))[X|->ANum 3]}}
-    X::=ANum 3{{fun st=>(0<=st X/\st X<=5)}}.
-Proof. apply hoare_asgn. Qed.
 (* FILL IN HERE *)
 (** [] *)
 
@@ -467,7 +459,7 @@ Proof. apply hoare_asgn. Qed.
     The rule universally quantifies over the arithmetic expression 
     [a], and your counterexample needs to exhibit an [a] for which 
     the rule doesn't work.) *)
-(* 可以去 a::= X+1 *)
+
 (* FILL IN HERE *)
 (** [] *)
 
@@ -499,20 +491,7 @@ Theorem hoare_asgn_fwd :
             /\ st X = aeval (t_update st X m) a }}.
 Proof.
   intros functional_extensionality m a P.
-  unfold hoare_triple. intros. split.
-  - inversion H. subst.
-    assert (t_update (t_update st X (aeval st a)) X m=st).
-    { destruct H0. unfold t_update. apply functional_extensionality. intros. destruct (beq_id X x) eqn:E.
-      rewrite <-H1. assert (X=x). apply beq_id_true_iff.
-      apply E. rewrite H2. reflexivity. reflexivity. }
-    rewrite H1. destruct H0. apply H0.
-  - inversion H. subst. destruct H0.
-    assert (t_update (t_update st X (aeval st a)) X m=st).
-    { unfold t_update. apply functional_extensionality. intros. destruct (beq_id X x) eqn:E.
-      rewrite <-H1. assert (X=x). apply beq_id_true_iff.
-      apply E. rewrite H2. reflexivity. reflexivity. }
-    rewrite H2. unfold t_update. reflexivity. Qed.
-  (* FILL IN HERE *)
+  (* FILL IN HERE *) Admitted.
 (** [] *)
 
 (** **** Exercise: 2 stars, advanced (hoare_asgn_fwd_exists)  *)
@@ -537,15 +516,7 @@ Theorem hoare_asgn_fwd_exists :
                 st X = aeval (t_update st X m) a }}.
 Proof.
   intros functional_extensionality a P.
-  (* FILL IN HERE *)
-  unfold hoare_triple. intros. inversion H. subst.
-  exists (st X). assert (t_update (t_update st X (aeval st a)) X (st X)=st).
-  { unfold t_update. apply functional_extensionality.
-    intros. destruct (beq_id X x) eqn:E.
-    assert (X=x). apply beq_id_true_iff. apply E.
-    rewrite H1. reflexivity. reflexivity. }
-  rewrite H1. split. apply H0. unfold t_update.
-  simpl. reflexivity. Qed.
+  (* FILL IN HERE *) Admitted.
 (** [] *)
 
 (* ================================================================= *)
@@ -775,11 +746,7 @@ Qed.
    ...into formal statements (name them [assn_sub_ex1'] and 
    [assn_sub_ex2']) and use [hoare_asgn] and [hoare_consequence_pre] 
    to prove them. *)
-Lemma hoare_sub_ex1':
-  {{fun st=>(st X+1<=5)}}X::=APlus (AId X) (ANum 1)
-                       {{fun st=>(st X<=5)}}.
-Proof. eapply hoare_consequence_pre.
-   apply hoare_asgn. unfold assert_implies, assn_sub, t_update. intros. simpl. apply H. Qed.
+
 (* FILL IN HERE *)
 (** [] *)
 
@@ -878,12 +845,8 @@ Qed.
 Example hoare_asgn_example4 :
   {{fun st => True}} (X ::= (ANum 1);; Y ::= (ANum 2))
   {{fun st => st X = 1 /\ st Y = 2}}.
-Proof. eapply hoare_seq. apply hoare_asgn.
-   unfold assn_sub, t_update, hoare_triple. simpl.
-   intros. split.
-   -inversion H. unfold t_update. simpl. subst. auto.
-   - reflexivity. Qed.
-  (* FILL IN HERE *)
+Proof.
+  (* FILL IN HERE *) Admitted.
 (** [] *)
 
 (** **** Exercise: 3 stars (swap_exercise)  *)
@@ -893,19 +856,15 @@ Proof. eapply hoare_seq. apply hoare_asgn.
       {{X <= Y}} c {{Y <= X}}
 *)
 
-Definition swap_program : com :=
-  (* REPLACE THIS LINE WITH   := _your_definition_ . *)
-  (Z::=(AId X);;X::=(AId Y);;Y::=(AId Z)).
+Definition swap_program : com 
+  (* REPLACE THIS LINE WITH   := _your_definition_ . *) . Admitted.
+
 Theorem swap_exercise :
   {{fun st => st X <= st Y}}
   swap_program
   {{fun st => st Y <= st X}}.
-Proof. unfold swap_program. eapply hoare_seq.
-   eapply hoare_seq. apply hoare_asgn. apply hoare_asgn.
-   unfold hoare_triple, assn_sub, t_update.
-   intros. simpl. inversion H. subst. unfold t_update.
-   simpl. apply H0. Qed.
-  (* FILL IN HERE *)
+Proof.
+  (* FILL IN HERE *) Admitted.
 (** [] *)
 
 (** **** Exercise: 3 stars (hoarestate1)  *)
@@ -918,7 +877,6 @@ Proof. unfold swap_program. eapply hoare_seq.
 *)
 
 (* FILL IN HERE *)
-(* 第一条赋值语句可能改变状态st为st'，使得aeval st' a<>n *)
 (** [] *)
 
 (* ================================================================= *)
@@ -1049,18 +1007,8 @@ Theorem if_minus_plus :
     ELSE (Y ::= APlus (AId X) (AId Z))
   FI
   {{fun st => st Y = st X + st Z}}.
-Proof. eapply hoare_if.
-   - unfold bassn. eapply hoare_consequence_pre.
-     apply hoare_asgn. unfold assert_implies, assn_sub, t_update. simpl. intros. destruct H.
-     assert (forall a b, leb a b=true->b=a+(b-a)).
-     { induction a. simpl. intros. omega.
-       intros. destruct b. simpl. inversion H1.
-       simpl in *. pattern b at 1. rewrite (IHa b H1).
-       reflexivity. }
-     apply H1. assumption.
-   - unfold bassn. eapply hoare_consequence_pre.
-     apply hoare_asgn. unfold assert_implies, assn_sub, t_update. simpl. intros. reflexivity. Qed.
-  (* FILL IN HERE *)
+Proof.
+  (* FILL IN HERE *) Admitted.
 
 (* ----------------------------------------------------------------- *)
 (** *** Exercise: One-sided conditionals *)
@@ -1172,8 +1120,8 @@ Lemma hoare_if1_good :
     X ::= APlus (AId X) (AId Y)
   FI
   {{ fun st => st X = st Z }}.
-Proof. (* FILL IN HERE *)
-  unfold hoare_triple. intros. inversion H. Qed.
+Proof. (* FILL IN HERE *) Admitted.
+
 End If1.
 (** [] *)
 
@@ -1397,12 +1345,6 @@ Inductive ceval : state -> com -> state -> Prop :=
       ceval st c1 st' ->
       ceval st' (WHILE b1 DO c1 END) st'' ->
       ceval st (WHILE b1 DO c1 END) st''
-  | E_RepeatOnce: forall st st' c b,
-      ceval st c st'->beval st' b=true->
-      ceval st (REPEAT c UNTIL b END) st'
-  | E_RepeatLoop:forall st st' st'' c b,
-      ceval st c st'->ceval st' (REPEAT c UNTIL b END) st''->
-      ceval st (REPEAT c UNTIL b END) st''
 (* FILL IN HERE *)
 .
 
@@ -1431,11 +1373,8 @@ Definition ex1_repeat :=
 Theorem ex1_repeat_works :
   ex1_repeat / empty_state \\
                t_update (t_update empty_state X 1) Y 1.
-Proof. unfold ex1_repeat. apply E_RepeatOnce.
-   apply E_Seq with (t_update empty_state X 1).
-   apply E_Ass. auto. eapply E_Ass. auto.
-   unfold beval. auto. Qed.
-  (* FILL IN HERE *) 
+Proof.
+  (* FILL IN HERE *) Admitted.
 
 (** Now state and prove a theorem, [hoare_repeat], that expresses an
     appropriate proof rule for [repeat] commands.  Use [hoare_while]
@@ -1568,14 +1507,13 @@ Notation "{{ P }}  c  {{ Q }}" := (hoare_triple P c Q)
 (** Complete the Hoare rule for [HAVOC] commands below by defining
     [havoc_pre] and prove that the resulting rule is correct. *)
 
-Definition havoc_pre (X : id) (Q : Assertion) : Assertion :=
-  fun st=>(forall a, Q (t_update st X a)).
-  (* REPLACE THIS LINE WITH   := _your_definition_ . *)
+Definition havoc_pre (X : id) (Q : Assertion) : Assertion 
+  (* REPLACE THIS LINE WITH   := _your_definition_ . *) . Admitted.
+
 Theorem hoare_havoc : forall (Q : Assertion) (X : id),
   {{ havoc_pre X Q }} HAVOC X {{ Q }}.
-Proof. intros. unfold havoc_pre. unfold hoare_triple.
-   intros. inversion H. subst. apply H0. Qed.
-  (* FILL IN HERE *)
+Proof.
+  (* FILL IN HERE *) Admitted.
 
 End Himp.
 (** [] *)
