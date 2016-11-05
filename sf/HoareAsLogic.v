@@ -112,7 +112,19 @@ Print sample_proof.
 Theorem hoare_proof_sound : forall P c Q,
   hoare_proof P c Q -> {{P}} c {{Q}}.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* FILL IN HERE *)
+  intros. induction X.
+  - apply hoare_skip.
+  - apply hoare_asgn.
+  - eapply hoare_seq. apply IHX2. apply IHX1.
+  - eapply hoare_if. apply IHX1. apply IHX2.
+  - eapply hoare_while. apply IHX.
+  - eapply hoare_consequence_pre with P'.
+    eapply hoare_consequence_post with Q'.
+    apply IHX. unfold assert_implies in *.
+    intros. apply q. apply H.
+    unfold assert_implies in *.
+    intros. apply p. apply H. Qed.
 (** [] *)
 
 (** We can also use Coq's reasoning facilities to prove metatheorems
@@ -216,6 +228,12 @@ Qed.
 Definition wp (c:com) (Q:Assertion) : Assertion :=
   fun s => forall s', c / s \\ s' -> Q s'.
 
+Fixpoint wp_iter (n:nat) (b:bexp) (c:com) (Q:Assertion) : Assertion :=
+  match n with
+  |O=>(fun st=>Q st/\ ~bassn b st)
+  |S n=>(fun st=>bassn b st /\ wp c (wp_iter n b c Q) st)
+  end.
+
 (** **** Exercise: 1 star (wp_is_precondition)  *)
 
 Lemma wp_is_precondition: forall c Q,
@@ -242,9 +260,29 @@ Proof.
     reflexivity.
 Qed.
 (** [] *)
+(*
+Lemma wp_iter_is_precondition:forall b c Q,
+    {{fun st=>(exists n,wp_iter n b c Q st)}} WHILE b DO c END{{Q}}.
+Proof. unfold hoare_triple. intros. remember (WHILE b DO c END) as wl.
+   induction H; try inversion Heqwl.
+   - subst. destruct H0. destruct x.
+     + simpl in H0. destruct H0. assumption.
+     + simpl in H0. destruct H0. unfold bassn in H0. rewrite H0 in H. inversion H.
+   - subst. destruct H0. destruct x.
+     + simpl in H0. destruct H0. unfold bassn in H3. rewrite H in H3.
+       unfold not in H3. assert False. apply H3. reflexivity. inversion H4.
+     + simpl in H0. destruct H0. clear H Heqwl. apply IHceval2. reflexivity.
+       exists x. apply H3. assumption. Qed.
+*)
+(* wp_iter n (WHIEL b DO c END) Q 未必是 weakest，这是 WHILE loop有可能不会中止，比如 wl=WHILEL BTrue DO SKIP END, 我们有 wp_iter n wl False=(fun st=>False), forall n.
+hoare triple {{fun st=>Ture)}}wl{{funs st=>False}}成立。
+但fun st=True->False  不正确。
+ *)
 
 (** **** Exercise: 5 stars (hoare_proof_complete)  *)
 (** Complete the proof of the theorem. *)
+
+Axiom ex_mid : forall P:Prop,P\/~P.
 
 Theorem hoare_proof_complete: forall P c Q,
   {{P}} c {{Q}} -> hoare_proof P c Q.
@@ -268,7 +306,8 @@ Proof.
          eapply HT. econstructor; eassumption. assumption.
      eapply IHc2. intros st st' E1 H. apply H; assumption.
      (* FILL IN HERE *)
-  - eapply H_If.
+  - (* If *)
+    eapply H_If.
     + apply IHc1. unfold hoare_triple in *. intros.
       apply HT with st. apply E_IfTrue. destruct H0.
       unfold bassn in H1. assumption. assumption. destruct H0. assumption.
@@ -276,8 +315,31 @@ Proof.
       apply HT with st. apply E_IfFalse. destruct H0.
       unfold bassn in H1. destruct (beval st b) eqn:E.
       unfold not in H1. destruct H1. reflexivity. reflexivity. apply H. destruct H0. assumption.
-  - unfold hoare_triple in *. Admitted.
-(** [] *)
+  - (* While *)
+    
+    (* 首先，我们寻找不变量 R *)
+    remember (fun st=>(exists n, (wp_iter n b c Q) st)) as R.
+    assert (HR:hoare_proof R (WHILE b DO c END) (fun st=>R st/\ ~bassn b st)).
+    { eapply H_While. apply IHc. unfold hoare_triple in *. intros.
+      subst. destruct H0. destruct H0. destruct x.
+      - simpl in H0. destruct H0. unfold not in H2. assert (False). apply H2. assumption.
+        inversion H3.
+      - exists x. simpl in H0. unfold wp in H0. apply H0. apply H. }
+    (* 接下来证明 *)
+    assert ((fun st=>R st/\ ~bassn b st)->>Q).
+    { unfold assert_implies. rewrite HeqR. intros. destruct H.
+      destruct H. induction x. simpl in H. destruct H. assumption.
+      apply IHx. simpl in H. destruct H. unfold not in H1. assert (False).
+      apply H0. assumption. inversion H2. }
+    
+    (* 下面这个命题不正确，只有当WHILE b DO c END 可以中止时能够被证明 *)
+    (*
+    assert (wp (WHILE b DO c END) Q->>R).
+    { unfold assert_implies. intros. subst.  unfold wp in H.
+      
+        eapply H_Consequence. apply HR. apply H. apply H0. Qed.*)
+Admitted.
+(* [] *)
 
 (** Finally, we might hope that our axiomatic Hoare logic is
     _decidable_; that is, that there is an (terminating) algorithm (a
