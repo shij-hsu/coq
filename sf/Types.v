@@ -349,8 +349,8 @@ Proof.
 Example succ_hastype_nat__hastype_nat : forall t,
   |- tsucc t \in TNat ->
   |- t \in TNat.
-Proof. intros. 
-  (* FILL IN HERE *) Admitted.
+Proof. intros. inversion H. assumption. Qed.
+  (* FILL IN HERE *) 
 (** [] *)
 
 (* ----------------------------------------------------------------- *)
@@ -409,7 +409,20 @@ Proof with auto.
     + (* t1 can take a step *)
       inversion H as [t1' H1].
       exists (tif t1' t2 t3)...
-  (* FILL IN HERE *) Admitted.
+  -  destruct IHHT.
+     + left. apply (nat_canonical t1 HT) in H. right. apply nv_succ. assumption.
+     + right. destruct H. exists (tsucc x). eapply ST_Succ. assumption.
+  - destruct IHHT.
+    + inversion H.
+      inversion H0. subst. inversion HT. subst. inversion HT. right.
+      inversion H0. exists tzero. apply ST_PredZero. exists t. apply ST_PredSucc.
+      assumption.
+    + right. destruct H. exists (tpred x)...
+  - destruct IHHT. inversion H. inversion H0. subst. inversion HT.
+    subst. inversion HT.
+    + right. inversion H0. exists ttrue... exists tfalse...
+    + right. destruct H. exists  (tiszero x)... Qed.
+  (* FILL IN HERE *)
 (** [] *)
 
 (** **** Exercise: 3 stars, advanced (finish_progress_informal)  *)
