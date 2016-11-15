@@ -137,12 +137,31 @@ Qed.
 Theorem progress' : forall t T,
      empty |- t \in T ->
      value t \/ exists t', t ==> t'.
-Proof.
+Proof with auto using update_eq.
   intros t.
   induction t; intros T Ht; auto.
-  - left. inversion Ht. subst. inversion H1.
-  - 
-  (* FILL IN HERE *) 
+  - inversion Ht. left. inversion H1.
+  - inversion Ht. destruct (IHt1 _ H2). subst.
+    + destruct (IHt2 _ H4). subst. edestruct canonical_forms_fun.
+      apply H2. assumption. destruct H0. subst. right.
+      exists ([x0:=t2]x1)...
+      right. destruct H. exists (tapp t1 x0)...
+    + destruct (IHt2 _ H4). subst.
+      right. destruct H5. exists (tapp x0 t2)...
+      right. destruct H5. exists (tapp x0 t2)...
+  - inversion Ht. destruct (IHt1 _ H3). subst.
+    + destruct (IHt2 _ H5). subst. destruct (IHt3 _ H6).
+      edestruct canonical_forms_bool. apply H3. assumption. subst.
+      right. exists (t2)...
+      right. subst. exists (t3)...
+      right. destruct H7. inversion H3.
+      exists t2...
+      exists t3...
+      right. destruct H7. inversion H3.
+      exists t2...
+      exists t3...
+    + right. destruct H7 as [t']. exists (tif t' t2 t3)... Qed.
+(* FILL IN HERE *) 
 (** [] *)
 
 (* ################################################################# *)
@@ -297,8 +316,19 @@ Qed.
 Corollary typable_empty__closed : forall t T,
     empty |- t \in T  ->
     closed t.
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. unfold closed, not. induction t.
+   - intros. inversion H0. inversion H. inversion H5.
+   - intros. inversion H0. inversion H. subst. eapply IHt1. apply H8.
+     apply H3. inversion H. subst. eapply IHt2. eassumption. eassumption.
+   - intros. inversion H. subst. edestruct free_in_context. eassumption.
+     eassumption. inversion H1.
+   - intros. inversion H0.
+   - intros. inversion H0.
+   - intros. inversion H0. subst. edestruct free_in_context.
+     apply H0. eassumption. inversion H1. subst.
+     edestruct free_in_context. apply H0. eassumption. inversion H1.
+     subst. edestruct free_in_context. apply H0. eassumption. inversion H1. Qed.
+(* FILL IN HERE *) 
 (** [] *)
 
 (** Sometimes, when we have a proof [Gamma |- t : T], we will need to
@@ -590,7 +620,10 @@ Proof.
   intros t t' T Hhas_type Hmulti. unfold stuck.
   intros [Hnf Hnot_val]. unfold normal_form in Hnf.
   induction Hmulti.
-  (* FILL IN HERE *) Admitted.
+  - edestruct progress. apply Hhas_type. apply Hnot_val. assumption.
+    apply Hnf. assumption.
+  - eapply IHHmulti. eapply preservation. apply Hhas_type. assumption. assumption. assumption. Qed.
+  (* FILL IN HERE *) 
 (** [] *)
 
 (* ################################################################# *)
