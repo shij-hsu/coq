@@ -500,8 +500,14 @@ Proof with auto.
       + (* ST_IFTrue *) assumption.
       + (* ST_IfFalse *) assumption.
       + (* ST_If *) apply T_If; try assumption.
-        apply IHHT1; assumption.
-    (* FILL IN HERE *) Admitted.
+                    apply IHHT1; assumption.
+    - inversion HE; subst; clear HE. apply T_Succ. apply IHHT.
+      assumption.
+    - inversion HE; subst; clear HE. assumption. inversion HT.
+      assumption. apply T_Pred. apply IHHT. assumption.
+    - inversion HE; subst; clear HE. apply T_True. apply T_False.
+      apply T_Iszero. apply IHHT. assumption. Qed.
+    (* FILL IN HERE *) 
 (** [] *)
 
 (** **** Exercise: 3 stars, advanced (finish_preservation_informal)  *)
@@ -547,7 +553,22 @@ Theorem preservation' : forall t t' T,
   t ==> t' ->
   |- t' \in T.
 Proof with eauto.
-  (* FILL IN HERE *) Admitted.
+  (* FILL IN HERE *)
+  intros t t' T H H0. generalize dependent T. induction H0.
+  - intros. inversion H. subst. assumption.
+  - intros. inversion H. subst. assumption.
+  - intros. inversion H. subst. apply T_If. apply IHstep. assumption.
+    assumption. assumption.
+  - intros. inversion H. subst. apply T_Succ. apply IHstep. assumption.
+  - intros. inversion H. subst. apply T_Zero.
+  - intros. inversion H0. subst. apply succ_hastype_nat__hastype_nat.
+    assumption.
+  - intros. inversion H. subst. apply T_Pred. apply IHstep. assumption.
+  - intros. inversion H. subst. apply T_True.
+  - intros. inversion H. subst. inversion H0. subst. apply T_False.
+    inversion H0. subst. apply T_False.
+  - intros. inversion H. subst. inversion H. subst. apply T_Iszero.
+    apply IHstep. assumption. Qed.
 (** [] *)
 
 (** The preservation theorem is often called _subject reduction_,
@@ -662,8 +683,8 @@ Qed.
 Theorem normalize_ex : exists e',
   (AMult (ANum 3) (AMult (ANum 2) (ANum 1))) / empty_state
   ==>a* e'.
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. eapply ex_intro. normalize. Qed.
+  (* FILL IN HERE *) 
 
 (** [] *)
 
@@ -673,8 +694,8 @@ Proof.
 Theorem normalize_ex' : exists e',
   (AMult (ANum 3) (AMult (ANum 2) (ANum 1))) / empty_state
   ==>a* e'.
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. eapply ex_intro. normalize. Qed.
+  (* FILL IN HERE *) 
 (** [] *)
 
 (* ================================================================= *)
