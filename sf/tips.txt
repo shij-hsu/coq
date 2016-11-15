@@ -1,0 +1,5 @@
+统计单词出现次数
+grep -o Admitted *.v | wc -l
+统计行数 
+wc -l *.v
+

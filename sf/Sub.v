@@ -792,19 +792,20 @@ Proof. auto. Qed.
                   gpa  : Float }
     Employee := { name : String ;
                   ssn  : Integer }
-*)
+ *)
 Definition Person : ty 
-  (* REPLACE THIS LINE WITH   := _your_definition_ . *) . Admitted.
-Definition Student : ty 
-  (* REPLACE THIS LINE WITH   := _your_definition_ . *) . Admitted.
-Definition Employee : ty 
-  (* REPLACE THIS LINE WITH   := _your_definition_ . *) . Admitted.
+  (* REPLACE THIS LINE WITH   := _your_definition_ . *) 
+Definition Student : ty :=TArrow String Float.
+  (* REPLACE THIS LINE WITH   := _your_definition_ . *) 
+Definition Employee : ty :=
+  TArrow String Integer.
+  (* REPLACE THIS LINE WITH   := _your_definition_ . *) 
 
 (** Now use the definition of the subtype relation to prove the following: *)
 
 Example sub_student_person :
   Student <: Person.
-Proof.
+Proof. unfold Person, Student. 
 (* FILL IN HERE *) Admitted.
 
 Example sub_employee_person :
