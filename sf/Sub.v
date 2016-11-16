@@ -644,6 +644,7 @@ Inductive ty : Type :=
   | TBase  : id -> ty
   | TArrow : ty -> ty -> ty
   | TUnit  : ty
+  | TProd:ty->ty->ty(* <-- Add *)
 .
 
 Inductive tm : Type :=
@@ -653,7 +654,8 @@ Inductive tm : Type :=
   | ttrue : tm
   | tfalse : tm
   | tif : tm -> tm -> tm -> tm
-  | tunit : tm 
+  | tunit : tm
+  | tprod:tm->tm->tm (*<-- Add *)
 .
 
 (* ----------------------------------------------------------------- *)
@@ -676,8 +678,9 @@ Fixpoint subst (x:id) (s:tm)  (t:tm) : tm :=
       tfalse
   | tif t1 t2 t3 =>
       tif (subst x s t1) (subst x s t2) (subst x s t3)
-  | tunit =>
-      tunit 
+  | tunit => tunit
+  | tprod t1 t2 =>
+   tprod (subst x s t1) (subst x s t2) (*<-- Add *)
   end.
 
 Notation "'[' x ':=' s ']' t" := (subst x s t) (at level 20).
@@ -721,6 +724,10 @@ Inductive step : tm -> tm -> Prop :=
   | ST_If : forall t1 t1' t2 t3,
       t1 ==> t1' ->
       (tif t1 t2 t3) ==> (tif t1' t2 t3)
+  | ST_Prod1 : forall t1 t1' t2,t1==>t1'->
+                           tprod t1 t2==>tprod t1' t2
+  | ST_Prod2: forall t1 t2 t2', t2==>t2'->
+                           tprod t1 t2==>tprod t1 t2'
 where "t1 '==>' t2" := (step t1 t2).
 
 Hint Constructors step.
@@ -749,7 +756,11 @@ Inductive subtype : ty -> ty -> Prop :=
   | S_Arrow : forall S1 S2 T1 T2,
       T1 <: S1 ->
       S2 <: T2 ->
-      (TArrow S1 S2) <: (TArrow T1 T2)
+            (TArrow S1 S2) <: (TArrow T1 T2)
+  | S_Prod: forall S1 S2 T1 T2,
+      T1<:S1->
+      T2<:S2->
+             (TProd T1 T2)<:(TProd S1 S2)                                            
 where "T '<:' U" := (subtype T U).
 
 (** Note that we don't need any special rules for base types: they are
@@ -793,25 +804,29 @@ Proof. auto. Qed.
     Employee := { name : String ;
                   ssn  : Integer }
  *)
-Definition Person : ty 
+Definition Person : ty :=
+  TProd String TTop.
   (* REPLACE THIS LINE WITH   := _your_definition_ . *) 
-Definition Student : ty :=TArrow String Float.
+Definition Student : ty :=
+  TProd String Float.
   (* REPLACE THIS LINE WITH   := _your_definition_ . *) 
 Definition Employee : ty :=
-  TArrow String Integer.
+  TProd String Integer.
   (* REPLACE THIS LINE WITH   := _your_definition_ . *) 
 
 (** Now use the definition of the subtype relation to prove the following: *)
 
 Example sub_student_person :
   Student <: Person.
-Proof. unfold Person, Student. 
-(* FILL IN HERE *) Admitted.
+Proof. unfold Person, Student.
+   apply S_Prod. apply S_Refl. apply S_Top. Qed.
+(* FILL IN HERE *)
 
 Example sub_employee_person :
   Employee <: Person.
-Proof.
-(* FILL IN HERE *) Admitted.
+Proof. unfold Employee, Person. apply S_Prod.
+   apply S_Refl. apply S_Top. Qed.
+(* FILL IN HERE *) 
 (** [] *)
 
 (** The following facts are mostly easy to prove in Coq.  To get
@@ -823,7 +838,9 @@ Example subtyping_example_1 :
   (TArrow TTop Student) <: (TArrow (TArrow C C) Person).
   (* Top->Student <: (C->C)->Person *)
 Proof with eauto.
-  (* FILL IN HERE *) Admitted.
+  apply S_Arrow. eapply S_Trans. apply S_Top. apply S_Top.
+  apply sub_student_person. Qed.
+  (* FILL IN HERE *) 
 (** [] *)
 
 (** **** Exercise: 1 star, optional (subtyping_example_2)  *)
@@ -831,7 +848,8 @@ Example subtyping_example_2 :
   (TArrow TTop Person) <: (TArrow Person TTop).
   (* Top->Person <: Person->Top *)
 Proof with eauto.
-  (* FILL IN HERE *) Admitted.
+  apply S_Arrow. apply S_Top. apply S_Top. Qed.
+  (* FILL IN HERE *) 
 (** [] *)
 
 End Examples.
@@ -947,8 +965,13 @@ Lemma sub_inversion_Bool : forall U,
        U = TBool.
 Proof with auto.
   intros U Hs.
-  remember TBool as V.
-  (* FILL IN HERE *) Admitted.
+  remember TBool as V. induction Hs.
+  - reflexivity.
+  - subst. eapply trans_eq. apply IHHs1. apply IHHs2. reflexivity. apply IHHs2. reflexivity.
+  - inversion HeqV.
+  - inversion HeqV.
+  - inversion HeqV. Qed.
+  (* FILL IN HERE *) 
 
 (** **** Exercise: 3 stars, optional (sub_inversion_arrow)  *)
 Lemma sub_inversion_arrow : forall U V1 V2,
@@ -959,7 +982,18 @@ Proof with eauto.
   intros U V1 V2 Hs.
   remember (TArrow V1 V2) as V.
   generalize dependent V2. generalize dependent V1.
-  (* FILL IN HERE *) Admitted.
+  induction Hs.
+  - intros. exists V1, V2. split. assumption. split. apply S_Refl. apply S_Refl.
+  - intros. destruct (IHHs2 _ _ HeqV). destruct H. destruct H.
+    destruct (IHHs1 _ _ H). destruct H1. destruct H1. 
+    exists x1, x2. split. assumption. destruct H0, H2. split.
+    eapply S_Trans. eassumption. eassumption.
+    eapply S_Trans. eassumption. eassumption.
+  - intros. inversion HeqV.
+  - intros. inversion HeqV. subst. exists S1, S2. split. reflexivity.
+    split. assumption. assumption.
+  - intros. inversion HeqV. Qed.
+  (* FILL IN HERE *)
 (** [] *)
 
 (* ================================================================= *)
@@ -990,13 +1024,17 @@ Proof with eauto.
     type. *)
 
 (** **** Exercise: 3 stars, optional (canonical_forms_of_arrow_types)  *)
+
 Lemma canonical_forms_of_arrow_types : forall Gamma s T1 T2,
   Gamma |- s \in (TArrow T1 T2) ->
   value s ->
   exists x, exists S1, exists s2,
      s = tabs x S1 s2.
 Proof with eauto.
-  (* FILL IN HERE *) Admitted.
+  intros Gamma s T1 T2 H H0. inversion H0.
+  - exists x, T, t...
+  - subst. assert (Gamma|-ttrue \in TBool). apply T_True. Admitted.
+  (* FILL IN HERE *)
 (** [] *)
 
 (** Similarly, the canonical forms of type [Bool] are the constants
