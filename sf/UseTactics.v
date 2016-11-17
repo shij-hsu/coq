@@ -1025,9 +1025,7 @@ Proof with eauto.
     (* An example where [assert] can be replaced with [lets]. *)
     (* old: assert (subtype TUnit S)
              by apply (typing_inversion_unit _ _ Htypt)... *)
-    (* new: *) lets: typing_inversion_unit Htypt...
-  
-Admitted.
+    (* new: *) lets: typing_inversion_unit Htypt... Qed.
 
 End ExamplesInstantiations.
 

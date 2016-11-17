@@ -725,9 +725,17 @@ Theorem ceval_deterministic': forall c st st1 st2,
   c / st \\ st1 ->
   c / st \\ st2 ->
   st1 = st2.
-Proof.
-  (* FILL IN HERE *) admit.
-Admitted.
+Proof.  intros c st st1 st2 E1 E2.
+  generalize dependent st2.
+  (induction E1); intros st2 E2; inversion E2; subst; try auto.
+    - apply IHE1_2. erewrite (IHE1_1). eassumption. assumption.
+    - apply IHE1. rewrite H in H5. inversion H5.
+    - rewrite H in H5. inversion H5.
+    - rewrite H in H2. inversion H2.
+    - rewrite H in H4. inversion H4.
+    - apply IHE1_2. rewrite (IHE1_1 _ H3). assumption. Qed.
+  (* FILL IN HERE *)
+
 
 (** In fact, using automation is not just a matter of calling [auto]
     in place of one or two other tactics. Using automation is about

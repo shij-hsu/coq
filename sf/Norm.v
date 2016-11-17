@@ -680,7 +680,8 @@ Proof.
   eapply IHT2.
   apply  ST_App1. apply E.
   apply RRt; auto.
-  (* FILL IN HERE *) Admitted.
+  split. inversion RRt. inversion RRt. Qed.
+  (* FILL IN HERE *) 
 
 (** The generalization to multiple steps is trivial: *)
 
@@ -697,8 +698,14 @@ Qed.
 
 Lemma step_preserves_R' : forall T t t',
   has_type empty t T -> (t ==> t') -> R T t' -> R T t.
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof.  induction T; unfold R; fold R.
+   - repeat split. assumption. inversion H1. edestruct step_preserves_halting. eapply H0. apply H5. apply H3.
+   -  repeat split. assumption. inversion H1. edestruct step_preserves_halting. eapply H0. apply H5. apply H3.
+      intros.  destruct H1. destruct H3. eapply IHT2. eapply T_App.
+      apply H. eapply R_typable_empty. assumption.
+      eapply ST_App1. eassumption. apply H4. assumption.
+   - repeat split. assumption. inversion H1. edestruct step_preserves_halting. eapply H0. apply H5. apply H3. apply H1. Qed.
+(* FILL IN HERE *)
 
 Lemma multistep_preserves_R' : forall T t t',
   has_type empty t T -> (t ==>* t') -> R T t' -> R T t.
@@ -834,7 +841,51 @@ Lemma vacuous_substitution : forall  t x,
      ~ appears_free_in x t  ->
      forall t', [x:=t']t = t.
 Proof with eauto.
-  (* FILL IN HERE *) Admitted.
+  induction t.
+  - unfold not, subst. intros.
+    destruct (beq_id x i) eqn:E.
+    + assert (x=i). eapply beq_id_true_iff. assumption. subst.
+      destruct H. apply afi_var.
+    + reflexivity.
+  - unfold not. subst. intros. simpl in *.
+    assert (~ appears_free_in x t1  /\ ~ appears_free_in x t2).
+    { split. unfold not. intros. apply H. apply afi_app1. assumption.
+      unfold not; intros. apply H. apply afi_app2. assumption. }
+    destruct H0. rewrite (IHt1 _ H0 _). rewrite (IHt2 _ H1 _). reflexivity.
+  - intros. destruct (beq_id x i) eqn:E.
+    + assert (x=i). eapply beq_id_true_iff. assumption. subst.
+      simpl. rewrite E. reflexivity.
+    + unfold not in H. simpl.
+      destruct (beq_id x i) eqn:E1.
+      * reflexivity.
+      * erewrite IHt. reflexivity. unfold not. intros.
+        apply H. apply afi_abs. SearchAbout "beq_id_false_iff".
+        assert (x<>i). apply beq_id_false_iff. assumption. unfold not in *.
+        intros. apply H1. symmetry. assumption. assumption.
+  - intros. simpl.
+    assert (~ appears_free_in x t1  /\ ~ appears_free_in x t2).
+    { split. unfold not. intros. apply H. apply afi_pair1. assumption.
+      unfold not. intros. apply H. apply afi_pair2. assumption. }
+    destruct H0. rewrite (IHt1 _ H0 _). rewrite (IHt2 _ H1 _). reflexivity.
+  - intros. simpl.
+    assert (~ appears_free_in x t ).
+    { unfold not. intros. apply H. apply afi_fst.  assumption. }
+    erewrite IHt. reflexivity. assumption.
+  - intros. simpl.
+    assert (~ appears_free_in x t).
+    { unfold not. intros. apply H. apply afi_snd.  assumption. }
+    erewrite IHt. reflexivity. assumption.
+  - intros. simpl. reflexivity.
+  - intros. simpl. reflexivity.
+  - intros. simpl.
+    assert (~ appears_free_in x t1 /\ ~ appears_free_in x t2 /\ ~ appears_free_in x t3).
+    { repeat split; unfold not; intros; apply H.
+      apply afi_if0. assumption. apply afi_if1. assumption.
+      apply afi_if2. assumption. }
+    destruct H0. destruct H1.
+    erewrite IHt1, IHt2, IHt3. reflexivity. assumption. assumption.
+    assumption. Qed.
+(* FILL IN HERE *)
 
 Lemma subst_closed: forall t,
      closed t  ->
@@ -888,7 +939,23 @@ Proof with eauto.
    + subst. simpl. rewrite <- beq_id_refl. apply subst_closed...
    + subst. simpl. rewrite <- beq_id_refl. rewrite subst_closed...
    + simpl. rewrite false_beq_id... rewrite false_beq_id...
-  (* FILL IN HERE *) Admitted.
+  - erewrite IHt2. erewrite IHt1. reflexivity. assumption. assumption.
+    assumption. assumption. assumption. assumption.
+  - destruct (beq_idP x1 i); destruct (beq_idP x i).
+    + reflexivity.
+    + reflexivity.
+    + reflexivity.
+    + erewrite IHt. reflexivity. assumption. assumption. assumption.
+  - erewrite IHt1. erewrite IHt2. reflexivity.
+    assumption. assumption. assumption. assumption. assumption. assumption.
+  - erewrite IHt. reflexivity. assumption. assumption. assumption.
+  - erewrite IHt. reflexivity. assumption. assumption. assumption.
+  - reflexivity.
+  - reflexivity.
+  - rewrite IHt1, IHt2, IHt3. reflexivity. assumption. assumption.
+    assumption. assumption. assumption. assumption. assumption.
+    assumption. assumption. Qed.
+  (* FILL IN HERE *)
 
 (* ----------------------------------------------------------------- *)
 (** *** Properties of Multi-Substitutions *)
@@ -1135,7 +1202,6 @@ Proof.
     rewrite msubst_app.
     destruct (IHHT1 c H env0 V) as [_ [_ P1]].
     pose proof (IHHT2 c H env0 V) as P2.  fold R in P1.  auto.
-
   (* FILL IN HERE *) Admitted.
 
 (* ----------------------------------------------------------------- *)
