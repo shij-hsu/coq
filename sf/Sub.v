@@ -644,7 +644,6 @@ Inductive ty : Type :=
   | TBase  : id -> ty
   | TArrow : ty -> ty -> ty
   | TUnit  : ty
-  | TProd:ty->ty->ty(* <-- Add *)
 .
 
 Inductive tm : Type :=
@@ -655,7 +654,6 @@ Inductive tm : Type :=
   | tfalse : tm
   | tif : tm -> tm -> tm -> tm
   | tunit : tm
-  | tprod:tm->tm->tm (*<-- Add *)
 .
 
 (* ----------------------------------------------------------------- *)
@@ -679,8 +677,6 @@ Fixpoint subst (x:id) (s:tm)  (t:tm) : tm :=
   | tif t1 t2 t3 =>
       tif (subst x s t1) (subst x s t2) (subst x s t3)
   | tunit => tunit
-  | tprod t1 t2 =>
-   tprod (subst x s t1) (subst x s t2) (*<-- Add *)
   end.
 
 Notation "'[' x ':=' s ']' t" := (subst x s t) (at level 20).
@@ -724,10 +720,6 @@ Inductive step : tm -> tm -> Prop :=
   | ST_If : forall t1 t1' t2 t3,
       t1 ==> t1' ->
       (tif t1 t2 t3) ==> (tif t1' t2 t3)
-  | ST_Prod1 : forall t1 t1' t2,t1==>t1'->
-                           tprod t1 t2==>tprod t1' t2
-  | ST_Prod2: forall t1 t2 t2', t2==>t2'->
-                           tprod t1 t2==>tprod t1 t2'
 where "t1 '==>' t2" := (step t1 t2).
 
 Hint Constructors step.
@@ -756,11 +748,7 @@ Inductive subtype : ty -> ty -> Prop :=
   | S_Arrow : forall S1 S2 T1 T2,
       T1 <: S1 ->
       S2 <: T2 ->
-            (TArrow S1 S2) <: (TArrow T1 T2)
-  | S_Prod: forall S1 S2 T1 T2,
-      T1<:S1->
-      T2<:S2->
-             (TProd T1 T2)<:(TProd S1 S2)                                            
+            (TArrow S1 S2) <: (TArrow T1 T2)                                     
 where "T '<:' U" := (subtype T U).
 
 (** Note that we don't need any special rules for base types: they are
@@ -805,13 +793,13 @@ Proof. auto. Qed.
                   ssn  : Integer }
  *)
 Definition Person : ty :=
-  TProd String TTop.
+  TArrow String TTop.
   (* REPLACE THIS LINE WITH   := _your_definition_ . *) 
 Definition Student : ty :=
-  TProd String Float.
+  TArrow String Float.
   (* REPLACE THIS LINE WITH   := _your_definition_ . *) 
 Definition Employee : ty :=
-  TProd String Integer.
+  TArrow String Integer.
   (* REPLACE THIS LINE WITH   := _your_definition_ . *) 
 
 (** Now use the definition of the subtype relation to prove the following: *)
@@ -819,12 +807,12 @@ Definition Employee : ty :=
 Example sub_student_person :
   Student <: Person.
 Proof. unfold Person, Student.
-   apply S_Prod. apply S_Refl. apply S_Top. Qed.
+   apply S_Arrow. apply S_Refl. apply S_Top. Qed.
 (* FILL IN HERE *)
 
 Example sub_employee_person :
   Employee <: Person.
-Proof. unfold Employee, Person. apply S_Prod.
+Proof. unfold Employee, Person. apply S_Arrow.
    apply S_Refl. apply S_Top. Qed.
 (* FILL IN HERE *) 
 (** [] *)
@@ -969,7 +957,6 @@ Proof with auto.
   - reflexivity.
   - subst. eapply trans_eq. apply IHHs1. apply IHHs2. reflexivity. apply IHHs2. reflexivity.
   - inversion HeqV.
-  - inversion HeqV.
   - inversion HeqV. Qed.
   (* FILL IN HERE *) 
 
@@ -991,8 +978,7 @@ Proof with eauto.
     eapply S_Trans. eassumption. eassumption.
   - intros. inversion HeqV.
   - intros. inversion HeqV. subst. exists S1, S2. split. reflexivity.
-    split. assumption. assumption.
-  - intros. inversion HeqV. Qed.
+    split. assumption. assumption. Qed.
   (* FILL IN HERE *)
 (** [] *)
 
@@ -1031,9 +1017,20 @@ Lemma canonical_forms_of_arrow_types : forall Gamma s T1 T2,
   exists x, exists S1, exists s2,
      s = tabs x S1 s2.
 Proof with eauto.
-  intros Gamma s T1 T2 H H0. inversion H0.
-  - exists x, T, t...
-  - subst. assert (Gamma|-ttrue \in TBool). apply T_True. Admitted.
+  intros.  remember (TArrow T1 T2) as T.
+  generalize dependent T1. generalize dependent T2.
+  induction H.
+  - inversion H0.
+  - intros. exists x, T11, t12...
+  - inversion H0.
+  - intros. inversion HeqT.
+  - intros. inversion HeqT.
+  - intros. inversion H0.
+  - intros. inversion HeqT.
+  - intros. edestruct sub_inversion_arrow.
+    subst. eapply H1. destruct H2. destruct H2.
+    apply (IHhas_type H0 _ _ H2).
+Qed.
   (* FILL IN HERE *)
 (** [] *)
 
@@ -1141,7 +1138,6 @@ Proof with eauto.
         by (eapply canonical_forms_of_Bool; eauto).
       inversion H0; subst...
     + inversion H. rename x into t1'. eauto.
-
 Qed.
 
 (* ================================================================= *)
@@ -1335,7 +1331,6 @@ Proof with eauto.
     unfold update, t_update. destruct (beq_idP x x0)...
   - (* T_If *)
     apply T_If...
-
 Qed.
 
 Lemma free_in_context : forall x t T Gamma,
@@ -1420,7 +1415,7 @@ Proof with eauto.
     auto.
   - (* tunit *)
     assert (TUnit <: S)
-      by apply (typing_inversion_unit _ _  Htypt)... 
+      by apply (typing_inversion_unit _ _  Htypt)...
 Qed.
 
 (* ================================================================= *)
