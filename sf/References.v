@@ -1850,7 +1850,7 @@ Qed.
     behaves like the factorial.  Just uncomment the example below to make
     sure it gives the correct result when applied to the argument
     [4].) *)
-
+(*
 Definition factorial : tm :=
   
   (* REPLACE THIS LINE WITH   := _your_definition_ . *) . Admitted.
@@ -1858,7 +1858,7 @@ Definition factorial : tm :=
 Lemma factorial_type : empty; nil |- factorial \in (TArrow TNat TNat).
 Proof with eauto.
   (* FILL IN HERE *) Admitted.
-
+*)
 (** If your definition is correct, you should be able to just
     uncomment the example below; the proof should be fully
     automatic using the [reduce] tactic. *)

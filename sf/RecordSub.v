@@ -259,7 +259,12 @@ Example subtyping_example_1 :
   subtype TRcd_kj TRcd_j.
 (* {k:A->A,j:B->B} <: {j:B->B} *)
 Proof with eauto.
-  (* FILL IN HERE *) Admitted.
+  unfold TRcd_kj. unfold TRcd_j.
+  assert (TRCons k (TArrow A A) (TRCons j (TArrow B B) TRNil) <:
+            TRCons j (TArrow B B) (TRCons k (TArrow A A) TRNil)).
+  { apply S_RcdPerm. auto. unfold not. intros. inversion H. }
+  eapply S_Trans. eassumption. eapply S_RcdDepth. eapply S_Refl. auto. auto. auto. auto. Qed.
+(* FILL IN HERE *)
 (** [] *)
 
 (** **** Exercise: 1 star  *)
@@ -268,7 +273,8 @@ Example subtyping_example_2 :
           (TArrow (TArrow C C) TRcd_j).
 (* Top->{k:A->A,j:B->B} <: (C->C)->{j:B->B} *)
 Proof with eauto.
-  (* FILL IN HERE *) Admitted.
+  eapply S_Arrow. apply S_Top. auto. apply subtyping_example_1. Qed.
+(* FILL IN HERE *)
 (** [] *)
 
 (** **** Exercise: 1 star  *)
@@ -277,7 +283,8 @@ Example subtyping_example_3 :
           (TArrow (TRCons k B TRNil) TRNil).
 (* {}->{j:A} <: {k:B}->{} *)
 Proof with eauto.
-  (* FILL IN HERE *) Admitted.
+  auto. Qed.
+ (* FILL IN HERE *) 
 (** [] *)
 
 (** **** Exercise: 2 stars  *)
@@ -286,7 +293,17 @@ Example subtyping_example_4 :
           (TRCons z C (TRCons y B (TRCons x A TRNil))).
 (* {x:A,y:B,z:C} <: {z:C,y:B,x:A} *)
 Proof with eauto.
-  (* FILL IN HERE *) Admitted.
+  assert (TRCons x A (TRCons y B (TRCons z C TRNil)) <:
+            TRCons x A (TRCons z C (TRCons y B TRNil))).
+  { eapply S_RcdDepth. auto. eapply S_RcdPerm. auto. unfold not; intros. inversion H. auto. auto. }
+  eapply S_Trans. apply H.
+  assert (TRCons x A (TRCons z C (TRCons y B TRNil)) <:
+            TRCons z C (TRCons x A (TRCons y B TRNil))).
+  { eapply S_RcdPerm. auto. unfold not; intros. inversion H0. }
+  eapply S_Trans. eassumption. eapply S_RcdDepth. auto.
+  eapply S_RcdPerm. auto. unfold not; intros. inversion H1. auto.
+  auto. Qed.
+(* FILL IN HERE *) 
 (** [] *)
 
 End Examples.
@@ -386,7 +403,21 @@ Proof with eauto.
   intros U V1 V2 Hs.
   remember (TArrow V1 V2) as V.
   generalize dependent V2. generalize dependent V1.
-  (* FILL IN HERE *) Admitted.
+  induction Hs.
+  - intros. exists V1, V2. split. eauto. split. apply S_Refl.
+    subst. inversion H. subst. auto. apply S_Refl. subst. inversion H.
+    assumption.
+  - intros. edestruct IHHs2. apply HeqV.
+    destruct H. destruct H. destruct H0. destruct (IHHs2 _ _ HeqV).
+    destruct H2. destruct H2. destruct H3.  
+    edestruct IHHs1. eassumption. destruct H5. destruct H5. destruct H6.  exists x3, x4. repeat split. assumption. eapply S_Trans. eassumption. assumption. eapply S_Trans. eassumption. assumption.
+  - intros. inversion HeqV.
+  - intros. exists S1, S2. repeat split. inversion HeqV. subst. assumption.
+    inversion HeqV. subst. assumption.
+  - intros. inversion HeqV.
+  - intros. inversion HeqV.
+  - intros. inversion HeqV. Qed.
+(* FILL IN HERE *)
 (** [] *)
 
 (* ################################################################# *)
@@ -451,8 +482,9 @@ Example typing_example_0 :
                                trnil))
            TRcd_kj.
 (* empty |- {k=(\z:A.z), j=(\z:B.z)} : {k:A->A,j:B->B} *)
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. apply T_RCons. auto. apply T_RCons. auto. auto. auto.
+   auto. unfold TRcd_j. auto. auto. Qed.
+  (* FILL IN HERE *) 
 (** [] *)
 
 (** **** Exercise: 2 stars  *)
@@ -465,7 +497,20 @@ Example typing_example_1 :
               {k=(\z:A.z), j=(\z:B.z)} 
          : B->B *)
 Proof with eauto.
-  (* FILL IN HERE *) Admitted.
+  unfold trcd_kj, TRcd_j.
+  eapply T_App. apply T_Abs. auto. eapply T_Proj. auto. auto.
+  eapply T_Sub. assert ( empty
+   |- trcons k (tabs z A (tvar z))
+            (trcons j (tabs z B (tvar z)) trnil) \in
+                           (TRCons k (TArrow A A)  (TRCons j (TArrow B B) TRNil))).
+  { apply T_RCons. auto. auto. auto. auto. }
+  eassumption. eapply S_Trans.
+  assert (TRCons k (TArrow A A) (TRCons j (TArrow B B) TRNil) <:
+            TRCons j (TArrow B B) (TRCons k (TArrow A A) TRNil)).
+  { eapply S_RcdPerm. auto. unfold not; intros. inversion H. }
+  eassumption. apply S_RcdDepth. auto. auto. auto. auto. Qed.
+  (* (\x.{j:B->B}.j) ({k:A->A,j:B->B}) *)
+  (* FILL IN HERE *) 
 (** [] *)
 
 (** **** Exercise: 2 stars, optional  *)
@@ -481,7 +526,20 @@ Example typing_example_2 :
               (\z:C->C. {k=(\z:A.z), j=(\z:B.z)})
            : B->B *)
 Proof with eauto.
-  (* FILL IN HERE *) Admitted.
+  eapply T_App. apply  T_Abs. unfold TRcd_j. auto.
+  eapply T_Proj. eapply T_App. apply T_Var. auto. auto.
+  apply T_Abs. auto. apply T_Var. auto. auto. auto.
+  eapply T_Abs. auto. unfold trcd_kj. unfold TRcd_j.
+  eapply T_Sub.
+  assert (update empty z (TArrow C C)
+   |- trcons k (tabs z A (tvar z))
+            (trcons j (tabs z B (tvar z)) trnil) \in
+             (TRCons k (TArrow A A) (TRCons j (TArrow B B) TRNil) )).
+  { apply T_RCons. auto. auto. auto. auto. }
+  eassumption. assert (TRCons k (TArrow A A) (TRCons j (TArrow B B) TRNil) <: TRCons j (TArrow B B) (TRCons k (TArrow A A) TRNil)).
+  { eapply S_RcdPerm. auto. unfold not; intros. inversion H. }
+  eapply S_Trans. eassumption. apply S_RcdDepth. auto. auto. auto. auto. Qed.
+(* FILL IN HERE *) 
 (** [] *)
 
 End Examples2.
@@ -550,7 +608,19 @@ Lemma canonical_forms_of_arrow_types : forall Gamma s T1 T2,
      exists x, exists S1, exists s2,
         s = tabs x S1 s2.
 Proof with eauto.
-  (* FILL IN HERE *) Admitted.
+  intros. remember (TArrow T1 T2) as T.
+  generalize dependent T1. generalize dependent T2.
+  induction H.
+  - inversion H0.
+  - inversion H0. intros. exists x, T11, t12...
+  - inversion H0.
+  - inversion H0.
+  - intros. subst. edestruct sub_inversion_arrow. apply H1.
+    destruct H2. destruct H2. destruct H3.
+    eapply IHhas_type. assumption. apply H2.
+  - intros. inversion HeqT.
+  - intros. inversion HeqT. Qed.
+  (* FILL IN HERE *) 
 (** [] *)
 
 Theorem progress : forall t T,
