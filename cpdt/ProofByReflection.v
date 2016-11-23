@@ -1,4 +1,8 @@
 (* chap 15.1 Proving Eveness *)
+
+Require Import List.
+Require Import Cpdt.CpdtTactics Cpdt.MoreSpecif.
+
 Set Implicit Arguments.
 Set Asymmetric Patterns.
 
@@ -15,8 +19,6 @@ Theorem lt_2_1024 : 2<256.  (* it will be very slow *)
 
 Print lt_2_1024.
 Print even_256.
-
-Require Import Cpdt.CpdtTactics Cpdt.MoreSpecif.
 
 Print partial.
 Local Open Scope partial_scope.
@@ -76,6 +78,8 @@ Fixpoint tautDenote (t:taut) : Prop :=
 Theorem tautTrue : forall t, tautDenote t.
   induction t; crush. Qed.
 
+
+
 Ltac tautReify P :=
   match P with
   | True => TautTrue
@@ -100,6 +104,9 @@ Ltac obvious :=
     exact (tautTrue t)
   end.
 
+Lemma true_test1: True.
+  exact (tautTrue TautTrue). Qed.
+Print true_test1.
 Theorem true_galore' : (True /\ True) -> (True \/ (True /\ (True -> True))).
   obvious. Qed.
 
@@ -130,7 +137,7 @@ Section monoid.
     | Op me1 me2 => mdenote me1 + mdenote me2
     end.
 
-  Require Import List.
+
   Fixpoint mIdenote (ls :list A): A:=
     match ls with
     | nil => e
@@ -180,5 +187,141 @@ Section monoid.
     intros; monoid. reflexivity. Qed.
 
   Print t1.
+End monoid.
 
-  End monoid.
+Module test1. (* This module is a test for keyword `return` *)
+  Inductive test:Type:=
+    test1 | test2.
+  Definition return_test (n:test) :=
+    match n return (match n with
+                    | test1 => Prop
+                    | test2 => Type
+                   end)  with
+    | test1 => (forall x:nat , x >=0)
+    | test2 => test
+    end.
+  Lemma test_test : return_test test1=(forall x:nat, x >= 0).
+    reflexivity. Qed. Print test_test.
+End test1.
+
+(* chap 15.4 *)
+Require Import Quote.
+
+Inductive formula: Set:=
+| Atomic :index->formula
+| Truth: formula
+| Falsehood : formula
+| And : formula -> formula -> formula
+| Or: formula -> formula -> formula
+| Imp : formula -> formula -> formula.
+
+Definition imp (P1 P2:Prop)  := P1->P2.
+Infix "->" := imp (no associativity, at level 95).
+
+Definition asgn := varmap Prop.
+Fixpoint formulaDenote (atomics:asgn) (f:formula) :Prop:=
+  match f with
+  | Atomic v => varmap_find False v atomics
+  | Truth => True
+  | Falsehood => False
+  | And f1 f2 => formulaDenote atomics f1 /\ formulaDenote atomics f2
+  | Or f1 f2 => formulaDenote atomics f1 \/ formulaDenote atomics f2
+  | Imp f1 f2 => formulaDenote atomics f1 -> formulaDenote atomics f2
+  end.
+
+Section my_tauto.
+  Variable atomics : asgn.
+  Definition holds (v:index)  := varmap_find False v atomics.
+  Require Import ListSet.
+
+  Definition index_eq : forall x y:index, {x = y}+{ x<> y}.
+    decide equality.
+  Defined.
+
+  Definition add (s:set index) (v:index)  := set_add index_eq v s.
+  Definition In_dec:forall v (s :set index), {In v s}+{~ In v s} .
+    Local Open Scope specif_scope.
+
+    intro; refine (fix F (s:set index) : {In v s}+{~ In v s}:=
+                     match s with
+                     | nil => No
+                     | v'::s' => index_eq v' v || F s'
+                     end); crush.
+  Defined.
+
+  Fixpoint allTrue (s:set index) :Prop:=
+    match s with
+    | nil => True
+    | v::s' => holds v /\ allTrue s'
+    end.
+
+  Theorem allTrue_add : forall v s, allTrue s->
+                               holds v->allTrue (add s v).
+    induction s; crush; match goal with
+                        | [ |- context[if ?E then _ else _]]=> destruct E
+                        end; crush. Qed.
+
+  Theorem allTrue_In : forall v s, allTrue s -> set_In v s ->
+                              varmap_find False v atomics.
+    induction s; crush. Qed.
+
+  Hint Resolve allTrue_add allTrue_In.
+  Local Open Scope partial_scope.
+
+  Definition forward: forall (f :formula) (known:set index) (hyp:formula)
+                        (cont: forall known', [allTrue known'->formulaDenote atomics f]),
+      [allTrue known ->formulaDenote atomics hyp -> formulaDenote atomics f].
+    refine (fix F (f:formula ) (known: set index) (hyp: formula)
+                (cont : forall known', [allTrue known' -> formulaDenote atomics f])
+            : [ allTrue known -> formulaDenote atomics hyp -> formulaDenote atomics f]:=
+              match hyp with
+              | Atomic v => Reduce (cont (add known v))
+              | Truth => Reduce (cont known)
+              | Falsehood  => Yes
+              | And h1 h2 =>
+                Reduce (F (Imp h2 f) known h1 (fun known' =>
+                                                 Reduce (F f known' h2 cont)))
+              | Or h1 h2 => F f known h1 cont && F f known h2 cont
+              | Imp _ _ => Reduce (cont known)
+              end); crush.
+  Defined.
+
+  Definition backward : forall (known : set index) (f : formula),
+[allTrue known -> formulaDenote atomics f ].
+refine (fix F (known : set index) (f : formula)
+: [allTrue known -> formulaDenote atomics f ] :=
+match f with
+| Atomic v => Reduce (In_dec v known)
+| Truth => Yes
+| Falsehood => No
+| And f1 f2 => F known f1 && F known f2
+| Or f1 f2 => F known f1 || F known f2
+| Imp f1 f2 => forward f2 known f1 (fun known' => F known' f2 )
+end); crush; eauto.
+  Defined.
+
+  Definition my_tauto: forall f: formula, [formulaDenote atomics f].
+    intro; refine (Reduce (backward nil f)) ;crush. Defined.
+
+End my_tauto.
+
+Ltac my_tauto:=
+  repeat match goal with
+         | [ |- forall x:?P, _ ]=>
+           match type of P with
+           | Prop => fail 1
+           | _ => intro
+           end
+         end;
+  quote formulaDenote;
+  match goal with
+  | [ |- formulaDenote ?m ?f] => exact (partialOut (my_tauto m f))
+  end.
+
+Theorem mt1 : True.
+  my_tauto. Qed.
+
+Print mt1.
+
+Theorem mt2 : forall x y:nat, x= y -> x=y.
+  intros.  
