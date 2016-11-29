@@ -1,5 +1,12 @@
 (* Chap 12.1 The Type Hierarchy *)
 
+Require Import Cpdt.CpdtTactics Cpdt.MoreSpecif.
+Require Import Classical_Prop.
+Require Import ProofIrrelevance.
+Require Import Eqdep.
+Require Eqdep_dec.
+Require RelationalChoice.
+
 Check 0.
 Check nat.
 Check Set.
@@ -150,12 +157,13 @@ Print Assumptions t2.
 
 Theorem nat_eq_dec : forall n m:nat, n=m \/ n<>m.
   induction n. destruct m. intuition.
-  right. intuition. inversion H.
-  destruct m. right. intuition. inversion H.
-  destruct (IHn m) eqn:E1.
-  - left. rewrite e. reflexivity.
-  - right. unfold not. intros. apply n0.
-    auto. Qed.
+  - right. unfold not; intros. inversion H.
+  - destruct m.
+    + right; unfold not; intros; inversion H.
+    + destruct (IHn m).
+      * rewrite H. left; reflexivity.
+      * right; unfold not in *; intros; apply H.
+        inversion H0. reflexivity. Qed.
 
 Require Import ProofIrrelevance.
 
@@ -195,11 +203,43 @@ Corollary predicate_extensionality : forall (A:Type) (B:A->Prop) (f g:forall x:A
     (forall x:A, f x=g x) -> f=g.
   intros. apply functional_extensionality_dep; assumption. Qed.
 
-(* 12.3.2 *)
+(* 12.3.2 Axiom of Choice *)
+Reset Printing.
 
 Require Import ConstructiveEpsilon.
 Check constructive_definite_description.
 Print Assumptions constructive_definite_description.
 
+(* 唯一 *)
 Require Import ClassicalUniqueChoice.
 Check dependent_unique_choice.
+
+(* 选择公理 *)
+Require Import ClassicalChoice.
+Check choice.
+
+Definition choice_Set (A B:Type) (R:A->B->Prop) (H: forall x:A, {y:B|R x y}):{f:A->B| forall x:A, R x (f x)}:=
+  exist (fun f => forall x:A, R x (f x)) (fun x=> proj1_sig (H x)) (fun x=> proj2_sig (H x)).
+
+Check exist.
+Check proj1_sig.
+Check proj2_sig.
+
+Check forall (A:Type) (P:A->Prop) (x:A), {x:A|P x}.
+
+(* 12.3.3 Axioms and Computation *)
+Definition cast (x y:Set) (pf: x=y) (v:x):y :=
+  match pf with
+  | eq_refl => v
+  end.
+
+Eval compute in (cast (eq_refl( nat->nat)) (fun n => S n)) 12.
+Eval compute in (fun n => S n) 12.
+
+(*
+Theorem t3 :(forall n:nat, fin (S n))=(forall n:nat, fin (n+1)).
+  change ((forall n:nat, (fun n=> fin (S n)) n)=(forall n:nat, (fun n=>fin (n+1)) n));
+    erewrite (functional_extensionality (fun n=> fin (n+1))); crush. Qed.
+
+Eval compute in (cast t3 (fun _ => First)) 12.
+ *)
