@@ -1666,6 +1666,7 @@ Proof.
 (** More generally... *)
 
 (** **** Exercise: 3 stars, optional  *)
+Require Import NPeano.
 Lemma par_body_n__Sn : forall n st,
   st X = n /\ st Y = 0 ->
   par_loop / st ==>* par_loop / (t_update st X (S n)).

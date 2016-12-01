@@ -16,52 +16,55 @@ type 'a option =
 | Some of 'a
 | None
 
-(** val plus : nat -> nat -> nat **)
+(** val add : nat -> nat -> nat **)
 
-let rec plus n m =
+let rec add n m =
   match n with
   | O -> m
-  | S p -> S (plus p m)
+  | S p -> S (add p m)
 
-(** val mult : nat -> nat -> nat **)
+(** val mul : nat -> nat -> nat **)
 
-let rec mult n m =
+let rec mul n m =
   match n with
   | O -> O
-  | S p -> plus m (mult p m)
+  | S p -> add m (mul p m)
 
-(** val minus : nat -> nat -> nat **)
+(** val sub : nat -> nat -> nat **)
 
-let rec minus n m =
+let rec sub n m =
   match n with
   | O -> n
   | S k ->
     (match m with
      | O -> n
-     | S l -> minus k l)
+     | S l -> sub k l)
 
-(** val leb : nat -> nat -> bool **)
+module Nat =
+ struct
+  (** val eqb : nat -> nat -> bool **)
 
-let rec leb m x =
-  match m with
-  | O -> True
-  | S m' ->
-    (match x with
-     | O -> False
-     | S n' -> leb m' n')
+  let rec eqb n m =
+    match n with
+    | O ->
+      (match m with
+       | O -> True
+       | S _ -> False)
+    | S n' ->
+      (match m with
+       | O -> False
+       | S m' -> eqb n' m')
 
-(** val beq_nat : nat -> nat -> bool **)
+  (** val leb : nat -> nat -> bool **)
 
-let rec beq_nat n m =
-  match n with
-  | O ->
-    (match m with
-     | O -> True
-     | S n0 -> False)
-  | S n1 ->
-    (match m with
-     | O -> False
-     | S m1 -> beq_nat n1 m1)
+  let rec leb n m =
+    match n with
+    | O -> True
+    | S n' ->
+      (match m with
+       | O -> False
+       | S m' -> leb n' m')
+ end
 
 type id =
   nat
@@ -70,7 +73,7 @@ type id =
 (** val beq_id : id -> id -> bool **)
 
 let beq_id id1 id2 =
-  beq_nat id1 id2
+  Nat.eqb id1 id2
 
 type 'a total_map = id -> 'a
 
@@ -103,17 +106,17 @@ type bexp =
 let rec aeval st = function
 | ANum n -> n
 | AId x -> st x
-| APlus (a1, a2) -> plus (aeval st a1) (aeval st a2)
-| AMinus (a1, a2) -> minus (aeval st a1) (aeval st a2)
-| AMult (a1, a2) -> mult (aeval st a1) (aeval st a2)
+| APlus (a1, a2) -> add (aeval st a1) (aeval st a2)
+| AMinus (a1, a2) -> sub (aeval st a1) (aeval st a2)
+| AMult (a1, a2) -> mul (aeval st a1) (aeval st a2)
 
 (** val beval : state -> bexp -> bool **)
 
 let rec beval st = function
 | BTrue -> True
 | BFalse -> False
-| BEq (a1, a2) -> beq_nat (aeval st a1) (aeval st a2)
-| BLe (a1, a2) -> leb (aeval st a1) (aeval st a2)
+| BEq (a1, a2) -> Nat.eqb (aeval st a1) (aeval st a2)
+| BLe (a1, a2) -> Nat.leb (aeval st a1) (aeval st a2)
 | BNot b1 -> negb (beval st b1)
 | BAnd (b1, b2) ->
   (match beval st b1 with
@@ -150,4 +153,3 @@ let rec ceval_step st c = function
          | Some st' -> ceval_step st' c i'
          | None -> None)
       | False -> Some st))
-

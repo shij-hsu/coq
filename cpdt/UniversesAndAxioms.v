@@ -243,3 +243,5 @@ Theorem t3 :(forall n:nat, fin (S n))=(forall n:nat, fin (n+1)).
 
 Eval compute in (cast t3 (fun _ => First)) 12.
  *)
+
+(* 12.3.4 *)

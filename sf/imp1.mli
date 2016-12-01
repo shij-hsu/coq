@@ -12,15 +12,18 @@ type 'a option =
 | Some of 'a
 | None
 
-val plus : nat -> nat -> nat
+val add : nat -> nat -> nat
 
-val mult : nat -> nat -> nat
+val mul : nat -> nat -> nat
 
-val minus : nat -> nat -> nat
+val sub : nat -> nat -> nat
 
-val leb : nat -> nat -> bool
+module Nat :
+ sig
+  val eqb : nat -> nat -> bool
 
-val beq_nat : nat -> nat -> bool
+  val leb : nat -> nat -> bool
+ end
 
 type id =
   nat
@@ -61,4 +64,3 @@ type com =
 | CWhile of bexp * com
 
 val ceval_step : state -> com -> nat -> state option
-

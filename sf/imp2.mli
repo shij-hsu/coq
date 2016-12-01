@@ -4,15 +4,18 @@ type 'a option =
 | Some of 'a
 | None
 
-val plus : int -> int -> int
+val add : int -> int -> int
 
-val mult : int -> int -> int
+val mul : int -> int -> int
 
-val minus : int -> int -> int
+val sub : int -> int -> int
 
-val leb : int -> int -> bool
+module Nat :
+ sig
+  val eqb : int -> int -> bool
 
-val beq_nat : int -> int -> bool
+  val leb : int -> int -> bool
+ end
 
 type id =
   int
@@ -53,4 +56,3 @@ type com =
 | CWhile of bexp * com
 
 val ceval_step : state -> com -> int -> state option
-
