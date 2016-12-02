@@ -1,0 +1,104 @@
+DIGEST 3f2bd2fd3a907c1ee2365c2debe0ecdd
+Fpdf.autorewrite
+R89:93 Coq.Arith.Arith <> <> lib
+var 105:107 <> Ack
+R114:115 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R119:120 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R121:123 Coq.Init.Datatypes <> nat ind
+R116:118 Coq.Init.Datatypes <> nat ind
+R111:113 Coq.Init.Datatypes <> nat ind
+ax 133:136 <> Ack0
+R149:151 Coq.Init.Datatypes <> nat ind
+R161:163 Coq.Init.Logic <> :type_scope:x_'='_x not
+R154:156 pdf.autorewrite <> Ack defax
+R160:160 pdf.autorewrite <> m var
+R164:164 Coq.Init.Datatypes <> S constr
+R166:166 pdf.autorewrite <> m var
+ax 175:178 <> Ack1
+R191:193 Coq.Init.Datatypes <> nat ind
+R207:209 Coq.Init.Logic <> :type_scope:x_'='_x not
+R196:198 pdf.autorewrite <> Ack defax
+R201:201 Coq.Init.Datatypes <> S constr
+R203:203 pdf.autorewrite <> n var
+R210:212 pdf.autorewrite <> Ack defax
+R214:214 pdf.autorewrite <> n var
+ax 225:228 <> Ack2
+R243:245 Coq.Init.Datatypes <> nat ind
+R264:266 Coq.Init.Logic <> :type_scope:x_'='_x not
+R248:250 pdf.autorewrite <> Ack defax
+R260:260 Coq.Init.Datatypes <> S constr
+R262:262 pdf.autorewrite <> m var
+R253:253 Coq.Init.Datatypes <> S constr
+R255:255 pdf.autorewrite <> n var
+R267:269 pdf.autorewrite <> Ack defax
+R274:276 pdf.autorewrite <> Ack defax
+R284:284 pdf.autorewrite <> m var
+R279:279 Coq.Init.Datatypes <> S constr
+R281:281 pdf.autorewrite <> n var
+R271:271 pdf.autorewrite <> n var
+R302:305 pdf.autorewrite <> Ack0 prfax
+R307:310 pdf.autorewrite <> Ack1 prfax
+R312:315 pdf.autorewrite <> Ack2 prfax
+prf 332:338 <> RseAck0
+R349:351 Coq.Init.Logic <> :type_scope:x_'='_x not
+R342:344 pdf.autorewrite <> Ack defax
+R425:429 Coq.omega.Omega <> <> lib
+var 442:442 <> g
+R449:450 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R454:455 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R456:458 Coq.Init.Datatypes <> nat ind
+R451:453 Coq.Init.Datatypes <> nat ind
+R446:448 Coq.Init.Datatypes <> nat ind
+ax 468:469 <> g0
+R482:484 Coq.Init.Datatypes <> nat ind
+R492:492 Coq.Init.Logic <> :type_scope:x_'='_x not
+R487:487 pdf.autorewrite <> g defax
+R491:491 pdf.autorewrite <> m var
+R493:493 pdf.autorewrite <> m var
+ax 502:503 <> g1
+R518:520 Coq.Init.Datatypes <> nat ind
+R523:523 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R527:531 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R532:532 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R538:542 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R548:550 Coq.Init.Logic <> :type_scope:x_'='_x not
+R543:543 pdf.autorewrite <> g defax
+R547:547 pdf.autorewrite <> m var
+R545:545 pdf.autorewrite <> n var
+R551:551 pdf.autorewrite <> g defax
+R564:566 Coq.Init.Peano <> :nat_scope:x_'-'_x not
+R563:563 pdf.autorewrite <> m var
+R554:557 Coq.Init.Peano <> pred syndef
+R559:559 pdf.autorewrite <> n var
+R534:534 Coq.Init.Peano <> :nat_scope:x_'>'_x not
+R533:533 pdf.autorewrite <> m var
+R525:525 Coq.Init.Peano <> :nat_scope:x_'>'_x not
+R524:524 pdf.autorewrite <> n var
+ax 578:579 <> g2
+R594:596 Coq.Init.Datatypes <> nat ind
+R599:599 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R603:605 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R606:606 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R613:617 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R623:625 Coq.Init.Logic <> :type_scope:x_'='_x not
+R618:618 pdf.autorewrite <> g defax
+R622:622 pdf.autorewrite <> m var
+R620:620 pdf.autorewrite <> n var
+R626:626 pdf.autorewrite <> g defax
+R636:636 Coq.Init.Peano <> :nat_scope:x_'+'_x not
+R635:635 pdf.autorewrite <> m var
+R629:629 Coq.Init.Datatypes <> S constr
+R631:631 pdf.autorewrite <> n var
+R608:609 Coq.Init.Peano <> :nat_scope:x_'<='_x not
+R607:607 pdf.autorewrite <> m var
+R601:601 Coq.Init.Peano <> :nat_scope:x_'>'_x not
+R600:600 pdf.autorewrite <> n var
+R656:657 pdf.autorewrite <> g0 prfax
+R659:660 pdf.autorewrite <> g1 prfax
+R662:663 pdf.autorewrite <> g2 prfax
+prf 690:694 <> Resg0
+R705:707 Coq.Init.Logic <> :type_scope:x_'='_x not
+R698:698 pdf.autorewrite <> g defax
+prf 885:889 <> Resg1
+R899:901 Coq.Init.Logic <> :type_scope:x_'='_x not
+R893:893 pdf.autorewrite <> g defax

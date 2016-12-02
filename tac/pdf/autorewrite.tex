@@ -1,0 +1,64 @@
+\documentclass[12pt]{report}
+\usepackage[]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{fullpage}
+\usepackage{coqdoc}
+\usepackage{amsmath,amssymb}
+\usepackage{url}
+\begin{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% This file has been automatically generated with the command
+%% coqdoc -R . pdf --interpolate --latex autorewrite.v -o autorewrite.tex 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\coqlibrary{pdf.autorewrite}{Library }{pdf.autorewrite}
+
+\begin{coqdoccode}
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Reset} \coqdocvar{Initial}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Require} \coqdockw{Import} \coqexternalref{}{http://coq.inria.fr/distrib/8.5pl1/stdlib/Coq.Arith.Arith}{\coqdoclibrary{Arith}}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Variable} \coqdef{pdf.autorewrite.Ack}{Ack}{\coqdocvariable{Ack}} : \coqexternalref{nat}{http://coq.inria.fr/distrib/8.5pl1/stdlib/Coq.Init.Datatypes}{\coqdocinductive{nat}}\coqexternalref{:type scope:x '->' x}{http://coq.inria.fr/distrib/8.5pl1/stdlib/Coq.Init.Logic}{\coqdocnotation{\ensuremath{\rightarrow}}}\coqexternalref{nat}{http://coq.inria.fr/distrib/8.5pl1/stdlib/Coq.Init.Datatypes}{\coqdocinductive{nat}}\coqexternalref{:type scope:x '->' x}{http://coq.inria.fr/distrib/8.5pl1/stdlib/Coq.Init.Logic}{\coqdocnotation{\ensuremath{\rightarrow}}}\coqexternalref{nat}{http://coq.inria.fr/distrib/8.5pl1/stdlib/Coq.Init.Datatypes}{\coqdocinductive{nat}}.\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Axiom} \coqdef{pdf.autorewrite.Ack0}{Ack0}{\coqdocaxiom{Ack0}} : \coqdockw{\ensuremath{\forall}} \coqdocvar{m}:\coqexternalref{nat}{http://coq.inria.fr/distrib/8.5pl1/stdlib/Coq.Init.Datatypes}{\coqdocinductive{nat}}, \coqref{pdf.autorewrite.Ack}{\coqdocaxiom{Ack}} 0 \coqdocvariable{m} \coqexternalref{:type scope:x '=' x}{http://coq.inria.fr/distrib/8.5pl1/stdlib/Coq.Init.Logic}{\coqdocnotation{=}} \coqexternalref{S}{http://coq.inria.fr/distrib/8.5pl1/stdlib/Coq.Init.Datatypes}{\coqdocconstructor{S}} \coqdocvariable{m}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Axiom} \coqdef{pdf.autorewrite.Ack1}{Ack1}{\coqdocaxiom{Ack1}} : \coqdockw{\ensuremath{\forall}} \coqdocvar{n}:\coqexternalref{nat}{http://coq.inria.fr/distrib/8.5pl1/stdlib/Coq.Init.Datatypes}{\coqdocinductive{nat}}, \coqref{pdf.autorewrite.Ack}{\coqdocaxiom{Ack}} (\coqexternalref{S}{http://coq.inria.fr/distrib/8.5pl1/stdlib/Coq.Init.Datatypes}{\coqdocconstructor{S}} \coqdocvariable{n}) 0 \coqexternalref{:type scope:x '=' x}{http://coq.inria.fr/distrib/8.5pl1/stdlib/Coq.Init.Logic}{\coqdocnotation{=}} \coqref{pdf.autorewrite.Ack}{\coqdocaxiom{Ack}} \coqdocvariable{n} 1.\coqdoceol
+\coqdocnoindent
+\coqdockw{Axiom} \coqdef{pdf.autorewrite.Ack2}{Ack2}{\coqdocaxiom{Ack2}} : \coqdockw{\ensuremath{\forall}} \coqdocvar{n} \coqdocvar{m}:\coqexternalref{nat}{http://coq.inria.fr/distrib/8.5pl1/stdlib/Coq.Init.Datatypes}{\coqdocinductive{nat}}, \coqref{pdf.autorewrite.Ack}{\coqdocaxiom{Ack}} (\coqexternalref{S}{http://coq.inria.fr/distrib/8.5pl1/stdlib/Coq.Init.Datatypes}{\coqdocconstructor{S}} \coqdocvariable{n})  (\coqexternalref{S}{http://coq.inria.fr/distrib/8.5pl1/stdlib/Coq.Init.Datatypes}{\coqdocconstructor{S}} \coqdocvariable{m}) \coqexternalref{:type scope:x '=' x}{http://coq.inria.fr/distrib/8.5pl1/stdlib/Coq.Init.Logic}{\coqdocnotation{=}} \coqref{pdf.autorewrite.Ack}{\coqdocaxiom{Ack}} \coqdocvariable{n} (\coqref{pdf.autorewrite.Ack}{\coqdocaxiom{Ack}} (\coqexternalref{S}{http://coq.inria.fr/distrib/8.5pl1/stdlib/Coq.Init.Datatypes}{\coqdocconstructor{S}} \coqdocvariable{n}) \coqdocvariable{m}).\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Hint Rewrite} \coqref{pdf.autorewrite.Ack0}{\coqdocaxiom{Ack0}} \coqref{pdf.autorewrite.Ack1}{\coqdocaxiom{Ack1}} \coqref{pdf.autorewrite.Ack2}{\coqdocaxiom{Ack2}} :\coqdocvar{base0}.\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Lemma} \coqdef{pdf.autorewrite.RseAck0}{RseAck0}{\coqdoclemma{RseAck0}} : \coqref{pdf.autorewrite.Ack}{\coqdocaxiom{Ack}} 3 2 \coqexternalref{:type scope:x '=' x}{http://coq.inria.fr/distrib/8.5pl1/stdlib/Coq.Init.Logic}{\coqdocnotation{=}} 29.\coqdoceol
+\coqdocindent{1.00em}
+\coqdoctac{autorewrite} \coqdockw{with} \coqdocvar{base0} \coqdockw{using} \coqdoctac{try} \coqdoctac{reflexivity}. \coqdockw{Qed}.\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Require} \coqdockw{Import} \coqexternalref{}{http://coq.inria.fr/distrib/8.5pl1/stdlib/Coq.omega.Omega}{\coqdoclibrary{Omega}}.\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Variable} \coqdef{pdf.autorewrite.g}{g}{\coqdocvariable{g}} : \coqexternalref{nat}{http://coq.inria.fr/distrib/8.5pl1/stdlib/Coq.Init.Datatypes}{\coqdocinductive{nat}}\coqexternalref{:type scope:x '->' x}{http://coq.inria.fr/distrib/8.5pl1/stdlib/Coq.Init.Logic}{\coqdocnotation{\ensuremath{\rightarrow}}}\coqexternalref{nat}{http://coq.inria.fr/distrib/8.5pl1/stdlib/Coq.Init.Datatypes}{\coqdocinductive{nat}}\coqexternalref{:type scope:x '->' x}{http://coq.inria.fr/distrib/8.5pl1/stdlib/Coq.Init.Logic}{\coqdocnotation{\ensuremath{\rightarrow}}}\coqexternalref{nat}{http://coq.inria.fr/distrib/8.5pl1/stdlib/Coq.Init.Datatypes}{\coqdocinductive{nat}}.\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Axiom} \coqdef{pdf.autorewrite.g0}{g0}{\coqdocaxiom{g0}} : \coqdockw{\ensuremath{\forall}} \coqdocvar{m}:\coqexternalref{nat}{http://coq.inria.fr/distrib/8.5pl1/stdlib/Coq.Init.Datatypes}{\coqdocinductive{nat}}, \coqref{pdf.autorewrite.g}{\coqdocaxiom{g}} 0 \coqdocvariable{m}\coqexternalref{:type scope:x '=' x}{http://coq.inria.fr/distrib/8.5pl1/stdlib/Coq.Init.Logic}{\coqdocnotation{=}}\coqdocvariable{m}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Axiom} \coqdef{pdf.autorewrite.g1}{g1}{\coqdocaxiom{g1}} : \coqdockw{\ensuremath{\forall}} \coqdocvar{n} \coqdocvar{m}:\coqexternalref{nat}{http://coq.inria.fr/distrib/8.5pl1/stdlib/Coq.Init.Datatypes}{\coqdocinductive{nat}}, \coqexternalref{:type scope:x '->' x}{http://coq.inria.fr/distrib/8.5pl1/stdlib/Coq.Init.Logic}{\coqdocnotation{(}}\coqdocvariable{n}\coqexternalref{:nat scope:x '>' x}{http://coq.inria.fr/distrib/8.5pl1/stdlib/Coq.Init.Peano}{\coqdocnotation{>}}0\coqexternalref{:type scope:x '->' x}{http://coq.inria.fr/distrib/8.5pl1/stdlib/Coq.Init.Logic}{\coqdocnotation{)}} \coqexternalref{:type scope:x '->' x}{http://coq.inria.fr/distrib/8.5pl1/stdlib/Coq.Init.Logic}{\coqdocnotation{\ensuremath{\rightarrow}}} \coqexternalref{:type scope:x '->' x}{http://coq.inria.fr/distrib/8.5pl1/stdlib/Coq.Init.Logic}{\coqdocnotation{(}}\coqdocvariable{m}\coqexternalref{:nat scope:x '>' x}{http://coq.inria.fr/distrib/8.5pl1/stdlib/Coq.Init.Peano}{\coqdocnotation{>}}100\coqexternalref{:type scope:x '->' x}{http://coq.inria.fr/distrib/8.5pl1/stdlib/Coq.Init.Logic}{\coqdocnotation{)}} \coqexternalref{:type scope:x '->' x}{http://coq.inria.fr/distrib/8.5pl1/stdlib/Coq.Init.Logic}{\coqdocnotation{\ensuremath{\rightarrow}}} \coqref{pdf.autorewrite.g}{\coqdocaxiom{g}} \coqdocvariable{n} \coqdocvariable{m} \coqexternalref{:type scope:x '=' x}{http://coq.inria.fr/distrib/8.5pl1/stdlib/Coq.Init.Logic}{\coqdocnotation{=}} \coqref{pdf.autorewrite.g}{\coqdocaxiom{g}} (\coqexternalref{pred}{http://coq.inria.fr/distrib/8.5pl1/stdlib/Coq.Init.Peano}{\coqdocabbreviation{pred}} \coqdocvariable{n}) (\coqdocvariable{m} \coqexternalref{:nat scope:x '-' x}{http://coq.inria.fr/distrib/8.5pl1/stdlib/Coq.Init.Peano}{\coqdocnotation{-}} 10).\coqdoceol
+\coqdocnoindent
+\coqdockw{Axiom} \coqdef{pdf.autorewrite.g2}{g2}{\coqdocaxiom{g2}} : \coqdockw{\ensuremath{\forall}} \coqdocvar{n} \coqdocvar{m}:\coqexternalref{nat}{http://coq.inria.fr/distrib/8.5pl1/stdlib/Coq.Init.Datatypes}{\coqdocinductive{nat}}, \coqexternalref{:type scope:x '->' x}{http://coq.inria.fr/distrib/8.5pl1/stdlib/Coq.Init.Logic}{\coqdocnotation{(}}\coqdocvariable{n}\coqexternalref{:nat scope:x '>' x}{http://coq.inria.fr/distrib/8.5pl1/stdlib/Coq.Init.Peano}{\coqdocnotation{>}}0\coqexternalref{:type scope:x '->' x}{http://coq.inria.fr/distrib/8.5pl1/stdlib/Coq.Init.Logic}{\coqdocnotation{)->(}}\coqdocvariable{m}\coqexternalref{:nat scope:x '<=' x}{http://coq.inria.fr/distrib/8.5pl1/stdlib/Coq.Init.Peano}{\coqdocnotation{\ensuremath{\le}}}100\coqexternalref{:type scope:x '->' x}{http://coq.inria.fr/distrib/8.5pl1/stdlib/Coq.Init.Logic}{\coqdocnotation{)}} \coqexternalref{:type scope:x '->' x}{http://coq.inria.fr/distrib/8.5pl1/stdlib/Coq.Init.Logic}{\coqdocnotation{\ensuremath{\rightarrow}}} \coqref{pdf.autorewrite.g}{\coqdocaxiom{g}} \coqdocvariable{n} \coqdocvariable{m} \coqexternalref{:type scope:x '=' x}{http://coq.inria.fr/distrib/8.5pl1/stdlib/Coq.Init.Logic}{\coqdocnotation{=}} \coqref{pdf.autorewrite.g}{\coqdocaxiom{g}} (\coqexternalref{S}{http://coq.inria.fr/distrib/8.5pl1/stdlib/Coq.Init.Datatypes}{\coqdocconstructor{S}} \coqdocvariable{n}) (\coqdocvariable{m}\coqexternalref{:nat scope:x '+' x}{http://coq.inria.fr/distrib/8.5pl1/stdlib/Coq.Init.Peano}{\coqdocnotation{+}}11).\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Hint Rewrite} \coqref{pdf.autorewrite.g0}{\coqdocaxiom{g0}} \coqref{pdf.autorewrite.g1}{\coqdocaxiom{g1}} \coqref{pdf.autorewrite.g2}{\coqdocaxiom{g2}} \coqdockw{using} \coqdoctac{omega}:\coqdocvar{base1}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Lemma} \coqdef{pdf.autorewrite.Resg0}{Resg0}{\coqdoclemma{Resg0}} : \coqref{pdf.autorewrite.g}{\coqdocaxiom{g}} 1 110 \coqexternalref{:type scope:x '=' x}{http://coq.inria.fr/distrib/8.5pl1/stdlib/Coq.Init.Logic}{\coqdocnotation{=}} 100.\coqdoceol
+\coqdocindent{1.00em}
+\coqdoctac{autorewrite} \coqdockw{with} \coqdocvar{base1} \coqdockw{using} \coqdoctac{first} [\coqdoctac{progress} \coqdoctac{reflexivity} \ensuremath{|}  \coqdoctac{progress} \coqdoctac{simpl}]. \coqdockw{Qed}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Lemma} \coqdef{pdf.autorewrite.Resg1}{Resg1}{\coqdoclemma{Resg1}} : \coqref{pdf.autorewrite.g}{\coqdocaxiom{g}} 1 95 \coqexternalref{:type scope:x '=' x}{http://coq.inria.fr/distrib/8.5pl1/stdlib/Coq.Init.Logic}{\coqdocnotation{=}} 91.\coqdoceol
+\coqdocindent{1.00em}
+\coqdoctac{autorewrite} \coqdockw{with} \coqdocvar{base1} \coqdockw{using} \coqdoctac{reflexivity} || \coqdoctac{simpl}. \coqdockw{Qed}.\coqdoceol
+\coqdocemptyline
+\end{coqdoccode}
+\end{document}

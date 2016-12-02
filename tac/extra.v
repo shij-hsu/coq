@@ -21,5 +21,5 @@ Lemma max_val : forall (f:nat->nat) (n:nat), exists m:nat, maxn f n m.
     * exists (f (S n)). eapply maxnSl. eassumption. assumption.
     * exists m. eapply maxnSg. assumption. assumption. Qed.
 
-Extraction Language Haskell.
+Extraction Language Ocaml.
 Extraction "maxv" max_val.
