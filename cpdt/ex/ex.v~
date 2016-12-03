@@ -1,0 +1,51 @@
+Require Import Coq.Setoids.Setoid.
+
+
+(* 0.1 From Inductive Types *)
+
+(* exercise 1 *)
+Inductive truth:Type:= Yes|No|Maybe.
+
+Definition not (a:truth):truth :=
+  match a with
+  | Yes => No
+  | No => Yes
+  | Maybe => Maybe
+  end.
+
+Check not Yes.
+
+Definition and (a b:truth):truth:=
+match a with
+| Yes => b
+| No => match b with
+       | Maybe => Maybe
+       | _ => No
+       end
+| Maybe => Maybe
+end.
+
+Definition or (a b:truth):truth :=
+  match a with
+  | Yes => match b with
+          | Maybe => Maybe
+          | _ => Yes
+          end
+  | No => b
+  | Maybe => Maybe
+  end.
+
+Lemma and_comm : forall (a b:truth), and a b = and b a.
+  intros; destruct a, b; auto. Qed.
+Lemma or_comm : forall (a b:truth), or a b = or b a.
+  intros; destruct a, b; auto. Qed.
+Lemma or_distr : forall (a b c:truth), or (and a b) c=and (or a c) (or b c).
+  intros; destruct a, b, c; auto. Qed.
+
+(* exercise 2 *)
+
+Require Import List.
+
+Inductive slist : Type:=
+| nil.
+| single => 

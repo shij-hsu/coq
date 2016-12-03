@@ -1,0 +1,816 @@
+DIGEST d355b8b1b725bf19f90debcaef961762
+FInfDataAndPf
+R54:69 Cpdt.CpdtTactics <> <> lib
+sec 105:110 <> stream
+var 124:124 stream A
+ind 148:153 <> stream
+constr 169:172 <> Cons
+R177:180 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R187:190 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R191:196 InfDataAndPf <> stream ind
+R181:186 InfDataAndPf <> stream ind
+R176:176 InfDataAndPf <> stream.A var
+R203:208 InfDataAndPf stream <> sec
+def 223:228 <> zeroes
+R232:237 InfDataAndPf <> stream coind
+R239:241 Coq.Init.Datatypes <> nat ind
+R246:249 InfDataAndPf <> Cons constr
+R253:258 InfDataAndPf <> zeroes def
+def 272:283 <> trues_falses
+def 330:341 <> falses_trues
+R287:292 InfDataAndPf <> stream coind
+R294:297 Coq.Init.Datatypes <> bool ind
+R345:350 InfDataAndPf <> stream coind
+R352:355 Coq.Init.Datatypes <> bool ind
+R302:305 InfDataAndPf <> Cons constr
+R312:323 InfDataAndPf <> falses_trues def
+R307:310 Coq.Init.Datatypes <> true constr
+R360:363 InfDataAndPf <> Cons constr
+R371:382 InfDataAndPf <> trues_falses def
+R365:369 Coq.Init.Datatypes <> false constr
+def 395:400 <> approx
+R409:414 InfDataAndPf <> stream coind
+R416:416 InfDataAndPf <> A var
+R424:426 Coq.Init.Datatypes <> nat ind
+R431:434 Coq.Init.Datatypes <> list ind
+R436:436 InfDataAndPf <> A var
+R449:449 InfDataAndPf <> n var
+R460:460 Coq.Init.Datatypes <> O constr
+R465:467 Coq.Init.Datatypes <> nil constr
+R473:473 Coq.Init.Datatypes <> S constr
+R491:491 InfDataAndPf <> s var
+R504:507 InfDataAndPf <> Cons constr
+R517:518 Coq.Init.Datatypes <> :list_scope:x_'::'_x not
+R519:524 InfDataAndPf <> approx def
+R560:565 InfDataAndPf <> approx def
+R567:572 InfDataAndPf <> zeroes def
+R592:597 InfDataAndPf <> approx def
+R599:610 InfDataAndPf <> trues_falses def
+sec 625:627 <> map
+var 641:641 map A
+var 643:643 map B
+var 664:664 map f
+R669:672 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R673:673 InfDataAndPf <> map.B var
+R668:668 InfDataAndPf <> map.A var
+def 689:691 <> map
+R697:702 InfDataAndPf <> stream coind
+R704:704 InfDataAndPf <> map.A var
+R709:714 InfDataAndPf <> stream coind
+R716:716 InfDataAndPf <> map.B var
+R731:731 InfDataAndPf <> s var
+R744:747 InfDataAndPf <> Cons constr
+R756:759 InfDataAndPf <> Cons constr
+R768:770 InfDataAndPf <> map def
+R762:762 InfDataAndPf <> map.f var
+R788:790 InfDataAndPf map <> sec
+sec 802:811 <> interleave
+var 825:825 interleave A
+def 848:857 <> interleave
+R866:871 InfDataAndPf <> stream coind
+R873:873 InfDataAndPf <> interleave.A var
+R877:882 InfDataAndPf <> stream coind
+R884:884 InfDataAndPf <> interleave.A var
+R902:903 InfDataAndPf <> s2 var
+R898:899 InfDataAndPf <> s1 var
+R916:919 InfDataAndPf <> Cons constr
+R928:931 InfDataAndPf <> Cons constr
+R942:945 InfDataAndPf <> Cons constr
+R951:954 InfDataAndPf <> Cons constr
+R960:969 InfDataAndPf <> interleave def
+R992:1001 InfDataAndPf interleave <> sec
+sec 1013:1016 <> map'
+var 1030:1030 map' A
+var 1032:1032 map' B
+var 1053:1053 map' f
+R1058:1060 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R1061:1061 InfDataAndPf <> map'.B var
+R1057:1057 InfDataAndPf <> map'.A var
+def 1226:1227 <> t1
+R1234:1239 InfDataAndPf <> stream coind
+R1241:1241 InfDataAndPf <> A var
+R1246:1251 InfDataAndPf <> stream coind
+R1253:1253 InfDataAndPf <> A var
+R1264:1264 InfDataAndPf <> s var
+R1273:1276 InfDataAndPf <> Cons constr
+R1441:1444 InfDataAndPf map' <> sec
+def 1486:1489 <> ones
+R1493:1498 InfDataAndPf <> stream coind
+R1500:1502 Coq.Init.Datatypes <> nat ind
+R1507:1510 InfDataAndPf <> Cons constr
+R1514:1517 InfDataAndPf <> ones def
+def 1531:1535 <> ones'
+R1540:1542 InfDataAndPf <> map def
+R1546:1551 InfDataAndPf <> zeroes def
+R1544:1544 Coq.Init.Datatypes <> S constr
+prf 1562:1568 <> ones_eq
+R1576:1578 Coq.Init.Logic <> :type_scope:x_'='_x not
+R1572:1575 InfDataAndPf <> ones def
+R1579:1583 InfDataAndPf <> ones' def
+sec 1602:1610 <> stream_eq
+var 1624:1624 stream_eq A
+ind 1648:1656 <> stream_eq
+constr 1697:1705 <> Stream_eq
+R1668:1671 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R1680:1683 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R1672:1677 InfDataAndPf <> stream coind
+R1679:1679 InfDataAndPf <> stream_eq.A var
+R1660:1665 InfDataAndPf <> stream coind
+R1667:1667 InfDataAndPf <> stream_eq.A var
+R1740:1743 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R1744:1752 InfDataAndPf <> stream_eq ind
+R1767:1770 InfDataAndPf <> Cons constr
+R1774:1775 InfDataAndPf <> t2 var
+R1772:1772 InfDataAndPf <> h var
+R1755:1758 InfDataAndPf <> Cons constr
+R1762:1763 InfDataAndPf <> t1 var
+R1760:1760 InfDataAndPf <> h var
+R1725:1733 InfDataAndPf <> stream_eq ind
+R1738:1739 InfDataAndPf <> t2 var
+R1735:1736 InfDataAndPf <> t1 var
+R1783:1791 InfDataAndPf stream_eq <> sec
+prf 1803:1809 <> ones_eq
+R1812:1820 InfDataAndPf <> stream_eq coind
+R1827:1831 InfDataAndPf <> ones' def
+R1822:1825 InfDataAndPf <> ones def
+def 1889:1892 <> frob
+R1899:1904 InfDataAndPf <> stream coind
+R1906:1906 InfDataAndPf <> A var
+R1911:1916 InfDataAndPf <> stream coind
+R1918:1918 InfDataAndPf <> A var
+R1930:1930 InfDataAndPf <> s var
+R1941:1944 InfDataAndPf <> Cons constr
+R1953:1956 InfDataAndPf <> Cons constr
+prf 1978:1984 <> frob_eq
+R2000:2005 InfDataAndPf <> stream coind
+R2007:2007 InfDataAndPf <> A var
+R2012:2012 Coq.Init.Logic <> :type_scope:x_'='_x not
+R2011:2011 InfDataAndPf <> s var
+R2013:2016 InfDataAndPf <> frob def
+R2018:2018 InfDataAndPf <> s var
+prf 2062:2068 <> ones_eq
+R2072:2080 InfDataAndPf <> stream_eq coind
+R2087:2091 InfDataAndPf <> ones' def
+R2082:2085 InfDataAndPf <> ones def
+R2112:2118 InfDataAndPf <> frob_eq thm
+R2120:2123 InfDataAndPf <> ones def
+R2112:2118 InfDataAndPf <> frob_eq thm
+R2120:2123 InfDataAndPf <> ones def
+R2112:2118 InfDataAndPf <> frob_eq thm
+R2120:2123 InfDataAndPf <> ones def
+R2136:2142 InfDataAndPf <> frob_eq thm
+R2144:2148 InfDataAndPf <> ones' def
+R2136:2142 InfDataAndPf <> frob_eq thm
+R2144:2148 InfDataAndPf <> ones' def
+R2136:2142 InfDataAndPf <> frob_eq thm
+R2144:2148 InfDataAndPf <> ones' def
+prf 2200:2207 <> ones_eq'
+R2211:2219 InfDataAndPf <> stream_eq coind
+R2226:2230 InfDataAndPf <> ones' def
+R2221:2224 InfDataAndPf <> ones def
+def 2268:2269 <> hd
+R2276:2281 InfDataAndPf <> stream coind
+R2283:2283 InfDataAndPf <> A var
+R2288:2288 InfDataAndPf <> A var
+R2299:2299 InfDataAndPf <> s var
+R2308:2311 InfDataAndPf <> Cons constr
+def 2339:2340 <> tl
+R2347:2352 InfDataAndPf <> stream coind
+R2354:2354 InfDataAndPf <> A var
+R2359:2364 InfDataAndPf <> stream coind
+R2366:2366 InfDataAndPf <> A var
+R2377:2377 InfDataAndPf <> s var
+R2386:2389 InfDataAndPf <> Cons constr
+sec 2415:2429 <> stream_eq_coind
+var 2443:2443 stream_eq_coind A
+var 2464:2464 stream_eq_coind R
+R2476:2479 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R2488:2491 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R2480:2485 InfDataAndPf <> stream coind
+R2487:2487 InfDataAndPf <> stream_eq_coind.A var
+R2468:2473 InfDataAndPf <> stream coind
+R2475:2475 InfDataAndPf <> stream_eq_coind.A var
+var 2512:2523 stream_eq_coind Cons_case_hd
+R2548:2551 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R2557:2559 Coq.Init.Logic <> :type_scope:x_'='_x not
+R2552:2553 InfDataAndPf <> hd def
+R2555:2556 InfDataAndPf <> s1 var
+R2560:2561 InfDataAndPf <> hd def
+R2563:2564 InfDataAndPf <> s2 var
+R2541:2541 InfDataAndPf <> stream_eq_coind.R var
+R2546:2547 InfDataAndPf <> s2 var
+R2543:2544 InfDataAndPf <> s1 var
+var 2580:2591 stream_eq_coind Cons_case_tl
+R2616:2619 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R2620:2620 InfDataAndPf <> stream_eq_coind.R var
+R2631:2632 InfDataAndPf <> tl def
+R2634:2635 InfDataAndPf <> s2 var
+R2623:2624 InfDataAndPf <> tl def
+R2626:2627 InfDataAndPf <> s1 var
+R2609:2609 InfDataAndPf <> stream_eq_coind.R var
+R2614:2615 InfDataAndPf <> s2 var
+R2611:2612 InfDataAndPf <> s1 var
+prf 2650:2664 <> stream_eq_conid
+R2689:2692 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R2693:2701 InfDataAndPf <> stream_eq coind
+R2706:2707 InfDataAndPf <> s2 var
+R2703:2704 InfDataAndPf <> s1 var
+R2682:2682 InfDataAndPf <> stream_eq_coind.R var
+R2687:2688 InfDataAndPf <> s2 var
+R2684:2685 InfDataAndPf <> s1 var
+R2770:2781 InfDataAndPf <> stream_eq_coind.Cons_case_hd var
+R2770:2781 InfDataAndPf <> stream_eq_coind.Cons_case_hd var
+R2873:2884 InfDataAndPf <> stream_eq_coind.Cons_case_tl var
+R2873:2884 InfDataAndPf <> stream_eq_coind.Cons_case_tl var
+R2899:2913 InfDataAndPf stream_eq_coind <> sec
+R2923:2937 InfDataAndPf <> stream_eq_conid thm
+prf 2949:2956 <> ones_eq'
+R2960:2968 InfDataAndPf <> stream_eq coind
+R2975:2979 InfDataAndPf <> ones' def
+R2970:2973 InfDataAndPf <> ones def
+R2991:3005 InfDataAndPf <> stream_eq_conid thm
+R3030:3033 Coq.Init.Logic <> :type_scope:x_'/\'_x not
+R3023:3025 Coq.Init.Logic <> :type_scope:x_'='_x not
+R3021:3022 InfDataAndPf <> s1 var
+R3026:3029 InfDataAndPf <> ones def
+R3036:3038 Coq.Init.Logic <> :type_scope:x_'='_x not
+R3034:3035 InfDataAndPf <> s2 var
+R3039:3043 InfDataAndPf <> ones' def
+R2991:3005 InfDataAndPf <> stream_eq_conid thm
+R3030:3033 Coq.Init.Logic <> :type_scope:x_'/\'_x not
+R3023:3025 Coq.Init.Logic <> :type_scope:x_'='_x not
+R3021:3022 InfDataAndPf <> s1 var
+R3026:3029 InfDataAndPf <> ones def
+R3036:3038 Coq.Init.Logic <> :type_scope:x_'='_x not
+R3034:3035 InfDataAndPf <> s2 var
+R3039:3043 InfDataAndPf <> ones' def
+sec 3069:3083 <> strream_eq_loop
+var 3097:3097 strream_eq_loop A
+var 3119:3120 strream_eq_loop s1
+var 3122:3123 strream_eq_loop s2
+R3127:3132 InfDataAndPf <> stream coind
+R3134:3134 InfDataAndPf <> strream_eq_loop.A var
+var 3150:3161 strream_eq_loop Cons_case_hd
+R3170:3172 Coq.Init.Logic <> :type_scope:x_'='_x not
+R3165:3166 InfDataAndPf <> hd def
+R3168:3169 InfDataAndPf <> strream_eq_loop.s1 var
+R3173:3174 InfDataAndPf <> hd def
+R3176:3177 InfDataAndPf <> strream_eq_loop.s2 var
+var 3193:3197 strream_eq_loop loop1
+R3206:3208 Coq.Init.Logic <> :type_scope:x_'='_x not
+R3201:3202 InfDataAndPf <> tl def
+R3204:3205 InfDataAndPf <> strream_eq_loop.s1 var
+R3209:3210 InfDataAndPf <> strream_eq_loop.s1 var
+var 3226:3230 strream_eq_loop loop2
+R3239:3241 Coq.Init.Logic <> :type_scope:x_'='_x not
+R3234:3235 InfDataAndPf <> tl def
+R3237:3238 InfDataAndPf <> strream_eq_loop.s2 var
+R3242:3243 InfDataAndPf <> strream_eq_loop.s2 var
+prf 3257:3270 <> stream_eq_loop
+R3274:3282 InfDataAndPf <> stream_eq coind
+R3287:3288 InfDataAndPf <> strream_eq_loop.s2 var
+R3284:3285 InfDataAndPf <> strream_eq_loop.s1 var
+R3579:3593 InfDataAndPf <> stream_eq_conid thm
+R3616:3619 Coq.Init.Logic <> :type_scope:x_'/\'_x not
+R3613:3613 Coq.Init.Logic <> :type_scope:x_'='_x not
+R3610:3612 InfDataAndPf <> s1' var
+R3614:3615 InfDataAndPf <> strream_eq_loop.s1 var
+R3623:3623 Coq.Init.Logic <> :type_scope:x_'='_x not
+R3620:3622 InfDataAndPf <> s2' var
+R3624:3625 InfDataAndPf <> strream_eq_loop.s2 var
+R3579:3593 InfDataAndPf <> stream_eq_conid thm
+R3616:3619 Coq.Init.Logic <> :type_scope:x_'/\'_x not
+R3613:3613 Coq.Init.Logic <> :type_scope:x_'='_x not
+R3610:3612 InfDataAndPf <> s1' var
+R3614:3615 InfDataAndPf <> strream_eq_loop.s1 var
+R3623:3623 Coq.Init.Logic <> :type_scope:x_'='_x not
+R3620:3622 InfDataAndPf <> s2' var
+R3624:3625 InfDataAndPf <> strream_eq_loop.s2 var
+R3646:3660 InfDataAndPf strream_eq_loop <> sec
+prf 3672:3681 <> ones_eq'''
+R3684:3692 InfDataAndPf <> stream_eq coind
+R3699:3703 InfDataAndPf <> ones' def
+R3694:3697 InfDataAndPf <> ones def
+R3714:3727 InfDataAndPf <> stream_eq_loop thm
+R3714:3727 InfDataAndPf <> stream_eq_loop thm
+R3758:3762 Coq.Arith.Arith <> <> lib
+R3771:3774 Coq.Arith.Factorial <> fact def
+def 3789:3798 <> fact_slow'
+R3803:3805 Coq.Init.Datatypes <> nat ind
+R3811:3814 InfDataAndPf <> Cons constr
+R3826:3835 InfDataAndPf <> fact_slow' def
+R3838:3838 Coq.Init.Datatypes <> S constr
+R3840:3840 InfDataAndPf <> n var
+R3817:3820 Coq.Arith.Factorial <> fact def
+R3822:3822 InfDataAndPf <> n var
+def 3856:3864 <> fact_slow
+R3869:3878 InfDataAndPf <> fact_slow' def
+def 3895:3904 <> fact_iter'
+R3915:3917 Coq.Init.Datatypes <> nat ind
+R3923:3926 InfDataAndPf <> Cons constr
+R3933:3942 InfDataAndPf <> fact_iter' def
+R3956:3956 Coq.Init.Peano <> :nat_scope:x_'*'_x not
+R3953:3955 InfDataAndPf <> acc var
+R3957:3959 InfDataAndPf <> cur var
+R3945:3945 Coq.Init.Datatypes <> S constr
+R3947:3949 InfDataAndPf <> cur var
+R3928:3930 InfDataAndPf <> acc var
+def 3975:3983 <> fact_iter
+R3988:3997 InfDataAndPf <> fact_iter' def
+R4019:4024 InfDataAndPf <> approx def
+R4026:4034 InfDataAndPf <> fact_iter def
+R4053:4058 InfDataAndPf <> approx def
+R4060:4068 InfDataAndPf <> fact_slow def
+prf 4158:4165 <> fact_def
+R4206:4207 Coq.Init.Logic <> :type_scope:x_'='_x not
+R4181:4190 InfDataAndPf <> fact_iter' def
+R4201:4201 Coq.Init.Peano <> :nat_scope:x_'*'_x not
+R4195:4198 Coq.Arith.Factorial <> fact def
+R4200:4200 InfDataAndPf <> n var
+R4202:4202 Coq.Init.Datatypes <> S constr
+R4204:4204 InfDataAndPf <> n var
+R4192:4192 InfDataAndPf <> x var
+R4208:4217 InfDataAndPf <> fact_iter' def
+R4222:4225 Coq.Arith.Factorial <> fact def
+R4228:4228 Coq.Init.Datatypes <> S constr
+R4230:4230 InfDataAndPf <> n var
+R4219:4219 InfDataAndPf <> x var
+prf 4303:4310 <> fact_eq'
+R4324:4332 InfDataAndPf <> stream_eq coind
+R4363:4372 InfDataAndPf <> fact_slow' def
+R4374:4374 InfDataAndPf <> n var
+R4335:4344 InfDataAndPf <> fact_iter' def
+R4353:4356 Coq.Arith.Factorial <> fact def
+R4358:4358 InfDataAndPf <> n var
+R4347:4347 Coq.Init.Datatypes <> S constr
+R4349:4349 InfDataAndPf <> n var
+R4395:4409 InfDataAndPf <> stream_eq_conid thm
+R4424:4430 Coq.Init.Logic <> :type_scope:'exists'_x_'..'_x_','_x not
+R4432:4433 Coq.Init.Logic <> :type_scope:'exists'_x_'..'_x_','_x not
+R4462:4465 Coq.Init.Logic <> :type_scope:x_'/\'_x not
+R4436:4436 Coq.Init.Logic <> :type_scope:x_'='_x not
+R4434:4435 InfDataAndPf <> s1 var
+R4437:4446 InfDataAndPf <> fact_iter' def
+R4455:4458 Coq.Arith.Factorial <> fact def
+R4460:4460 InfDataAndPf <> n var
+R4449:4449 Coq.Init.Datatypes <> S constr
+R4451:4451 InfDataAndPf <> n var
+R4468:4468 Coq.Init.Logic <> :type_scope:x_'='_x not
+R4466:4467 InfDataAndPf <> s2 var
+R4469:4478 InfDataAndPf <> fact_slow' def
+R4480:4480 InfDataAndPf <> n var
+R4395:4409 InfDataAndPf <> stream_eq_conid thm
+R4424:4430 Coq.Init.Logic <> :type_scope:'exists'_x_'..'_x_','_x not
+R4432:4433 Coq.Init.Logic <> :type_scope:'exists'_x_'..'_x_','_x not
+R4462:4465 Coq.Init.Logic <> :type_scope:x_'/\'_x not
+R4436:4436 Coq.Init.Logic <> :type_scope:x_'='_x not
+R4434:4435 InfDataAndPf <> s1 var
+R4437:4446 InfDataAndPf <> fact_iter' def
+R4455:4458 Coq.Arith.Factorial <> fact def
+R4460:4460 InfDataAndPf <> n var
+R4449:4449 Coq.Init.Datatypes <> S constr
+R4451:4451 InfDataAndPf <> n var
+R4468:4468 Coq.Init.Logic <> :type_scope:x_'='_x not
+R4466:4467 InfDataAndPf <> s2 var
+R4469:4478 InfDataAndPf <> fact_slow' def
+R4480:4480 InfDataAndPf <> n var
+prf 4513:4519 <> fact_eq
+R4523:4531 InfDataAndPf <> stream_eq coind
+R4543:4551 InfDataAndPf <> fact_slow def
+R4533:4541 InfDataAndPf <> fact_iter def
+R4562:4569 InfDataAndPf <> fact_eq' thm
+R4562:4569 InfDataAndPf <> fact_eq' thm
+sec 4586:4603 <> stream_eq_onequant
+var 4618:4618 stream_eq_onequant A
+var 4620:4620 stream_eq_onequant B
+var 4642:4642 stream_eq_onequant f
+var 4644:4644 stream_eq_onequant g
+R4649:4652 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R4653:4658 InfDataAndPf <> stream coind
+R4660:4660 InfDataAndPf <> stream_eq_onequant.B var
+R4648:4648 InfDataAndPf <> stream_eq_onequant.A var
+var 4677:4688 stream_eq_onequant Cons_case_hd
+R4710:4710 Coq.Init.Logic <> :type_scope:x_'='_x not
+R4702:4703 InfDataAndPf <> hd def
+R4706:4706 InfDataAndPf <> stream_eq_onequant.f var
+R4708:4708 InfDataAndPf <> x var
+R4711:4712 InfDataAndPf <> hd def
+R4715:4715 InfDataAndPf <> stream_eq_onequant.g var
+R4717:4717 InfDataAndPf <> x var
+var 4734:4745 stream_eq_onequant Cons_case_tl
+R4759:4765 Coq.Init.Logic <> :type_scope:'exists'_x_'..'_x_','_x not
+R4767:4768 Coq.Init.Logic <> :type_scope:'exists'_x_'..'_x_','_x not
+R4781:4784 Coq.Init.Logic <> :type_scope:x_'/\'_x not
+R4777:4777 Coq.Init.Logic <> :type_scope:x_'='_x not
+R4769:4770 InfDataAndPf <> tl def
+R4773:4773 InfDataAndPf <> stream_eq_onequant.f var
+R4775:4775 InfDataAndPf <> x var
+R4778:4778 InfDataAndPf <> stream_eq_onequant.f var
+R4780:4780 InfDataAndPf <> y var
+R4793:4793 Coq.Init.Logic <> :type_scope:x_'='_x not
+R4785:4786 InfDataAndPf <> tl def
+R4789:4789 InfDataAndPf <> stream_eq_onequant.g var
+R4791:4791 InfDataAndPf <> x var
+R4794:4794 InfDataAndPf <> stream_eq_onequant.g var
+R4796:4796 InfDataAndPf <> y var
+prf 4810:4827 <> stream_eq_onequant
+R4841:4849 InfDataAndPf <> stream_eq coind
+R4858:4858 InfDataAndPf <> stream_eq_onequant.g var
+R4860:4860 InfDataAndPf <> x var
+R4852:4852 InfDataAndPf <> stream_eq_onequant.f var
+R4854:4854 InfDataAndPf <> x var
+R4883:4897 InfDataAndPf <> stream_eq_conid thm
+R4913:4919 Coq.Init.Logic <> :type_scope:'exists'_x_'..'_x_','_x not
+R4921:4922 Coq.Init.Logic <> :type_scope:'exists'_x_'..'_x_','_x not
+R4929:4932 Coq.Init.Logic <> :type_scope:x_'/\'_x not
+R4925:4925 Coq.Init.Logic <> :type_scope:x_'='_x not
+R4923:4924 InfDataAndPf <> s1 var
+R4926:4926 InfDataAndPf <> stream_eq_onequant.f var
+R4928:4928 InfDataAndPf <> x var
+R4935:4935 Coq.Init.Logic <> :type_scope:x_'='_x not
+R4933:4934 InfDataAndPf <> s2 var
+R4936:4936 InfDataAndPf <> stream_eq_onequant.g var
+R4938:4938 InfDataAndPf <> x var
+R4883:4897 InfDataAndPf <> stream_eq_conid thm
+R4913:4919 Coq.Init.Logic <> :type_scope:'exists'_x_'..'_x_','_x not
+R4921:4922 Coq.Init.Logic <> :type_scope:'exists'_x_'..'_x_','_x not
+R4929:4932 Coq.Init.Logic <> :type_scope:x_'/\'_x not
+R4925:4925 Coq.Init.Logic <> :type_scope:x_'='_x not
+R4923:4924 InfDataAndPf <> s1 var
+R4926:4926 InfDataAndPf <> stream_eq_onequant.f var
+R4928:4928 InfDataAndPf <> x var
+R4935:4935 Coq.Init.Logic <> :type_scope:x_'='_x not
+R4933:4934 InfDataAndPf <> s2 var
+R4936:4936 InfDataAndPf <> stream_eq_onequant.g var
+R4938:4938 InfDataAndPf <> x var
+R4972:4989 InfDataAndPf stream_eq_onequant <> sec
+prf 4999:5007 <> fact_eq''
+R5020:5028 InfDataAndPf <> stream_eq coind
+R5059:5068 InfDataAndPf <> fact_slow' def
+R5070:5070 InfDataAndPf <> n var
+R5031:5040 InfDataAndPf <> fact_iter' def
+R5049:5052 Coq.Arith.Factorial <> fact def
+R5054:5054 InfDataAndPf <> n var
+R5043:5043 Coq.Init.Datatypes <> S constr
+R5045:5045 InfDataAndPf <> n var
+R5082:5099 InfDataAndPf <> stream_eq_onequant thm
+R5082:5099 InfDataAndPf <> stream_eq_onequant thm
+def 5143:5145 <> var
+R5150:5152 Coq.Init.Datatypes <> nat ind
+def 5166:5169 <> vars
+R5177:5178 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R5179:5181 Coq.Init.Datatypes <> nat ind
+R5174:5176 InfDataAndPf <> var def
+def 5195:5197 <> set
+R5203:5206 InfDataAndPf <> vars def
+R5212:5214 InfDataAndPf <> var def
+R5220:5222 Coq.Init.Datatypes <> nat ind
+R5226:5229 InfDataAndPf <> vars def
+R5246:5252 Coq.Arith.EqNat <> beq_nat syndef
+R5256:5257 InfDataAndPf <> v' var
+R5254:5254 InfDataAndPf <> v var
+R5271:5272 InfDataAndPf <> vs var
+R5274:5275 InfDataAndPf <> v' var
+R5264:5264 InfDataAndPf <> n var
+ind 5289:5291 <> exp
+constr 5306:5310 <> Const
+constr 5324:5326 <> Var
+constr 5340:5343 <> Plus
+R5315:5317 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R5318:5320 InfDataAndPf <> exp ind
+R5312:5314 Coq.Init.Datatypes <> nat ind
+R5331:5333 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R5334:5336 InfDataAndPf <> exp ind
+R5328:5330 InfDataAndPf <> var def
+R5348:5350 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R5354:5356 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R5357:5359 InfDataAndPf <> exp ind
+R5351:5353 InfDataAndPf <> exp ind
+R5345:5347 InfDataAndPf <> exp ind
+def 5372:5378 <> evalExp
+R5384:5387 InfDataAndPf <> vars def
+R5393:5395 InfDataAndPf <> exp ind
+R5399:5401 Coq.Init.Datatypes <> nat ind
+R5414:5414 InfDataAndPf <> e var
+R5425:5429 InfDataAndPf <> Const constr
+R5442:5444 InfDataAndPf <> Var constr
+R5451:5452 InfDataAndPf <> vs var
+R5460:5463 InfDataAndPf <> Plus constr
+R5487:5489 Coq.Init.Peano <> :nat_scope:x_'+'_x not
+R5474:5480 InfDataAndPf <> evalExp def
+R5482:5483 InfDataAndPf <> vs var
+R5490:5496 InfDataAndPf <> evalExp def
+R5498:5499 InfDataAndPf <> vs var
+ind 5522:5524 <> cmd
+constr 5534:5539 <> Assign
+constr 5559:5561 <> Seq
+constr 5581:5585 <> While
+R5544:5546 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R5550:5552 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R5553:5555 InfDataAndPf <> cmd ind
+R5547:5549 InfDataAndPf <> exp ind
+R5541:5543 InfDataAndPf <> var def
+R5566:5568 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R5572:5574 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R5575:5577 InfDataAndPf <> cmd ind
+R5569:5571 InfDataAndPf <> cmd ind
+R5563:5565 InfDataAndPf <> cmd ind
+R5590:5592 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R5596:5598 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R5599:5601 InfDataAndPf <> cmd ind
+R5593:5595 InfDataAndPf <> cmd ind
+R5587:5589 InfDataAndPf <> exp ind
+ind 5617:5623 <> evalCmd
+constr 5654:5663 <> EvalAssign
+constr 5732:5738 <> EvalSeq
+constr 5897:5910 <> EvalWhileFalse
+constr 5999:6011 <> EvalWhileTrue
+R5629:5631 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R5635:5637 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R5642:5644 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R5638:5641 InfDataAndPf <> vars def
+R5632:5634 InfDataAndPf <> cmd ind
+R5625:5628 InfDataAndPf <> vars def
+R5680:5686 InfDataAndPf <> evalCmd ind
+R5705:5707 InfDataAndPf <> set def
+R5715:5721 InfDataAndPf <> evalExp def
+R5726:5726 InfDataAndPf <> e var
+R5723:5724 InfDataAndPf <> vs var
+R5712:5712 InfDataAndPf <> v var
+R5709:5710 InfDataAndPf <> vs var
+R5692:5697 InfDataAndPf <> Assign constr
+R5701:5701 InfDataAndPf <> e var
+R5699:5699 InfDataAndPf <> v var
+R5688:5689 InfDataAndPf <> vs var
+R5783:5815 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R5834:5866 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R5867:5873 InfDataAndPf <> evalCmd ind
+R5891:5893 InfDataAndPf <> vs3 var
+R5880:5882 InfDataAndPf <> Seq constr
+R5887:5888 InfDataAndPf <> c2 var
+R5884:5885 InfDataAndPf <> c1 var
+R5875:5877 InfDataAndPf <> vs1 var
+R5816:5822 InfDataAndPf <> evalCmd ind
+R5831:5833 InfDataAndPf <> vs3 var
+R5828:5829 InfDataAndPf <> c2 var
+R5824:5826 InfDataAndPf <> vs2 var
+R5765:5771 InfDataAndPf <> evalCmd ind
+R5780:5782 InfDataAndPf <> vs2 var
+R5777:5778 InfDataAndPf <> c1 var
+R5773:5775 InfDataAndPf <> vs1 var
+R5941:5970 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R5971:5977 InfDataAndPf <> evalCmd ind
+R5994:5995 InfDataAndPf <> vs var
+R5983:5987 InfDataAndPf <> While constr
+R5991:5991 InfDataAndPf <> c var
+R5989:5989 InfDataAndPf <> e var
+R5979:5980 InfDataAndPf <> vs var
+R5939:5939 Coq.Init.Logic <> :type_scope:x_'='_x not
+R5927:5933 InfDataAndPf <> evalExp def
+R5938:5938 InfDataAndPf <> e var
+R5935:5936 InfDataAndPf <> vs var
+R6052:6088 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R6106:6142 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R6170:6206 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R6207:6213 InfDataAndPf <> evalCmd ind
+R6231:6233 InfDataAndPf <> vs3 var
+R6220:6224 InfDataAndPf <> While constr
+R6228:6228 InfDataAndPf <> c var
+R6226:6226 InfDataAndPf <> e var
+R6215:6217 InfDataAndPf <> vs1 var
+R6143:6149 InfDataAndPf <> evalCmd ind
+R6167:6169 InfDataAndPf <> vs3 var
+R6156:6160 InfDataAndPf <> While constr
+R6164:6164 InfDataAndPf <> c var
+R6162:6162 InfDataAndPf <> e var
+R6151:6153 InfDataAndPf <> vs2 var
+R6089:6095 InfDataAndPf <> evalCmd ind
+R6103:6105 InfDataAndPf <> vs2 var
+R6101:6101 InfDataAndPf <> c var
+R6097:6099 InfDataAndPf <> vs1 var
+R6049:6050 Coq.Init.Logic <> :type_scope:x_'<>'_x not
+R6036:6042 InfDataAndPf <> evalExp def
+R6048:6048 InfDataAndPf <> e var
+R6044:6046 InfDataAndPf <> vs1 var
+sec 6245:6257 <> evalCmd_coind
+var 6271:6271 evalCmd_coind R
+R6277:6279 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R6283:6285 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R6290:6292 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R6286:6289 InfDataAndPf <> vars def
+R6280:6282 InfDataAndPf <> cmd ind
+R6273:6276 InfDataAndPf <> vars def
+var 6312:6321 evalCmd_coind AssignCase
+R6364:6405 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R6409:6411 Coq.Init.Logic <> :type_scope:x_'='_x not
+R6406:6408 InfDataAndPf <> vs2 var
+R6412:6414 InfDataAndPf <> set def
+R6423:6429 InfDataAndPf <> evalExp def
+R6435:6435 InfDataAndPf <> e var
+R6431:6433 InfDataAndPf <> vs1 var
+R6420:6420 InfDataAndPf <> v var
+R6416:6418 InfDataAndPf <> vs1 var
+R6342:6342 InfDataAndPf <> evalCmd_coind.R var
+R6361:6363 InfDataAndPf <> vs2 var
+R6349:6354 InfDataAndPf <> Assign constr
+R6358:6358 InfDataAndPf <> e var
+R6356:6356 InfDataAndPf <> v var
+R6344:6346 InfDataAndPf <> vs1 var
+var 6452:6458 evalCmd_coind SeqCase
+R6502:6541 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R6542:6548 Coq.Init.Logic <> :type_scope:'exists'_x_'..'_x_','_x not
+R6552:6553 Coq.Init.Logic <> :type_scope:'exists'_x_'..'_x_','_x not
+R6566:6569 Coq.Init.Logic <> :type_scope:x_'/\'_x not
+R6554:6554 InfDataAndPf <> evalCmd_coind.R var
+R6563:6565 InfDataAndPf <> vs2 var
+R6560:6561 InfDataAndPf <> c1 var
+R6556:6558 InfDataAndPf <> vs1 var
+R6570:6570 InfDataAndPf <> evalCmd_coind.R var
+R6579:6581 InfDataAndPf <> vs3 var
+R6576:6577 InfDataAndPf <> c2 var
+R6572:6574 InfDataAndPf <> vs2 var
+R6481:6481 InfDataAndPf <> evalCmd_coind.R var
+R6499:6501 InfDataAndPf <> vs3 var
+R6488:6490 InfDataAndPf <> Seq constr
+R6495:6496 InfDataAndPf <> c2 var
+R6492:6493 InfDataAndPf <> c1 var
+R6483:6485 InfDataAndPf <> vs1 var
+var 6597:6605 evalCmd_coind WhileCase
+R6647:6686 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R6687:6687 Coq.Init.Logic <> :type_scope:x_'\/'_x not
+R6714:6755 Coq.Init.Logic <> :type_scope:x_'\/'_x not
+R6703:6706 Coq.Init.Logic <> :type_scope:x_'/\'_x not
+R6701:6701 Coq.Init.Logic <> :type_scope:x_'='_x not
+R6688:6694 InfDataAndPf <> evalExp def
+R6700:6700 InfDataAndPf <> e var
+R6696:6698 InfDataAndPf <> vs1 var
+R6710:6710 Coq.Init.Logic <> :type_scope:x_'='_x not
+R6707:6709 InfDataAndPf <> vs3 var
+R6711:6713 InfDataAndPf <> vs1 var
+R6756:6762 Coq.Init.Logic <> :type_scope:'exists'_x_'..'_x_','_x not
+R6766:6767 Coq.Init.Logic <> :type_scope:'exists'_x_'..'_x_','_x not
+R6784:6787 Coq.Init.Logic <> :type_scope:x_'/\'_x not
+R6781:6782 Coq.Init.Logic <> :type_scope:x_'<>'_x not
+R6768:6774 InfDataAndPf <> evalExp def
+R6780:6780 InfDataAndPf <> e var
+R6776:6778 InfDataAndPf <> vs1 var
+R6799:6802 Coq.Init.Logic <> :type_scope:x_'/\'_x not
+R6788:6788 InfDataAndPf <> evalCmd_coind.R var
+R6796:6798 InfDataAndPf <> vs2 var
+R6794:6794 InfDataAndPf <> c var
+R6790:6792 InfDataAndPf <> vs1 var
+R6803:6803 InfDataAndPf <> evalCmd_coind.R var
+R6821:6823 InfDataAndPf <> vs3 var
+R6810:6814 InfDataAndPf <> While constr
+R6818:6818 InfDataAndPf <> c var
+R6816:6816 InfDataAndPf <> e var
+R6805:6807 InfDataAndPf <> vs2 var
+R6626:6626 InfDataAndPf <> evalCmd_coind.R var
+R6644:6646 InfDataAndPf <> vs3 var
+R6633:6637 InfDataAndPf <> While constr
+R6641:6641 InfDataAndPf <> c var
+R6639:6639 InfDataAndPf <> e var
+R6628:6630 InfDataAndPf <> vs1 var
+prf 6837:6849 <> evalCmd_coind
+R6881:6884 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R6885:6891 InfDataAndPf <> evalCmd coind
+R6899:6901 InfDataAndPf <> vs2 var
+R6897:6897 InfDataAndPf <> c var
+R6893:6895 InfDataAndPf <> vs1 var
+R6870:6870 InfDataAndPf <> evalCmd_coind.R var
+R6878:6880 InfDataAndPf <> vs2 var
+R6876:6876 InfDataAndPf <> c var
+R6872:6874 InfDataAndPf <> vs1 var
+R6950:6959 InfDataAndPf <> evalCmd_coind.AssignCase var
+R6950:6959 InfDataAndPf <> evalCmd_coind.AssignCase var
+R6950:6959 InfDataAndPf <> evalCmd_coind.AssignCase var
+R6994:7000 InfDataAndPf <> evalCmd_coind.SeqCase var
+R6994:7000 InfDataAndPf <> evalCmd_coind.SeqCase var
+R7058:7066 InfDataAndPf <> evalCmd_coind.WhileCase var
+R7058:7066 InfDataAndPf <> evalCmd_coind.WhileCase var
+R7134:7146 InfDataAndPf evalCmd_coind <> sec
+def 7159:7164 <> optExp
+R7169:7171 InfDataAndPf <> exp ind
+R7175:7177 InfDataAndPf <> exp ind
+R7189:7189 InfDataAndPf <> e var
+R7200:7203 InfDataAndPf <> Plus constr
+R7206:7210 InfDataAndPf <> Const constr
+R7220:7225 InfDataAndPf <> optExp def
+R7227:7227 InfDataAndPf <> e var
+R7233:7236 InfDataAndPf <> Plus constr
+R7247:7250 InfDataAndPf <> Plus constr
+R7265:7270 InfDataAndPf <> optExp def
+R7253:7258 InfDataAndPf <> optExp def
+R7285:7285 InfDataAndPf <> e var
+def 7304:7309 <> optCmd
+R7314:7316 InfDataAndPf <> cmd ind
+R7319:7321 InfDataAndPf <> cmd ind
+R7333:7333 InfDataAndPf <> c var
+R7344:7349 InfDataAndPf <> Assign constr
+R7358:7363 InfDataAndPf <> Assign constr
+R7368:7373 InfDataAndPf <> optExp def
+R7382:7384 InfDataAndPf <> Seq constr
+R7395:7397 InfDataAndPf <> Seq constr
+R7412:7417 InfDataAndPf <> optCmd def
+R7400:7405 InfDataAndPf <> optCmd def
+R7427:7431 InfDataAndPf <> While constr
+R7440:7444 InfDataAndPf <> While constr
+R7458:7463 InfDataAndPf <> optCmd def
+R7465:7465 InfDataAndPf <> c var
+R7447:7452 InfDataAndPf <> optExp def
+prf 7482:7495 <> optExp_correct
+R7533:7533 Coq.Init.Logic <> :type_scope:x_'='_x not
+R7512:7518 InfDataAndPf <> evalExp def
+R7524:7529 InfDataAndPf <> optExp def
+R7531:7531 InfDataAndPf <> e var
+R7520:7521 InfDataAndPf <> vs var
+R7534:7540 InfDataAndPf <> evalExp def
+R7545:7545 InfDataAndPf <> e var
+R7542:7543 InfDataAndPf <> vs var
+R7666:7670 InfDataAndPf <> Const constr
+R7666:7670 InfDataAndPf <> Const constr
+R7832:7832 Coq.Init.Datatypes <> O constr
+R7868:7868 Coq.Init.Datatypes <> S constr
+R7832:7832 Coq.Init.Datatypes <> O constr
+R7868:7868 Coq.Init.Datatypes <> S constr
+R7969:7982 InfDataAndPf <> optExp_correct thm
+R8042:8048 InfDataAndPf <> evalCmd coind
+R8042:8048 InfDataAndPf <> evalCmd coind
+prf 8205:8219 <> optCmd_correct1
+R8258:8298 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R8299:8305 InfDataAndPf <> evalCmd coind
+R8322:8324 InfDataAndPf <> vs2 var
+R8312:8317 InfDataAndPf <> optCmd def
+R8319:8319 InfDataAndPf <> c var
+R8307:8309 InfDataAndPf <> vs1 var
+R8241:8247 InfDataAndPf <> evalCmd coind
+R8255:8257 InfDataAndPf <> vs2 var
+R8253:8253 InfDataAndPf <> c var
+R8249:8251 InfDataAndPf <> vs1 var
+R8344:8356 InfDataAndPf <> evalCmd_coind thm
+R8376:8382 Coq.Init.Logic <> :type_scope:'exists'_x_'..'_x_','_x not
+R8384:8385 Coq.Init.Logic <> :type_scope:'exists'_x_'..'_x_','_x not
+R8403:8406 Coq.Init.Logic <> :type_scope:x_'/\'_x not
+R8386:8392 InfDataAndPf <> evalCmd coind
+R8400:8402 InfDataAndPf <> vs2 var
+R8398:8398 InfDataAndPf <> c var
+R8394:8396 InfDataAndPf <> vs1 var
+R8409:8409 Coq.Init.Logic <> :type_scope:x_'='_x not
+R8407:8408 InfDataAndPf <> c' var
+R8410:8415 InfDataAndPf <> optCmd def
+R8417:8417 InfDataAndPf <> c var
+R8468:8470 Coq.Init.Logic <> :type_scope:x_'='_x not
+R8471:8476 InfDataAndPf <> optCmd def
+R8468:8470 Coq.Init.Logic <> :type_scope:x_'='_x not
+R8471:8476 InfDataAndPf <> optCmd def
+R8344:8356 InfDataAndPf <> evalCmd_coind thm
+R8376:8382 Coq.Init.Logic <> :type_scope:'exists'_x_'..'_x_','_x not
+R8384:8385 Coq.Init.Logic <> :type_scope:'exists'_x_'..'_x_','_x not
+R8403:8406 Coq.Init.Logic <> :type_scope:x_'/\'_x not
+R8386:8392 InfDataAndPf <> evalCmd coind
+R8400:8402 InfDataAndPf <> vs2 var
+R8398:8398 InfDataAndPf <> c var
+R8394:8396 InfDataAndPf <> vs1 var
+R8409:8409 Coq.Init.Logic <> :type_scope:x_'='_x not
+R8407:8408 InfDataAndPf <> c' var
+R8410:8415 InfDataAndPf <> optCmd def
+R8417:8417 InfDataAndPf <> c var
+prf 8646:8660 <> optCmd_correct2
+R8708:8749 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R8750:8756 InfDataAndPf <> evalCmd coind
+R8764:8766 InfDataAndPf <> vs2 var
+R8762:8762 InfDataAndPf <> c var
+R8758:8760 InfDataAndPf <> vs1 var
+R8682:8688 InfDataAndPf <> evalCmd coind
+R8705:8707 InfDataAndPf <> vs2 var
+R8695:8700 InfDataAndPf <> optCmd def
+R8702:8702 InfDataAndPf <> c var
+R8690:8692 InfDataAndPf <> vs1 var
+R8788:8800 InfDataAndPf <> evalCmd_coind thm
+R8820:8826 InfDataAndPf <> evalCmd coind
+R8843:8845 InfDataAndPf <> vs2 var
+R8833:8838 InfDataAndPf <> optCmd def
+R8840:8840 InfDataAndPf <> c var
+R8828:8830 InfDataAndPf <> vs1 var
+R8788:8800 InfDataAndPf <> evalCmd_coind thm
+R8820:8826 InfDataAndPf <> evalCmd coind
+R8843:8845 InfDataAndPf <> vs2 var
+R8833:8838 InfDataAndPf <> optCmd def
+R8840:8840 InfDataAndPf <> c var
+R8828:8830 InfDataAndPf <> vs1 var
+prf 8889:8902 <> optCmd_correct
+R8950:8954 Coq.Init.Logic <> :type_scope:x_'<->'_x not
+R8924:8930 InfDataAndPf <> evalCmd coind
+R8947:8949 InfDataAndPf <> vs2 var
+R8937:8942 InfDataAndPf <> optCmd def
+R8944:8944 InfDataAndPf <> c var
+R8932:8934 InfDataAndPf <> vs1 var
+R8955:8961 InfDataAndPf <> evalCmd coind
+R8969:8971 InfDataAndPf <> vs2 var
+R8967:8967 InfDataAndPf <> c var
+R8963:8965 InfDataAndPf <> vs1 var
+R9020:9034 InfDataAndPf <> optCmd_correct2 thm
+R8995:9009 InfDataAndPf <> optCmd_correct1 thm
+R8995:9009 InfDataAndPf <> optCmd_correct1 thm
+R9020:9034 InfDataAndPf <> optCmd_correct2 thm
+R8995:9009 InfDataAndPf <> optCmd_correct1 thm

@@ -1,0 +1,45 @@
+DIGEST d6b3bb48fea4c4b948ce28f65afd2cd2
+FSubsetTypesAndVars
+R15:19 Coq.Arith.Arith <> <> lib
+R37:52 Cpdt.CpdtTactics <> <> lib
+R61:64 Coq.Init.Nat <> pred def
+R79:82 Coq.Init.Nat <> pred def
+prf 117:120 <> zgtz
+R127:129 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R130:134 Coq.Init.Logic <> False ind
+R125:125 Coq.Init.Peano <> :nat_scope:x_'>'_x not
+def 163:174 <> pred_strong1
+R179:181 Coq.Init.Datatypes <> nat ind
+R187:189 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R190:192 Coq.Init.Datatypes <> nat ind
+R185:185 Coq.Init.Peano <> :nat_scope:x_'>'_x not
+R184:184 SubsetTypesAndVars <> n var
+R203:203 SubsetTypesAndVars <> n var
+R212:212 Coq.Init.Datatypes <> O constr
+R225:225 Coq.Init.Peano <> :nat_scope:x_'>'_x not
+R237:240 SubsetTypesAndVars <> zgtz thm
+R242:243 SubsetTypesAndVars <> pf var
+R256:256 Coq.Init.Datatypes <> S constr
+R288:299 SubsetTypesAndVars <> pred_strong1 def
+prf 311:317 <> two_gt0
+R322:322 Coq.Init.Peano <> :nat_scope:x_'>'_x not
+R357:368 SubsetTypesAndVars <> pred_strong1 def
+R370:376 SubsetTypesAndVars <> two_gt0 thm
+def 391:403 <> pred_strong1'
+R408:410 Coq.Init.Datatypes <> nat ind
+R416:419 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R420:422 Coq.Init.Datatypes <> nat ind
+R414:414 Coq.Init.Peano <> :nat_scope:x_'>'_x not
+R413:413 SubsetTypesAndVars <> n var
+R434:434 SubsetTypesAndVars <> n var
+R446:448 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R449:451 Coq.Init.Datatypes <> nat ind
+R444:444 Coq.Init.Peano <> :nat_scope:x_'>'_x not
+R443:443 SubsetTypesAndVars <> n var
+R462:462 Coq.Init.Datatypes <> O constr
+R475:475 Coq.Init.Peano <> :nat_scope:x_'>'_x not
+R487:490 SubsetTypesAndVars <> zgtz thm
+R492:493 SubsetTypesAndVars <> pf var
+R508:508 Coq.Init.Datatypes <> S constr
+R547:558 SubsetTypesAndVars <> pred_strong1 def
+R567:569 Coq.Init.Specif <> sig ind
