@@ -1,0 +1,370 @@
+DIGEST ffbf1b5c0a7439c1a1b827f35f45e3c5
+Fex
+R100:117 Coq.Setoids.Setoid <> <> lib
+mod 601:603 <> ex1
+ind 616:620 ex1 truth
+constr 632:634 ex1 Yes
+constr 638:639 ex1 No
+constr 643:647 ex1 Maybe
+R635:635 ex <> truth ind
+R640:640 ex <> truth ind
+R648:648 ex <> truth ind
+def 662:664 ex1 not
+R671:675 ex ex1 truth ind
+R680:684 ex ex1 truth ind
+R697:697 ex <> a var
+R708:710 ex ex1 Yes constr
+R715:716 ex ex1 No constr
+R722:723 ex ex1 No constr
+R728:730 ex ex1 Yes constr
+R736:740 ex ex1 Maybe constr
+R745:749 ex ex1 Maybe constr
+R765:767 ex ex1 not def
+R769:771 ex ex1 Yes constr
+def 786:788 ex1 and
+R797:801 ex ex1 truth ind
+R806:810 ex ex1 truth ind
+R821:821 ex <> a var
+R830:832 ex ex1 Yes constr
+R837:837 ex <> b var
+R841:842 ex ex1 No constr
+R853:853 ex <> b var
+R869:873 ex ex1 Maybe constr
+R878:882 ex ex1 Maybe constr
+R898:899 ex ex1 No constr
+R914:918 ex ex1 Maybe constr
+R923:927 ex ex1 Maybe constr
+def 946:947 ex1 or
+R956:960 ex ex1 truth ind
+R965:969 ex ex1 truth ind
+R982:982 ex <> a var
+R993:995 ex ex1 Yes constr
+R1006:1006 ex <> b var
+R1025:1029 ex ex1 Maybe constr
+R1034:1038 ex ex1 Maybe constr
+R1057:1059 ex ex1 Yes constr
+R1079:1080 ex ex1 No constr
+R1085:1085 ex <> b var
+R1091:1095 ex ex1 Maybe constr
+R1100:1104 ex ex1 Maybe constr
+prf 1120:1127 ex1 and_comm
+R1145:1149 ex ex1 truth ind
+R1160:1162 Coq.Init.Logic <> :type_scope:x_'='_x not
+R1153:1155 ex ex1 and def
+R1159:1159 ex <> b var
+R1157:1157 ex <> a var
+R1163:1165 ex ex1 and def
+R1169:1169 ex <> a var
+R1167:1167 ex <> b var
+prf 1214:1220 ex1 or_comm
+R1238:1242 ex ex1 truth ind
+R1252:1254 Coq.Init.Logic <> :type_scope:x_'='_x not
+R1246:1247 ex ex1 or def
+R1251:1251 ex <> b var
+R1249:1249 ex <> a var
+R1255:1256 ex ex1 or def
+R1260:1260 ex <> a var
+R1258:1258 ex <> b var
+prf 1305:1312 ex1 or_distr
+R1332:1336 ex ex1 truth ind
+R1354:1356 Coq.Init.Logic <> :type_scope:x_'='_x not
+R1340:1341 ex ex1 or def
+R1353:1353 ex <> c var
+R1344:1346 ex ex1 and def
+R1350:1350 ex <> b var
+R1348:1348 ex <> a var
+R1357:1359 ex ex1 and def
+R1371:1372 ex ex1 or def
+R1376:1376 ex <> c var
+R1374:1374 ex <> b var
+R1362:1363 ex ex1 or def
+R1367:1367 ex <> c var
+R1365:1365 ex <> a var
+R1424:1426 ex ex1 <> mod
+mod 2241:2243 <> ex2
+R2261:2264 Coq.Lists.List <> <> lib
+ind 2301:2305 ex2 slist
+constr 2329:2333 ex2 s_nil
+constr 2347:2357 ex2 s_singleton
+constr 2376:2381 ex2 s_cons
+R2337:2341 ex <> slist ind
+R2362:2365 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R2366:2370 ex <> slist ind
+R2392:2395 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R2403:2406 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R2407:2411 ex <> slist ind
+R2396:2400 ex <> slist ind
+R2385:2389 ex <> slist ind
+def 2426:2433 ex2 flattern
+R2452:2456 ex ex2 slist ind
+R2458:2458 ex <> X var
+R2463:2466 Coq.Init.Datatypes <> list ind
+R2468:2468 ex <> X var
+R2481:2482 ex <> sl var
+R2505:2507 Coq.Init.Datatypes <> nil constr
+R2513:2523 ex ex2 s_singleton constr
+R2531:2532 Coq.Init.Datatypes <> :list_scope:x_'::'_x not
+R2533:2535 Coq.Init.Datatypes <> nil constr
+R2541:2546 ex ex2 s_cons constr
+R2559:2559 Coq.Init.Datatypes <> :list_scope:x_'++'_x not
+R2572:2577 Coq.Init.Datatypes <> :list_scope:x_'++'_x not
+R2590:2590 Coq.Init.Datatypes <> :list_scope:x_'++'_x not
+R2560:2567 ex <> flattern def
+R2578:2585 ex <> flattern def
+def 2608:2612 ex2 s_app
+R2634:2638 ex ex2 slist ind
+R2640:2640 ex <> X var
+R2645:2649 ex ex2 slist ind
+R2651:2651 ex <> X var
+R2663:2664 ex <> s1 var
+R2686:2687 ex <> s2 var
+R2693:2703 ex ex2 s_singleton constr
+R2716:2721 ex ex2 s_cons constr
+R2725:2726 ex <> s2 var
+R2732:2737 ex ex2 s_cons constr
+R2748:2753 ex ex2 s_cons constr
+R2758:2762 ex <> s_app def
+R2768:2769 ex <> s2 var
+prf 2785:2798 ex2 flattern_distr
+R2827:2831 ex ex2 slist ind
+R2833:2833 ex <> X var
+R2857:2859 Coq.Init.Logic <> :type_scope:x_'='_x not
+R2837:2844 ex ex2 flattern def
+R2847:2851 ex ex2 s_app def
+R2855:2855 ex <> b var
+R2853:2853 ex <> a var
+R2860:2860 Coq.Init.Datatypes <> :list_scope:x_'++'_x not
+R2871:2876 Coq.Init.Datatypes <> :list_scope:x_'++'_x not
+R2887:2887 Coq.Init.Datatypes <> :list_scope:x_'++'_x not
+R2861:2868 ex ex2 flattern def
+R2870:2870 ex <> a var
+R2877:2884 ex ex2 flattern def
+R2886:2886 ex <> b var
+R2938:2946 Coq.Lists.List <> app_assoc thm
+R2938:2946 Coq.Lists.List <> app_assoc thm
+R2938:2946 Coq.Lists.List <> app_assoc thm
+R2992:2994 ex ex2 <> mod
+mod 3670:3672 <> ex3
+ind 3685:3689 ex3 binop
+constr 3700:3703 ex3 Plus
+constr 3707:3711 ex3 Times
+R3704:3704 ex <> binop ind
+R3712:3712 ex <> binop ind
+ind 3724:3726 ex3 var
+constr 3731:3734 ex3 vvar
+R3741:3743 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R3744:3746 ex <> var ind
+R3738:3740 Coq.Init.Datatypes <> nat ind
+ind 3759:3761 ex3 exp
+constr 3774:3778 ex3 Const
+constr 3795:3799 ex3 Binop
+constr 3832:3834 ex3 Var
+R3785:3788 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R3789:3791 ex <> exp ind
+R3782:3784 Coq.Init.Datatypes <> nat ind
+R3808:3811 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R3815:3818 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R3822:3825 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R3826:3828 ex <> exp ind
+R3819:3821 ex <> exp ind
+R3812:3814 ex <> exp ind
+R3803:3807 ex ex3 binop ind
+R3841:3844 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R3845:3847 ex <> exp ind
+R3838:3840 ex ex3 var ind
+def 3862:3872 ex3 binopDenote
+R3879:3883 ex ex3 binop ind
+R3895:3895 ex <> b var
+R3904:3907 ex ex3 Plus constr
+R3912:3915 Coq.Init.Peano <> plus syndef
+R3919:3923 ex ex3 Times constr
+R3928:3931 Coq.Init.Peano <> mult syndef
+def 3948:3956 ex3 expDenote
+R3968:3970 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R3971:3973 Coq.Init.Datatypes <> nat ind
+R3965:3967 ex ex3 var ind
+R3981:3983 ex ex3 exp ind
+R3988:3990 Coq.Init.Datatypes <> nat ind
+R4003:4003 ex <> e var
+R4014:4018 ex ex3 Const constr
+R4031:4035 ex ex3 Binop constr
+R4049:4059 ex ex3 binopDenote def
+R4084:4092 ex <> expDenote def
+R4094:4096 ex <> ass var
+R4065:4073 ex <> expDenote def
+R4075:4077 ex <> ass var
+R4106:4108 ex ex3 Var constr
+R4115:4117 ex <> ass var
+def 4138:4147 ex3 const_fold
+R4154:4156 ex ex3 exp ind
+R4161:4163 ex ex3 exp ind
+R4175:4175 ex <> e var
+R4186:4190 ex ex3 Const constr
+R4197:4197 ex <> e var
+R4203:4205 ex ex3 Var constr
+R4212:4212 ex <> e var
+R4218:4222 ex ex3 Binop constr
+R4275:4279 ex ex3 Const constr
+R4285:4289 ex ex3 Const constr
+R4297:4301 ex ex3 Const constr
+R4305:4315 ex ex3 binopDenote def
+R4357:4361 ex ex3 Binop constr
+R4382:4391 ex <> const_fold def
+R4366:4375 ex <> const_fold def
+prf 4435:4452 ex3 const_fold_correct
+R4468:4470 ex ex3 exp ind
+R4483:4486 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R4487:4489 Coq.Init.Datatypes <> nat ind
+R4480:4482 ex ex3 var ind
+R4508:4510 Coq.Init.Logic <> :type_scope:x_'='_x not
+R4493:4501 ex ex3 expDenote def
+R4507:4507 ex <> e var
+R4503:4505 ex <> ass var
+R4511:4519 ex ex3 expDenote def
+R4526:4535 ex ex3 const_fold def
+R4537:4537 ex <> e var
+R4521:4523 ex <> ass var
+R4650:4652 ex ex3 <> mod
+mod 5697:5699 <> ex4
+R5719:5723 Coq.Arith.Arith <> <> lib
+ind 5738:5743 ex4 nbinop
+constr 5754:5758 ex4 NPlus
+constr 5762:5767 ex4 NTimes
+R5759:5759 ex <> nbinop ind
+R5768:5768 ex <> nbinop ind
+ind 5782:5787 ex4 bbinop
+constr 5798:5800 ex4 TEq
+constr 5804:5806 ex4 TLt
+R5801:5801 ex <> bbinop ind
+R5807:5807 ex <> bbinop ind
+ind 5822:5824 ex4 var
+constr 5835:5838 ex4 vvar
+R5845:5848 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R5849:5851 ex <> var ind
+R5842:5844 Coq.Init.Datatypes <> nat ind
+ind 5866:5873 ex4 bool_exp
+constr 5887:5889 ex4 BEq
+constr 5920:5922 ex4 BLt
+constr 5953:5958 ex4 BConst
+R5896:5899 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R5903:5906 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R5907:5914 ex <> bool_exp ind
+R5900:5902 Coq.Init.Datatypes <> nat ind
+R5893:5895 Coq.Init.Datatypes <> nat ind
+R5929:5932 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R5936:5939 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R5940:5947 ex <> bool_exp ind
+R5933:5935 Coq.Init.Datatypes <> nat ind
+R5926:5928 Coq.Init.Datatypes <> nat ind
+R5966:5969 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R5970:5977 ex <> bool_exp ind
+R5962:5965 Coq.Init.Datatypes <> bool ind
+ind 5995:6001 ex4 nat_exp
+constr 6016:6021 ex4 NConst
+constr 6044:6049 ex4 NBinop
+constr 6097:6100 ex4 NVar
+constr 6123:6125 ex4 NIf
+R6028:6031 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R6032:6038 ex <> nat_exp ind
+R6025:6027 Coq.Init.Datatypes <> nat ind
+R6059:6062 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R6070:6073 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R6081:6084 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R6085:6091 ex <> nat_exp ind
+R6074:6080 ex <> nat_exp ind
+R6063:6069 ex <> nat_exp ind
+R6053:6058 ex ex4 nbinop ind
+R6107:6110 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R6111:6117 ex <> nat_exp ind
+R6104:6106 ex ex4 var ind
+R6137:6140 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R6148:6151 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R6159:6162 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R6163:6169 ex <> nat_exp ind
+R6152:6158 ex <> nat_exp ind
+R6141:6147 ex <> nat_exp ind
+R6129:6136 ex ex4 bool_exp ind
+def 6186:6197 ex4 bbinopDenote
+R6213:6214 ex <> bb var
+R6225:6227 ex ex4 TEq constr
+R6232:6238 Coq.Arith.EqNat <> beq_nat syndef
+R6244:6246 ex ex4 TLt constr
+R6251:6257 Coq.Arith.PeanoNat Nat leb def
+def 6280:6291 ex4 nbinopDenote
+R6307:6308 ex <> nb var
+R6319:6323 ex ex4 NPlus constr
+R6328:6331 Coq.Init.Peano <> plus syndef
+R6337:6342 ex ex4 NTimes constr
+R6347:6350 Coq.Init.Peano <> mult syndef
+def 6371:6380 ex4 bexpDenote
+R6387:6394 ex ex4 bool_exp ind
+R6399:6402 Coq.Init.Datatypes <> bool ind
+R6417:6417 ex <> e var
+R6430:6432 ex ex4 BEq constr
+R6443:6449 Coq.Arith.EqNat <> beq_nat syndef
+R6463:6465 ex ex4 BLt constr
+R6476:6482 Coq.Arith.PeanoNat Nat leb def
+R6496:6501 ex ex4 BConst constr
+def 6531:6540 ex4 nexpDenote
+R6552:6555 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R6556:6558 Coq.Init.Datatypes <> nat ind
+R6549:6551 ex ex4 var ind
+R6566:6572 ex ex4 nat_exp ind
+R6577:6579 Coq.Init.Datatypes <> nat ind
+R6594:6594 ex <> e var
+R6607:6612 ex ex4 NConst constr
+R6629:6634 ex ex4 NBinop constr
+R6648:6659 ex ex4 nbinopDenote def
+R6685:6694 ex <> nexpDenote def
+R6696:6698 ex <> ass var
+R6665:6674 ex <> nexpDenote def
+R6676:6678 ex <> ass var
+R6710:6713 ex ex4 NVar constr
+R6720:6722 ex <> ass var
+R6732:6734 ex ex4 NIf constr
+R6751:6760 ex ex4 bexpDenote def
+R6796:6805 ex <> nexpDenote def
+R6807:6809 ex <> ass var
+R6771:6780 ex <> nexpDenote def
+R6782:6784 ex <> ass var
+def 6836:6845 ex4 fold_const
+R6852:6858 ex ex4 nat_exp ind
+R6863:6869 ex ex4 nat_exp ind
+R6884:6884 ex <> e var
+R6897:6902 ex ex4 NBinop constr
+R6958:6963 ex ex4 NConst constr
+R6969:6974 ex ex4 NConst constr
+R6982:6987 ex ex4 NConst constr
+R6991:7002 ex ex4 nbinopDenote def
+R7047:7052 ex ex4 NBinop constr
+R7073:7082 ex <> fold_const def
+R7057:7066 ex <> fold_const def
+R7121:7123 ex ex4 NIf constr
+R7140:7149 ex ex4 bexpDenote def
+R7181:7190 ex <> fold_const def
+R7160:7169 ex <> fold_const def
+R7207:7207 ex <> e var
+prf 7227:7244 ex4 fold_const_correct
+R7260:7266 ex ex4 nat_exp ind
+R7279:7281 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R7282:7284 Coq.Init.Datatypes <> nat ind
+R7276:7278 ex ex4 var ind
+R7310:7312 Coq.Init.Logic <> :type_scope:x_'='_x not
+R7294:7303 ex ex4 nexpDenote def
+R7309:7309 ex <> e var
+R7305:7307 ex <> ass var
+R7313:7322 ex ex4 nexpDenote def
+R7329:7338 ex ex4 fold_const def
+R7340:7340 ex <> e var
+R7324:7326 ex <> ass var
+R7517:7521 Coq.Arith.PeanoNat <> :nat_scope:x_'<=?'_x not
+R7546:7549 Coq.Arith.PeanoNat <> :nat_scope:x_'=?'_x not
+R7517:7521 Coq.Arith.PeanoNat <> :nat_scope:x_'<=?'_x not
+R7517:7521 Coq.Arith.PeanoNat <> :nat_scope:x_'<=?'_x not
+R7546:7549 Coq.Arith.PeanoNat <> :nat_scope:x_'=?'_x not
+R7546:7549 Coq.Arith.PeanoNat <> :nat_scope:x_'=?'_x not
+R7546:7549 Coq.Arith.PeanoNat <> :nat_scope:x_'=?'_x not
+R7546:7549 Coq.Arith.PeanoNat <> :nat_scope:x_'=?'_x not
+R7570:7572 ex ex4 <> mod
+mod 8064:8066 <> ex5
+R8074:8076 ex ex5 <> mod
