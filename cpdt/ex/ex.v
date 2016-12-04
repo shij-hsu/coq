@@ -435,7 +435,25 @@ end
 
 Module ex11.
   Definition var := nat.
-  
+
+  Inductive exp : Type :=
+  | Const : nat -> exp
+  | Plus : nat -> nat -> exp
+  | Pair : exp -> exp -> exp
+  | Fst : exp -> exp
+  | Snd : exp -> exp
+  | Var : var -> exp.
+
+  Inductive cmd : Type :=
+  | Cmd : var -> exp -> cmd.
+
+  Inductive val : Type :=
+  | NumVal : nat -> val
+  | PairVar : val -> val -> val.
+
+  Inductive ass : Type :=
+  | Ass : var -> exp -> ass.
+
 End ex11.
 
 
@@ -454,6 +472,54 @@ End ex11.
 
 #</ol>#%\end{enumerate}% *)
 
+Module ex12.
+  CoInductive cotree (X : Type) : Type :=
+  | Node : X -> cotree X -> cotree X -> cotree X.
+
+  CoFixpoint everywhere (X : Type) (a : X) : cotree X :=
+    Node X a (everywhere X a) (everywhere X a).
+
+  CoFixpoint map (X : Type) (Y : Type) (f : X -> X -> Y) (t1 t2 : cotree X) : cotree Y :=
+    match t1, t2 with
+    | Node _ a1 t11 t12, Node _ a2 t21 t22 =>
+      Node Y (f a1 a2) (map X Y f t11 t21) (map X Y f t12 t22)
+    end.
+
+  Definition falses := everywhere _ false.
+
+  CoFixpoint true_false :=
+    Node _ true false_true false_true
+  with false_true :=
+         Node _ false true_false true_false.
+
+  CoInductive co_equal (X : Type)  : cotree X -> cotree X -> Prop:=
+  | Eq : forall l1 l2 r1 r2 e1 e2,
+      co_equal X l1 l2 ->
+      co_equal X r1 r2 -> e1 = e2 ->
+      co_equal X (Node _ e1 l1 r1) (Node _ e2 l2 r2).
+  Lemma orb_false_r : forall x, orb x false = x.
+    intros; destruct x; auto. Qed.
+  Hint Resolve orb_false_r.
+
+  Definition frob (X : Type) (t : cotree X) :=
+  match t with
+  | Node _ a t1 t2 => Node _ a t1 t2
+  end.
+
+  Lemma frob_eq : forall (X : Type) (t : cotree X), t = frob _ t.
+    destruct t; auto. Qed.
+
+  Hint Resolve frob_eq.
+  
+  Lemma f : co_equal _ true_false (map _ _ orb true_false falses).
+    cofix; rewrite (frob_eq _ true_false);
+      rewrite (frob_eq _ falses); simpl; fold falses.
+    assert ((map bool bool orb (Node bool true false_true false_true)
+                 (Node bool false falses falses)) =
+            Node _ true (map _ _ orb false_true falses) (map _ _ orb false_true falses)).
+    { rewrite (frob_eq _ falses); rewrite (frob_eq _ false_true).
+      
+End ex12.
 
 (** * From Subset *)
 
