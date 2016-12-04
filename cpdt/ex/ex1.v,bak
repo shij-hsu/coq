@@ -1,26 +1,17 @@
-(* Copyright (c) 2008-2012, 2015, Adam Chlipala
- * 
- * This work is licensed under a
- * Creative Commons Attribution-Noncommercial-No Derivative Works 3.0
- * Unported License.
- * The license text is available at:
- *   http://creativecommons.org/licenses/by-nc-nd/3.0/
+(* Copyright (c) 2016-2016, Shijie Xu
  *)
 
-(* begin hide *)
-Require Import List.
+
+(** %\chapter{From Inductive Types}% *)
 
 Require Import Cpdt.CpdtTactics.
-(* end hide *)
-
-(** These exercises were originally included inline in the text, but my latest feeling is that I don't have the time to maintain the exercises at a sufficient quality level to match the level I'm targetting for the rest of the book.  I'm including them in this file for now. *)
-
-(** * From InductiveTypes *)
+Require Import Cpdt.DepList.
+Require Import Coq.Setoids.Setoid.
 
 (** %\begin{enumerate}%#<ol>#
 
-%\item%#<li># Define an inductive type [truth] with three constructors, [Yes], [No], and [Maybe].  [Yes] stands for certain truth, [No] for certain falsehood, and [Maybe] for an unknown situation.  Define %``%#"#not,#"#%''% %``%#"#and,#"#%''% and %``%#"#or#"#%''% for this replacement boolean algebra.  Prove that your implementation of %``%#"#and#"#%''% is commutative and distributes over your implementation of %``%#"#or.#"#%''%#</li>#
- *)
+%\item%#<li># Define an inductive type [truth] with three constructors, [Yes], [No], and [Maybe]. [Yes] stands for certain truth, [No] for certain falsehood, and [Maybe] for an unknown situation.  Define %``%#"#not,#"#%''% %``%#"#and,#"#%''% and %``%#"#or#"#%''% for this replacement boolean algebra.  Prove that your implementation of %``%#"#and#"#%''% is commutative and distributes over your implementation of %``%#"#or.#"#%''%#</li>#
+*)
 
 Module ex1.
 Inductive truth : Type := Yes | No | Maybe.
@@ -62,6 +53,8 @@ Lemma or_distr : forall (a b c : truth), or (and a b) c = and (or a c) (or b c).
   intros; destruct a, b, c; auto. Qed.
 
 End ex1.
+
+
 (**
 %\item%#<li># Define an inductive type [slist] that implements lists with support for constant-time concatenation.  This type should be polymorphic in a choice of type for data values in lists.  The type [slist] should have three constructors, for empty lists, singleton lists, and concatenation.  Define a function [flatten] that converts [slist]s to [list]s.  (You will want to run [Require Import] %\coqdocconstructor{%#<tt>#List#</tt>#%}%[.] to bring list definitions into scope.)  Finally, prove that [flatten] distributes over concatenation, where the two sides of your quantified equality will use the [slist] and [list] versions of concatenation, as appropriate.  Recall from Chapter 2 that the infix operator [++] is syntactic sugar for the [list] concatenation function [app].#</li>#
  *)
@@ -91,9 +84,10 @@ Lemma flattern_distr : forall (X : Type) (a b : slist X), flattern (s_app a b) =
   - simpl. rewrite <- app_assoc. rewrite <- (IHa2 b). reflexivity. Qed.
 End ex2.
 
+
 (**
 %\item%#<li># Modify the first example language of Chapter 2 to include variables, where variables are represented with [nat].  Extend the syntax and semantics of expressions to accommodate the change.  Your new [expDenote] function should take as a new extra first argument a value of type [var -> nat], where [var] is a synonym for naturals-as-variables, and the function assigns a value to each variable.  Define a constant folding function which does a bottom-up pass over an expression, at each stage replacing every binary operation on constants with an equivalent constant.  Prove that constant folding preserves the meanings of expressions.#</li>#
- *)
+*)
 
 Module ex3.
 Inductive binop : Set := Plus | Times.
@@ -196,7 +190,6 @@ Module ex4.
     - destruct b; try destruct b; auto; simpl; intuition; destruct (n <=? n0);
         destruct (n =? n0); auto. Qed.
 End ex4.
-
 (**
 %\item%#<li># Define mutually inductive types of even and odd natural numbers, such that any natural number is isomorphic to a value of one of the two types.  (This problem does not ask you to prove that correspondence, though some interpretations of the task may be interesting exercises.)  Write a function that computes the sum of two even numbers, such that the function type guarantees that the output is even as well.  Prove that this function is commutative.#</li>#
  *)
@@ -234,87 +227,45 @@ End ex5.
  *)
 
 Module ex6.
-(**
-every nat_tree has two constructors:
-1. Only a leaf, which take a natural;
-2. A function that map naturals to nat_trees.
- *)
+  Require Import List.
+  CoInductive stream (X : Type) : Type :=
+  | Cons : X -> stream X -> stream X.
+  Fixpoint take (X : Type) (s : stream X) (n : nat) : X :=
+    match s with
+    | Cons _ x s' => match n with
+                  | O => x
+                  | S n' => take X s' n'
+                  end
+    end.
   
-  Inductive nat_tree : Type :=
+  CoFixpoint map (X : Type) (Y:Type) (f : X -> Y) (s : stream X) : stream Y:=
+    match s with
+    | Cons _ h s' => Cons _ (f h) (map _ _ f s')
+    end.
+  
+  Inductive nat_tree : Set :=
   | Leaf : nat -> nat_tree
-  | Branch : (nat -> nat_tree) -> nat_tree.
-
-(** 
-1. return type must be coinductive type;
-2. Guard constraint: all recursive call must be in the constructors. 
- *)
-  
+  | Node : stream nat_tree -> nat_tree.
+(*
   Fixpoint increment (t : nat_tree) : nat_tree :=
     match t with
     | Leaf n => Leaf (n+1)
-    | Branch f => Branch (fun n => increment (f n))
+    | Node ns => Node (map nat_tree nat_tree increment ns)
     end.
   
   Fixpoint leapfrog (i : nat) (t : nat_tree) : nat :=
     match t with
     | Leaf n => n
-    | Branch f => leapfrog (i+1) (f i)
+    | Node ch => leapfrog (i+1) (take nat_tree ch i)
     end.
-
-  Lemma leapfrog_increment : forall (t : nat_tree) (i : nat),
-      leapfrog i (increment t) = leapfrog i t + 1.
-    induction t; simpl; auto. Qed.
+  *)
 End ex6.
 
 (**
 %\item%#<li># Define a type of trees of trees of trees of (repeat to infinity).  That is, define an inductive type [trexp], whose members are either base cases containing natural numbers or binary trees of [trexp]s.  Base your definition on a parameterized binary tree type [btree] that you will also define, so that [trexp] is defined as a nested inductive type.  Define a function [total] that sums all of the naturals at the leaves of a [trexp].  Define a function [increment] that increments every leaf of a [trexp] by one.  Prove that, for all [tr], [total (increment tr) >= total tr].  On the way to finishing this proof, you will probably want to prove a lemma and add it as a hint using the syntax [Hint Resolve name_of_lemma.].#</li>#
- *)
 
-Module ex7.
-
-  Require Import Arith Bool.
-  Inductive trexp : Type :=
-  | Leaf : nat -> trexp
-  | Bin : trexp -> trexp -> trexp.
-
-  Fixpoint total (t : trexp) : nat :=
-    match t with
-    | Leaf n => n
-    | Bin t1 t2 => (total t1) + (total t2)
-    end.
-
-  Fixpoint increment (t : trexp) : trexp :=
-    match t with
-    | Leaf n => Leaf (n+1)
-    | Bin t1 t2 => Bin (increment t1) (increment t2)
-    end.
-
-  Lemma le_n_1_n : forall (n : nat), n + 1 = S n.
-    induction n; simpl; auto. Qed.
-  
-  Hint Resolve le_n_1_n.
-    
-  Lemma total_increment_add : forall (t : trexp), total (increment t) >= total t.
-    induction t; simpl; auto. rewrite (le_n_1_n n). auto.
-    apply plus_le_compat; assumption. Qed.
-
-(**
 %\item%#<li># Prove discrimination and injectivity theorems for the [nat_btree] type defined earlier in this chapter.  In particular, without using the tactics [discriminate], [injection], or [congruence], prove that no leaf equals any node, and prove that two equal nodes carry the same natural number.#</li>#
- *)
 
-    Lemma inj_leaf_node : forall (n : nat) (t1 t2 : trexp), Leaf n <> Bin t1 t2.
-    intros; unfold not; intros; inversion H. Qed.
-
-  Fixpoint nat_in_tree (n : nat) (t : trexp) : bool :=
-    match t with
-    | Leaf n' => beq_nat n n'
-    | Bin t1 t2 => orb (nat_in_tree n t1) (nat_in_tree n t2)
-    end.
-  Lemma node_equal : forall (t1 t2 : trexp), t1 = t2 -> (forall n : nat, nat_in_tree n t1 = nat_in_tree n t2).
-    induction t1, t2; intros; inversion H; simpl; auto. Qed.
-End ex7.
-
-(**
 #</ol>#%\end{enumerate}% *)
 
 
@@ -329,77 +280,14 @@ End ex7.
     %\item%#<li># [P -> ~ ~ P]#</li>#
     %\item%#<li># [P /\ (][Q \/ R) -> (][P /\ Q) \/ (][P /\ R)]#</li>#
   #</ol> </li>#%\end{enumerate}%
- *)
 
-Module ex8.
-  Lemma ex1 : (True \/ False ) /\ ( False \/ True ).
-    split; [ left | right ]; constructor. Qed.
-
-  Lemma ex2 : forall P : Prop, P -> ~ ~ P.
-    unfold not; intros;
-      match goal with
-      | [ H: _ |- False ] => apply H
-      end; assumption. Qed.
-
-  Lemma ex3 : forall (P Q R : Prop), P /\ (Q \/ R) -> (P /\ Q) \/ (P /\ R).
-    intros P Q R H; destruct H;
-      match goal with
-      | [ H : ?H1 \/ ?H2 |- _ ] => destruct H
-      end; [left | right]; split; repeat assumption. Qed.
-End ex8.
-
-(**
   %\item%#<li># Prove the following tautology of first-order logic, using only the tactics [apply], [assert], [assumption], [destruct], [eapply], %\coqdockw{%#<tt>#eassumption#</tt>#%}%, and %\coqdockw{%#<tt>#exists#</tt>#%}%.  You will probably find the [assert] tactic useful for stating and proving an intermediate lemma, enabling a kind of %``%#"#forward reasoning,#"#%''% in contrast to the %``%#"#backward reasoning#"#%''% that is the default for Coq tactics.  The tactic %\coqdockw{%#<tt>#eassumption#</tt>#%}% is a version of [assumption] that will do matching of unification variables.  Let some variable [T] of type [Set] be the set of individuals.  [x] is a constant symbol, [p] is a unary predicate symbol, [q] is a binary predicate symbol, and [f] is a unary function symbol.
 %\begin{enumerate}%#<ol>#
     %\item%#<li># [p x -> (][forall x, p x -> exists y, q x y) -> (][forall x y, q x y -> q y (f y)) -> exists z, q z (f z)]#</li>#
   #</ol> </li>#%\end{enumerate}%
- *)
 
-Module ex9.
-  Lemma ex1 : forall (T : Type) p q f (x y z : T),
-    p x -> (forall x, p x -> exists y, q x y) ->
-    (forall x y, q x y -> q y (f y)) ->
-    exists z, q z (f z).
-    intros. destruct (H x). assumption.
-    exists x0. eapply H0. eassumption. Qed.
-End ex9.
-
-(**
 %\item%#<li># Define an inductive predicate capturing when a natural number is an integer multiple of either 6 or 10.  Prove that 13 does not satisfy your predicate, and prove that any number satisfying the predicate is not odd.  It is probably easiest to prove the second theorem by indicating %``%#"#odd-ness#"#%''% as equality to [2 * n + 1] for some [n].#</li>#
- *)
 
-Module ex10.
-  Inductive six : nat -> Prop :=
-  | six_O : six O
-  | sixS : forall n, six n -> six (S (S (S (S (S (S n)))))).
-  Inductive ten : nat -> Prop :=
-  | ten_O : ten O
-  | tenS : forall n, ten n -> ten (S (S (S (S (S (S (S (S (S (S n)))))))))).
-  
-  Inductive six_ten : nat -> Prop :=
-  | Six : forall n, six n -> six_ten n
-  | Ten : forall n, ten n -> six_ten n.
-
-  Ltac finisher :=
-    unfold not; intros H; inversion H; subst;
-    repeat match goal with
-           | [ H: six _ |- _ ] => inversion H; subst
-           | [ H: ten _ |- _ ] => inversion H; subst
-           end.
-  Lemma not_13_six_tem : ~ ( six_ten 13).
-    finisher. Qed.
-
-  Require Import Arith Plus Nat.
-
-  Lemma six_ten_not_odd : forall n, six_ten n -> (odd n = false).
-    assert (H1 : forall n, six n -> (odd n = false)).
-    { intros n H; induction H; auto. }
-    assert (H2 : forall n, ten n -> (odd n = false)).
-    { intros n H; induction H; auto. }
-    intros n H; destruct H; auto. Qed.
-End ex10.
-
-(**
 %\item%#<li># Define a simple programming language, its semantics, and its typing rules, and then prove that well-typed programs cannot go wrong.  Specifically:
   %\begin{enumerate}%#<ol>#
     %\item%#<li># Define [var] as a synonym for the natural numbers.#</li>#
@@ -432,11 +320,6 @@ end
 #</li>#
 
 #</ol>#%\end{enumerate}% *)
-
-Module ex11.
-  Definition var := nat.
-  
-End ex11.
 
 
 (** * From Coinductive *)

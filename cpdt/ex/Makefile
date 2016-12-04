@@ -1,7 +1,7 @@
 all:*.v
-	coqc *.v
+	coqc -R ~/cpdt/src Cpdt *.v
 pdf:*.v
-	coqc *.v
+	coqc -R ~/cpdt/src Cpdt *.v
 	coqdoc --latex -s *.v 
 	pdflatex *.tex
 	evince *.pdf
