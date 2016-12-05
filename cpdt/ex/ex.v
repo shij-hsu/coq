@@ -476,6 +476,7 @@ Module ex12.
   CoInductive cotree (X : Type) : Type :=
   | Node : X -> cotree X -> cotree X -> cotree X.
 
+
   CoFixpoint everywhere (X : Type) (a : X) : cotree X :=
     Node X a (everywhere X a) (everywhere X a).
 
@@ -507,18 +508,21 @@ Module ex12.
   end.
 
   Lemma frob_eq : forall (X : Type) (t : cotree X), t = frob _ t.
-    destruct t; auto. Qed.
+    destruct t; auto. Qed. 
 
   Hint Resolve frob_eq.
-  
+
+(**
+The next Lemma if very important, a little difficult. 
+ *)
+    
   Lemma f : co_equal _ true_false (map _ _ orb true_false falses).
-    cofix; rewrite (frob_eq _ true_false);
-      rewrite (frob_eq _ falses); simpl; fold falses.
-    assert ((map bool bool orb (Node bool true false_true false_true)
-                 (Node bool false falses falses)) =
-            Node _ true (map _ _ orb false_true falses) (map _ _ orb false_true falses)).
-    { rewrite (frob_eq _ falses); rewrite (frob_eq _ false_true).
-      
+    cofix. rewrite (frob_eq _ (map bool bool orb true_false falses)),
+           (frob_eq _ true_false). simpl. constructor; try reflexivity.
+    rewrite (frob_eq _ (map bool bool orb false_true (everywhere bool false))),
+    (frob_eq _ false_true); simpl; constructor; fold falses; auto.
+    rewrite (frob_eq _ (map bool bool orb false_true (everywhere bool false))),
+    (frob_eq _ false_true); simpl; constructor; auto. Qed.
 End ex12.
 
 (** * From Subset *)
@@ -527,7 +531,35 @@ End ex12.
 
 %\begin{enumerate}%#<ol>#
 %\item%#<li># Write a function of type [forall n m : nat, {][n <= m} + {][n > m}].  That is, this function decides whether one natural is less than another, and its dependent type guarantees that its results are accurate.#</li>#
+ *)
+Module ex13.
+  Require Import Specif.
+  Require Import Arith.
+  Require Import Peano.
 
+  Notation "'LE'" := (left _ _ ).
+  Notation "'GT'" := (right _ _).
+  Notation "'Reduce' x" := (if x then LE else GT) (at level 50).
+  
+  Definition le_nat : forall n m : nat, { n <= m } + { n > m }.
+    refine (fix f (n m : nat) : { n <= m } + { n > m} :=
+           match n, m with
+           | O, _ => LE
+           | S _, O => GT
+           | S n', S m' => Reduce (f n' m')
+           end);
+      [ apply le_0_n |
+        apply gt_Sn_O|
+        apply le_n_S; assumption |
+        apply gt_n_S; assumption ].
+  Defined.
+
+  Eval compute in le_nat 99 100.
+      
+End ex13.
+
+
+(**
 %\item%#<li># %\begin{enumerate}%#<ol>#
   %\item%#<li># Define [var], a type of propositional variables, as a synonym for [nat].#</li>#
   %\item%#<li># Define an inductive type [prop] of propositional logic formulas, consisting of variables, negation, and binary conjunction and disjunction.#</li>#
@@ -536,7 +568,34 @@ End ex12.
   %\item%#<li># Define a function [decide] that determines whether a particular [prop] is true under a particular truth assignment.  That is, the function should have type [forall (truth : var -> bool) (p : prop), {propDenote truth p} + {~ propDenote truth p}].  This function is probably easiest to write in the usual tactical style, instead of programming with [refine].  The function [bool_true_dec] may come in handy as a hint.#</li>#
   %\item%#<li># Define a function [negate] that returns a simplified version of the negation of a [prop].  That is, the function should have type [forall p : prop, {p' : prop | forall truth, propDenote truth p <-> ~ propDenote truth p'}].  To simplify a variable, just negate it.  Simplify a negation by returning its argument.  Simplify conjunctions and disjunctions using De Morgan's laws, negating the arguments recursively and switching the kind of connective.  Your [decide] function may be useful in some of the proof obligations, even if you do not use it in the computational part of [negate]'s definition.  Lemmas like [decide] allow us to compensate for the lack of a general Law of the Excluded Middle in CIC.#</li>#
 #</ol>#%\end{enumerate}% #</li>#
+ *)
 
+Module ex14.
+  Inductive var : Type :=
+  | Var : nat -> var.
+  Inductive prop : Type :=
+  | PVar : var -> prop
+  | PNot : prop -> prop
+  | PConj : prop -> prop -> prop
+  | PDisj : prop -> prop -> prop.
+  
+  Fixpoint propDenote (f : var -> bool) (p : prop) : Prop :=
+    match p with
+    | PVar v => if (f v) then True else False
+    | PNot p => ~ (propDenote f p)
+    | PConj p1 p2 => (propDenote f p1) /\ (propDenote f p2)
+    | PDisj p1 p2 => (propDenote f p1) \/ (propDenote f p2)
+    end.
+
+  Definition bool_true_dec := forall b, { b = true } + { ~ ( b = true) }.
+
+  Definition decide := forall ( truth : var -> bool) (p : prop), { propDenote truth p} + { ~ propDenote truth p}.
+
+  Definition negate := forall p : prop, { p' : prop | forall truth, propDenote truth p <-> ~ propDenote truth p' }.
+  
+End ex14.
+
+(**
 %\item%#<li># Implement the DPLL satisfiability decision procedure for boolean formulas in conjunctive normal form, with a dependent type that guarantees its correctness.  An example of a reasonable type for this function would be [forall f : formula, {truth : tvals | formulaTrue truth f} + {][forall truth, ~ formulaTrue truth f}].  Implement at least %``%#"#the basic backtracking algorithm#"#%''% as defined here:
   %\begin{center}\url{http://en.wikipedia.org/wiki/DPLL_algorithm}\end{center}%
   #<blockquote><a href="http://en.wikipedia.org/wiki/DPLL_algorithm">http://en.wikipedia.org/wiki/DPLL_algorithm</a></blockquote>#

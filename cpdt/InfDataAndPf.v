@@ -91,6 +91,7 @@ Theorem ones_eq : stream_eq ones ones'.
   cofix. rewrite (frob_eq ones). rewrite (frob_eq ones').
   simpl. constructor. assumption. Qed.
 
+
 Theorem ones_eq' : stream_eq ones ones'.
   cofix; crush. Abort.
 
